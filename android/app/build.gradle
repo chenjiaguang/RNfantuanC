@@ -1,4 +1,8 @@
 apply plugin: "com.android.application"
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf', 'iconfont.ttf' ] // Name of the font files you want to copy
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 import com.android.build.OutputFile
 
@@ -107,6 +111,8 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         vectorDrawables.useSupportLibrary = true
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -138,6 +144,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-blur')
+    compile project(':react-native-autoheight-webview')
+    compile project(':react-native-picker')
+    compile project(':react-native-vector-icons')
     compile project(':react-native-image-crop-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"

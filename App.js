@@ -8,11 +8,11 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
-  Text,
-  View,
-  TouchableHighlight
+  StatusBar,
+  View
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+import AppNavigators from './AppNavigators';
+import Resolution from "./lib/Resolution";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -21,50 +21,21 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
-  pickImage =() => {
-    ImagePicker.openPicker({
-      multiple: true
-    }).then(images => {
-      console.log(images);
-    });
-  }
+export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <TouchableHighlight onPress={this.pickImage}>
-          <Text>上传图片</Text>
-        </TouchableHighlight>
-      </View>
-    );
+    return <AppNavigators/>
   }
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+    width:Resolution.get().width,
+    height:Resolution.get().height,
+    backgroundColor: '#fff',
+    transform:[{translateX:-Resolution.get().width*.5},
+      {translateY:-Resolution.get().height*.5},
+      {scale:Resolution.get().scale},
+      {translateX:Resolution.get().width*.5},
+      {translateY:Resolution.get().height*.5}]
+  }
+})
