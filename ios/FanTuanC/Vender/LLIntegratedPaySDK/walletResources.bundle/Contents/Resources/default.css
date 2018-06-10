@@ -1,0 +1,150 @@
+
+/* 样式表只是用来设置控件的属性，并不和标准css一致  */
+
+/* 基 础 样 式 表 */
+
+/* 背景色样式 */
+#BG-3{background-color:#f0f0f0};
+
+/* 字体样式 */
+#TX-C{font-size:23px;}
+#TX-D{font-size:16px;}
+#TX-E{font-size:14px;}
+#TX-F{font-size:13px;}
+#TX-G{font-size:12px;}
+#MoneyFont{font-size:24px}
+#TX-H{font-size:15px;}
+#TX-A{font-size:15px;}
+
+#TX-P{font-size:15px;font-color:#5aa5e9}
+
+/*银行卡管理*/
+#TX-BankName{font-size:18;font-color:#ffffff}
+#TX-CardType{font-size:12;font-color:#ffffff}
+#TX-CardTail{font-size:18;font-color:#ffffff}
+#TX-Unbind{font-size:12;font-color:#ffffff}
+
+/*tableView section header section footer*/
+#TX-TableInfo{font-size:13;font-color:#333333}
+
+#TX-1{font-color:#333333}
+#TX-2{font-color:#ff0000}
+#TX-3{font-color:#00a0e9} /*短信弹框确认文字颜色，购买信息价格文字颜色 #fe5000*/
+#TX-4{font-color:#999999}
+#TX-5{font-color:#5aa5e9}
+#TX-8{font-color:#ffffff}
+#TX-9{font-color:#ffeec1}
+#TX-11{font-color:#666666}
+#TX-12{font-color:#555555}
+#TX-Disable{font-color:#cdcdcd}
+#TX-black{font-color:#000000}
+#TX-tableHF{font-color:#F2F2F2}
+
+#TX-verified{font-color:#01BD3F}
+#TX-notVerified{font-color:#FF213B}
+
+/* 控件样式表 */
+NavBar {left:0px;top:0px;width:320px;height:44px;font-size:19px;font-color:#ffffff;
+    font-style:bold;background-color:#ffffff;background-image:ll_nav_bg3.png;}
+
+UIView{font-size:18px;}
+UILabel{background-color:clear;width:100px;height:15}
+UITextField{left:8px;width:304px;height:44px;margin:8px;border-style:none;font-color:#333333;font-size:16px;border-width:.4f;border-color:#ffffff;border-color-hi:#ffffff;border-radius:0;background-color:#ffffff}
+UITextView{background-color:#00000000;width:320px;height:100px;}
+UIButton{left:10px;width:300px;height:40px;font-color:#ffffff;font-size:18px;}
+UITableView{width:320px;height:200px;}
+LLInfoView{left:14px;top:14px;width:292px;}
+
+CusTitles {
+    /*聚合支付标题*/
+    payTitle:聚合收银台;signTitle:绑卡;alertTitle:请输入验证码;
+    /*开户标题*/
+    regPhone:注册;regPwdSet:注册;regPersonalInfo:注册;regResult:注册;
+    /*管理标题*/
+    mgrHome:钱包管理;mgrAccoutDetail:账户详情;
+    mgrAlertPassword:请输入支付密码;mgrAlertVerifyCode:请输入短信验证码;
+    mgrBalance:账户余额;balanceWithdraw:余额提现;balanceRecharge:充值;
+    mgrBankCard:我的银行卡;mgrBindCard:添加银行卡;
+    mgrPwd:找回密码;
+    mgrBillList:收支明细;mgrBillDetail:收支详情;
+    mgrResult:结果
+}
+
+LLIntegratedProductNames {
+    wallet:我的钱包;
+}
+
+.numText{keyboard-type:num;}
+.splitLine{width:320px;height:1px;image:examSplitline.png;}
+
+.confirmBtn{type:custom;background-image:confirmBtn.png;background-image-hi:btn-hi.png;}
+.cancelBtn{type:custom;background-image:quickPaycancelBtn.png;background-image-hi:btn-hi.png;}
+
+/* form page element */
+.formInputField{font-size:18px;border-style:none;}
+
+
+LLColorButton{border-radius:0px;}
+
+
+#pay-button{normal-color:#00a0e9;hi-color:#0094d8;disable-color:#cdcdcd;margin:15px;border-radius:5px}
+/*确认效果按钮*/
+#a-button{normal-color:#00a0e9;hi-color:#0094d8;disable-color:#cdcdcd;}
+/*取消效果按钮*/
+#b-button{normal-color:#00a0e9;hi-color:#0094d8;font-color:#ffffff;}
+
+
+#c-button{normal-color:#fe932f;hi-color:#cb7320;}
+#d-button{normal-color:#dcdcdc;hi-color:#a9a9a9;}
+#e-button{normal-color:#ffeec1;hi-color:#eeeeee;border-color:#ffd778;border-width:0.8px;font-color:#fe5000;}
+#f-button{normal-color:#ffffff;hi-color:#999999;border-color:#d9d9d9;border-width:0.8px;font-color:#666666;}
+
+#half-button{width:128px;font-size:14px;}
+
+#sms-button-d{background-image:D短信验证码按钮.png;background-image-hi:D短信验证码按钮按压.png;background-image-disable:D短信验证码按钮不可点击.png;
+width:99;height:44;}
+
+#confirm-short-button {
+    background-image:B弹框按钮.png;
+    background-image-hi:B弹框按钮按压.png;
+    background-image-disable:B弹框按钮按压.png;
+    width:129;
+    height:40;
+}
+
+#cancel-short-button {
+    background-image:D弹框按钮.png;
+    background-image-hi:D短信验证码按钮按压.png;
+    background-image-disable:D短信验证码按钮按压.png;
+    width:129;
+    height:40;
+    font-color:#000000;
+}
+
+#ok-button{normal-color:#00a0e9;hi-color:#0094d8;disable-color:214,214,214;margin:15px;border-radius:5px}
+
+/* 输入框 */
+#short-textfield{width:280px;}
+#inputVC-sms-textfield{left:8px;width:216px;}
+#money-textfield{font-size:24px;height:50px;margin:8px}
+LLSmallCountDownButton{left:216; top:0; width:88; height:44}
+#disable-textfield{user-interaction-enabled:false;background-color:#ffffff;}
+.deadlineField{font-size:15px;date-color:#999999; word-color:#999999;}
+
+
+
+/* 弹窗 */
+#alert-cancelBtn{normal-color:#ffffff;hi-color:#f0f0f0;disable-color:214,214,214;font-size:15px;font-color:#333333;left:0px;border-radius:0px;width:144px}
+#alert-confirmBtn{normal-color:#ffffff;hi-color:#f0f0f0;font-size:15px;font-color:#5aa5e9;left:0px;border-radius:0px;width:144px}
+
+#alert-paycode-textfield{margin:25px;width:216px;border-radius:4px;border-color:#bbbbbb;border-color-hi:#333333}
+#label-alertTitle{font-color:#333333;font-size:15px;height:44px;text-align:center;background-color:#f0f0f0}
+
+/* 页 面 样 式 */
+basePage{}
+
+#contentSpace{left:10px;width:120px;}
+#printerContentSpace{left:15;width:271px;}
+
+#label-tip{font-color:#999999;font-size:15px;height:44px;width:55px;}
+#support-tip{font-color:#666666;font-size:15px;align:center;width:300;height:44px;}
