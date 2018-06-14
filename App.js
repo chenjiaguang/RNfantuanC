@@ -8,11 +8,11 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
-  StatusBar,
-  View
 } from 'react-native';
 import AppNavigators from './AppNavigators';
 import Resolution from "./lib/Resolution";
+import { NativeModules } from 'react-native';
+
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -22,8 +22,15 @@ const instructions = Platform.select({
 });
 
 export default class App extends React.Component {
+  componentWillMount () {
+    // console.log('appWillMount', this.props, AppNavigators)
+    //   let CalendarManager = NativeModules.CalendarManager;
+    //   CalendarManager.addEvent('Birthday Party', '4 Privet Drive, Surrey');
+  }
   render() {
-    return <AppNavigators/>
+    return <AppNavigators screenProps={this.props.screenProps} onNavigationStateChange={(prevNav, nav, action) => {
+      console.log('判断根栈', prevNav, nav, action)
+    }} />
   }
 }
 

@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 import React, { componet } from "react";
-import {View, TouchableWithoutFeedback, Platform, PixelRatio, Dimensions, Easing, Animated} from 'react-native'
+import {View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated} from 'react-native'
+import Index from './views/Index';
 import HeadlineIndex from './views/HeadlineIndex';
 import HeadlineSelect from './views/HeadlineSelect';
 import HeadlineForm from './views/HeadlineForm';
@@ -10,7 +11,6 @@ import BindPhone from './views/BindPhone';
 import Dynamic from './views/Dynamic';
 import WebPage from './views/WebPage';
 import Iconfont from './components/cxicon/CXIcon';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import px2dp from './lib/px2dp'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
 
@@ -41,6 +41,7 @@ class HeaderRight extends React.Component {
   }
 }
 const SimpleApp = createStackNavigator({
+  Index: { screen: Index, path: '/Index' }, // RN应用入口
   HeadlineIndex: { screen: HeadlineIndex, path: '/headline/index' }, // "申请成为头条号"入口
   HeadlineSelect: { screen: HeadlineSelect, path: '/headline/select' }, // "申请成为头条号"选择类型
   HeadlineForm: { screen: HeadlineForm, path: '/headline/form' }, // "申请成为头条号"表单填写
@@ -50,11 +51,18 @@ const SimpleApp = createStackNavigator({
   Dynamic: { screen: Dynamic, path: '/circle' }, // 圈子首页
   WebPage: { screen: WebPage, path: '/web' },
 },{
-  navigationOptions: ({navigation}) => {
+  navigationOptions: ({navigation, screenProps}) => {
     return {
       headerTruncatedBackTitle: true,
       headerLeft: <HeaderLeft goBack={() => {
-        navigation.pop()
+        console.log(111, navigation, screenProps)
+        if (navigation.state.routeName === screenProps.route) {
+          console.log(222)
+          let CalendarManager = NativeModules.CalendarManager;
+          CalendarManager.popVc();
+        } else {
+          navigation.pop()
+        }
       }}/>,
       headerRight: <HeaderRight/>,
       headerStyle: {
@@ -80,7 +88,7 @@ const SimpleApp = createStackNavigator({
   },
   mode: 'float',
   headerMode: 'screen',
-  initialRouteName: 'HeadlineIndex',
+  initialRouteName: 'Index',
   transitionConfig: () => {
     return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
       screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
@@ -121,18 +129,6 @@ SimpleApp.router.getStateForAction = (action, state) => {
           }
         }
       }
-      // if (state.routes[state.index].routeName == 'Home') {
-      //   if (lastBackPressed + 2000 < Date.now()) {
-      //     ToastAndroid.show('再点击一次退出应用', ToastAndroid.SHORT);
-      //     lastBackPressed = Date.now();
-      //     const routes = [...state.routes];
-      //     return {
-      //       ...state,
-      //       ...state.routes,
-      //       index: routes.length - 1,
-      //     };
-      //   }
-      // }
     }
   }
   return defaultGetStateForAction(action, state);

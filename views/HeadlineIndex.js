@@ -28,6 +28,9 @@ export default class HeadlineIndex extends React.Component {
     const { navigate } = this.props.navigation;
     navigate('HeadlineSelect')
   }
+  componentDidMount () {
+    console.log('qwer', this.props)
+  }
   render() {
     let {showPage} = this.state
     return showPage ? <ScrollView style={style.scrollView}>
