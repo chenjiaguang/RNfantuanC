@@ -13,8 +13,8 @@ import commonStyle from '../static/commonStyle'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import px2dp from '../lib/px2dp'
 // 申请头条选择类型
-const personIcon = require('../static/image/person_icon.png')
-const organizationIcon = require('../static/image/organization_icon.png')
+const personIcon = require('../static/image/rn_person_icon.png')
+const organizationIcon = require('../static/image/rn_organization_icon.png')
 export default class HeadlineSelect extends React.Component {
   constructor (props) {
     super(props)
