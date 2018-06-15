@@ -14,8 +14,8 @@ import {
 import Iconfont from "../components/cxicon/CXIcon"; // 自定义iconfont字体文字，基于"react-native-vector-icons"
 import commonStyle from '../static/commonStyle' // 公共样式，方便以后换肤，换主题色
 import { ifIphoneX } from 'react-native-iphone-x-helper' // 判断是否iphoneX，适配底部开口
-const defaultAvatar = require('../static/image/apply_default_avatar.png')
-const defaultPic = require('../static/image/apply_default_pic.png')
+const defaultAvatar = require('../static/image/rn_apply_default_avatar.png')
+const defaultPic = require('../static/image/rn_apply_default_pic.png')
 import Picker from 'react-native-picker'; // RN官方提供的只有ios是滚轮的,引入滚轮选择（ios/android）
 import px2dp from '../lib/px2dp' // 将设计稿的尺寸转为可用的dp单位(以设计稿宽度750)
 import { getStatusBarHeight } from 'react-native-iphone-x-helper' // 获取状态栏高度(ios/android)，RN官方提供的只在android上有效
