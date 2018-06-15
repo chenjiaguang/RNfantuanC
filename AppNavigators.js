@@ -94,21 +94,6 @@ const SimpleApp = createStackNavigator({
             }
         } : {}
     }
-<<<<<<< HEAD
-  },
-  mode: 'float',
-  headerMode: 'screen',
-  initialRouteName: 'HeadlineIndex',
-  transitionConfig: () => {
-    return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
-      screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
-      transitionSpec: {
-        duration: 350
-      }
-    } : {}
-  }
-=======
->>>>>>> e0ceeb406f074e4994884a5bf0a03936cf45c21c
 });
 let stateIndex, oStateIndex = false, goBack = false;
 let lastBackPressed = false;
