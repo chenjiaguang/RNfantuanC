@@ -53,19 +53,17 @@ export default class VerifyPhone extends React.Component {
       this.setState({
         submitting: false
       })
-        console.log('/jv/sms/verify', res, rData)
       if (res && Boolean(res.error) && res.msg) {
         Toast.show(res.msg)
       } else if (res && !Boolean(res.error)) {
         // 下一步，调用页面传进来的verifySuccess
-        if (params && params.verifySuccess) {
-          if (verifySuccess === 'bindPhone') {
+        if (params && params.type) {
+          if (params.type === 'bindPhone') {
             this.props.navigation.navigate('BindPhone')
           } else if (verifySuccess === 'rebindPhone') {
             this.props.navigation.navigate('BindPhone', {rebind: true})
           }
         }
-        params && params.verifySuccess && params.verifySuccess()
       }
     }, err => {
       // 验证出错

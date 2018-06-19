@@ -100,7 +100,6 @@ let stateIndex, oStateIndex = false, goBack = false;
 let lastBackPressed = false;
 const defaultGetStateForAction = SimpleApp.router.getStateForAction;
 SimpleApp.router.getStateForAction = (action, state) => {
-    console.log('333')
     if (state) {
         stateIndex = state.index;
         if (action.type === 'Navigation/POP' || action.type === 'Navigation/BACK') { // 封装返回中断逻辑,在需要终止返回的页面设置params中的backFn，则会执行backFn，在backFn中使用返回一个promise并且不resolve的话则中断返回
@@ -128,6 +127,11 @@ SimpleApp.router.getStateForAction = (action, state) => {
                     }
                 }
             }
+        }
+        if (state.routes.length === 1) {
+            // 执行恢复原生导航
+        } else if (state.routes.length === 2) {
+            // 执行取消原生导航
         }
     }
     return defaultGetStateForAction(action, state);
