@@ -50,12 +50,13 @@ export default class CodeInput extends Component {
       return false
     }
     let rData = {
-      phone: phone
+      phone: phone,
+      purpose: 'changePhone'
     }
     this.setState({
       disabledBtn: true
     })
-    _FetchData(_Api + '/sms/send', rData).then(res => {
+    _FetchData(_Api + '/jv/sms/send', rData).then(res => {
       // 请求成功
       if (res && Boolean(res.error) && res.msg) {
         Toast.show(res.msg)

@@ -81,7 +81,8 @@ const SimpleApp = createStackNavigator({
                 color: '#333',
                 fontSize: px2dp(34)
             },
-            headerTintColor: '#333'
+            headerTintColor: '#333',
+            gesturesEnabled: true
         }
     },
     mode: 'float',

@@ -24,7 +24,11 @@ export default class HeadlineIndex extends React.Component {
     };
     componentWillMount () {
         console.log('componentWillMount', this.props)
-        this.props.navigation.replace(this.props.screenProps.route)
+        if (this.props.screenProps.params) {
+            this.props.navigation.replace(this.props.screenProps.route, this.props.screenProps.params)
+        } else {
+            this.props.navigation.replace(this.props.screenProps.route)
+        }
     }
     render() {
         return <View style={{flex: 1}}></View>

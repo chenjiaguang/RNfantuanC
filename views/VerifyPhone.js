@@ -12,8 +12,7 @@ import CodeInput from '../components/CodeInput' // 自己封装的获取验证�
 import Button from 'apsl-react-native-button'
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle"; // 第三方button库，RN官方的库会根据平台不同区别，这里统一
-// 提交头条申请成功页面  需要参数:phone: xxx, verifySuccess: function (验证通过后执行的方法，比如跳转其他页面),例：
-// 其他页面调用：this.props.navigation.navigate('VerifyPhone', {phone: 17508959493, verifySuccess: () => console.log(9999900000)})，验证成功后将log 9999900000
+// 提交头条申请成功页面  需要参数:phone: xxx, type:  xxx   type 决定验证成功后的动作
 
 export default class VerifyPhone extends React.Component {
   constructor (props) {
@@ -43,20 +42,29 @@ export default class VerifyPhone extends React.Component {
       return false
     }
     let rData = {
+      purpose: 'changePhone',
       phone: phone,
       code: code
     }
     this.setState({
       submitting: true
     })
-    _FetchData(_Api + '/sms/verify', rData).then(res => {
+    _FetchData(_Api + '/jv/sms/verify', rData).then(res => {
       this.setState({
         submitting: false
       })
+        console.log('/jv/sms/verify', res, rData)
       if (res && Boolean(res.error) && res.msg) {
         Toast.show(res.msg)
       } else if (res && !Boolean(res.error)) {
         // 下一步，调用页面传进来的verifySuccess
+        if (params && params.verifySuccess) {
+          if (verifySuccess === 'bindPhone') {
+            this.props.navigation.navigate('BindPhone')
+          } else if (verifySuccess === 'rebindPhone') {
+            this.props.navigation.navigate('BindPhone', {rebind: true})
+          }
+        }
         params && params.verifySuccess && params.verifySuccess()
       }
     }, err => {
