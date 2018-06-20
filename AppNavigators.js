@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 import React, { componet } from "react";
-import {View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated} from 'react-native'
+import {View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated,StatusBar,BackHandler} from 'react-native'
 import Index from './views/Index';
 import HeadlineIndex from './views/HeadlineIndex';
 import HeadlineSelect from './views/HeadlineSelect';
@@ -13,6 +13,7 @@ import WebPage from './views/WebPage';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
+import SwipBackModule from './modules/SwipBackModule';
 
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
 
@@ -56,8 +57,7 @@ const SimpleApp = createStackNavigator({
             headerTruncatedBackTitle: true,
             headerLeft: <HeaderLeft goBack={() => {
                 if (navigation.state.routeName === screenProps.route) {
-                    let CalendarManager = NativeModules.CalendarManager;
-                    CalendarManager.popVc();
+                    SwipBackModule.exit();
                 } else {
                     navigation.pop()
                 }
@@ -65,9 +65,11 @@ const SimpleApp = createStackNavigator({
             headerRight: <HeaderRight/>,
             headerStyle: {
                 width: px2dp(750),
-                height: px2dp(90),
-                backgroundColor: '#fff',
+                height: px2dp(90)+25,
+                paddingTop:25,
+                backgroundColor: '#fafafa',
                 borderBottomWidth: 0,
+                borderLeftWidth:2,
                 elevation: 0,
             },
             headerTitleStyle: {
@@ -129,9 +131,9 @@ SimpleApp.router.getStateForAction = (action, state) => {
             }
         }
         if (state.routes.length === 1) {
-            // 执行恢复原生导航
+            SwipBackModule.enable();
         } else if (state.routes.length === 2) {
-            // 执行取消原生导航
+            SwipBackModule.disable();
         }
     }
     return defaultGetStateForAction(action, state);

@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
+  View,
+  StatusBar
 } from 'react-native';
 import AppNavigators from './AppNavigators';
 import Resolution from "./lib/Resolution";
@@ -23,6 +25,8 @@ const instructions = Platform.select({
 export default class App extends React.Component {
   constructor (props) {
     super(props)
+    StatusBar.setBarStyle('dark-content')
+    StatusBar.setTranslucent(true)
   }
   componentWillMount () {
     // console.log('appWillMount', this.props, AppNavigators)
