@@ -10,6 +10,9 @@ import VerifyPhone from './views/VerifyPhone';
 import BindPhone from './views/BindPhone';
 import Dynamic from './views/Dynamic';
 import WebPage from './views/WebPage';
+import ActivitysJoined from './views/ActivitysJoined';
+import ActivitysMine from './views/ActivitysMine';
+import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
@@ -51,13 +54,16 @@ const SimpleApp = createStackNavigator({
     BindPhone: { screen: BindPhone, path: '/phone/bind' }, // 绑定手机号，当传入isRebind时，认为时新绑手机号
     Dynamic: { screen: Dynamic, path: '/circle' }, // 圈子首页
     WebPage: { screen: WebPage, path: '/web' },
+    ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },
+    ActivitysMine: { screen: ActivitysMine, path: '/ActivitysMine' },
+    ActivitysSignUpManagement: { screen: ActivitysSignUpManagement, path: '/ActivitysSignUpManagement' },
 },{
     navigationOptions: ({navigation, screenProps}) => {
         return {
             headerTruncatedBackTitle: true,
             headerLeft: <HeaderLeft goBack={() => {
                 if (navigation.state.routeName === screenProps.route) {
-                    SwipBackModule.exit();
+                    SwipBackModule && SwipBackModule.exit();
                 } else {
                     navigation.pop()
                 }
@@ -69,7 +75,6 @@ const SimpleApp = createStackNavigator({
                 paddingTop:25,
                 backgroundColor: '#fafafa',
                 borderBottomWidth: 0,
-                borderLeftWidth:2,
                 elevation: 0,
             },
             headerTitleStyle: {
@@ -131,9 +136,9 @@ SimpleApp.router.getStateForAction = (action, state) => {
             }
         }
         if (state.routes.length === 1) {
-            SwipBackModule.enable();
+            SwipBackModule && SwipBackModule.enable();
         } else if (state.routes.length === 2) {
-            SwipBackModule.disable();
+            SwipBackModule && SwipBackModule.disable();
         }
     }
     return defaultGetStateForAction(action, state);

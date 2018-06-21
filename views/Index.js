@@ -15,22 +15,34 @@ import Button from 'apsl-react-native-button' // 第三方button库，RN官方�
 // 申请头条首页
 
 export default class HeadlineIndex extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {}
     }
     static navigationOptions = {
         title: ''
     };
-    componentWillMount () {
+    componentWillMount() {
         console.log('componentWillMount', this.props)
-        if (this.props.screenProps.params) {
-            this.props.navigation.replace(this.props.screenProps.route, this.props.screenProps.params)
+
+        let screenProps = this.props.screenProps;
+        //testing
+        if (!screenProps) {
+            screenProps = {
+                route: "ActivitysSignUpManagement",
+                params: {
+                }
+            }
+        }
+
+
+        if (screenProps.params) {
+            this.props.navigation.replace(screenProps.route, screenProps.params)
         } else {
-            this.props.navigation.replace(this.props.screenProps.route)
+            this.props.navigation.replace(screenProps.route)
         }
     }
     render() {
-        return <View style={{flex: 1}}></View>
+        return <View style={{ flex: 1 }}></View>
     }
 }
