@@ -67,11 +67,10 @@ const SimpleApp = createStackNavigator({
             headerRight: <HeaderRight/>,
             headerStyle: {
                 width: px2dp(750),
-                height: px2dp(90)+25,
-                paddingTop:25,
+                height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
+                paddingTop: Platform.OS === 'android' ? 25 : 0,
                 backgroundColor: '#fafafa',
                 borderBottomWidth: 0,
-                borderLeftWidth:2,
                 elevation: 0,
             },
             headerTitleStyle: {
@@ -91,7 +90,7 @@ const SimpleApp = createStackNavigator({
     },
     mode: 'float',
     headerMode: 'screen',
-    initialRouteName: 'Index',
+    initialRouteName: 'HeadlineIndex',
     transitionConfig: () => {
         return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
             screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
@@ -137,9 +136,9 @@ SimpleApp.router.getStateForAction = (action, state) => {
                 }
             }
         }
-        if (state.routes.length === 1) {
+        if (state.routes.length === 1 && Platform.OS === 'android') {
             SwipBackModule.enable();
-        } else if (state.routes.length === 2) {
+        } else if (state.routes.length === 2 && Platform.OS === 'android') {
             SwipBackModule.disable();
         }
     }
