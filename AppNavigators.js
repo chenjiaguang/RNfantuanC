@@ -8,6 +8,7 @@ import HeadlineForm from './views/HeadlineForm';
 import HeadlineSubmitted from './views/HeadlineSubmitted';
 import VerifyPhone from './views/VerifyPhone';
 import BindPhone from './views/BindPhone';
+import ActivityDetail from './views/ActivityDetail';
 import Dynamic from './views/Dynamic';
 import WebPage from './views/WebPage';
 import Iconfont from './components/cxicon/CXIcon';
@@ -41,8 +42,9 @@ class HeaderRight extends React.Component {
   }
 }
 const SimpleApp = createStackNavigator({
-    Index: { screen: Index, path: '/Index' }, // RN应用入口
+    ActivityDetail: { screen: ActivityDetail, path: '/activity/detail' }, // "申请成为头条号"入口
     HeadlineIndex: { screen: HeadlineIndex, path: '/headline/index' }, // "申请成为头条号"入口
+    Index: { screen: Index, path: '/Index' }, // RN应用入口
     HeadlineSelect: { screen: HeadlineSelect, path: '/headline/select' }, // "申请成为头条号"选择类型
     HeadlineForm: { screen: HeadlineForm, path: '/headline/form' }, // "申请成为头条号"表单填写
     HeadlineSubmitted: { screen: HeadlineSubmitted, path: '/headline/submitted' }, // "申请成为头条号"提交成功
@@ -87,13 +89,18 @@ const SimpleApp = createStackNavigator({
     },
     mode: 'float',
     headerMode: 'screen',
+    initialRouteName: 'Index',
     transitionConfig: () => {
         return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
             screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
             transitionSpec: {
                 duration: 350
             }
-        } : {}
+        } : {
+            transitionSpec: {
+                duration: 250
+            }
+        }
     }
 });
 let stateIndex, oStateIndex = false, goBack = false;

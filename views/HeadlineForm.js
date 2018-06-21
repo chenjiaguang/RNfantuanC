@@ -468,7 +468,7 @@ export default class HeadlineForm extends React.Component {
               transparent={true}
               visible={this.state.showModal || false}
               onRequestClose={() => {this._setModalVisible(false)}}
-              style={{flex: 1}}
+              style={{flex: 1, }}
             >
               <TouchableWithoutFeedback onPress={() => { this.setState({showModal: false}); Picker.hide();}} onLayout={() => Picker.show()}>
                 <View style={{flex:1, backgroundColor: 'rgba(0,0,0,0.5)'}}></View>
