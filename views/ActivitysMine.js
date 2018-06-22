@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import RefreshListView from 'react-native-refresh-list-view'
 import px2dp from '../lib/px2dp'
+import ActivityEmpty from '../components/ActivityEmpty'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -39,6 +40,52 @@ class HeaderRight extends React.Component {
   }
 }
 export default class ActivitysMine extends React.Component {
+  activeStatus = [
+    '报名中',
+    '审核中'
+  ]
+  data = [
+    {
+      id: '0',
+      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
+      title: '啤酒与烧烤，夏日里的绝佳搭配',
+      time: '01-30 16:00 开始',
+      status: '已结束',
+      price: '￥100 x 10'
+    },
+    {
+      id: '1',
+      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
+      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~啤酒与烧烤，夏日里的绝佳搭配啤酒与烧烤，夏日里的绝佳搭配啤酒与烧烤，夏日里的绝佳搭配',
+      time: '01-30 16:00 开始',
+      status: '报名截止',
+      price: '￥100 x 10'
+    },
+    {
+      id: '2',
+      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
+      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
+      time: '01-30 16:00 开始',
+      status: '报名中',
+      price: '￥100 x 10'
+    },
+    {
+      id: '3',
+      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
+      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
+      time: '01-30 16:00 开始',
+      status: '审核中',
+      price: '￥100 x 10'
+    },
+    {
+      id: '4',
+      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
+      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
+      time: '01-30 16:00 开始',
+      status: '已拒绝',
+      price: '￥100 x 10'
+    },
+  ]
   constructor(props) {
     super(props)
     this.state = {
@@ -46,18 +93,9 @@ export default class ActivitysMine extends React.Component {
       dataList: this.data
     }
   }
-  data = [
-    {
-      id: 0,
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
-      time: '01-30 16:00 开始',
-      status: '已结束',
-      price: '￥100 x 10'
-    },
-  ]
-  keyExtractor = (item, index) => item.id;
-
+  onJumpActivitysSignUpManagement = (id) => {
+    this.props.navigation.navigate('ActivitysSignUpManagement')
+  }
   onHeaderRefresh = () => {
     this.setState({ refreshState: 1 })
     setTimeout(() => {
@@ -75,33 +113,41 @@ export default class ActivitysMine extends React.Component {
   }
   render() {
     return <View style={styles.container}>
-      <RefreshListView style={styles.list}
-        refreshState={this.state.refreshState}
-        onHeaderRefresh={this.onHeaderRefresh}
-        keyExtractor={this.keyExtractor}
-        data={this.state.dataList}
-        renderItem={({ item }) =>
-          <View style={styles.item}>
-            <Image
-              style={styles.img}
-              source={{ uri: item.img }}
-            />
-            <View style={styles.right}>
+      {
+        (this.state.dataList && this.state.dataList.length > 0) ?
+          <RefreshListView style={styles.list}
+            refreshState={this.state.refreshState}
+            onHeaderRefresh={this.onHeaderRefresh}
+            keyExtractor={(item) => item.id}
+            data={this.state.dataList}
+            renderItem={({ item }) =>
+              <TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
+                <View style={styles.item}>
+                  <Image
+                    style={styles.img}
+                    source={{ uri: item.img }}
+                  />
+                  <View style={styles.right}>
 
 
-              <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
 
-              <View style={styles.rightBottom}>
+                    <View style={styles.rightBottom}>
 
-                <View style={styles.rightBottomLeft}>
-                  <Text style={styles.time}>{item.time}</Text>
-                  <Text style={styles.price}>{item.price}</Text>
+                      <View style={styles.rightBottomLeft}>
+                        <Text style={styles.time}>{item.time}</Text>
+                        <Text style={styles.price}>{item.price}</Text>
+                      </View>
+                      <Text style={[styles.button, this.activeStatus.indexOf(item.status) > -1 ? styles.buttonEnable : null]}>{item.status}</Text>
+                    </View>
+                  </View>
                 </View>
-                <Text style={styles.button}>查看券码</Text>
-              </View>
-            </View>
-          </View>}
-      />
+              </TouchableWithoutFeedback>
+            }
+          /> :
+          <ActivityEmpty mode={1} />
+      }
+
     </View>
 
   }
@@ -171,7 +217,7 @@ const styles = StyleSheet.create({
     lineHeight: px2dp(38),
     width: px2dp(109),
     borderRadius: px2dp(6),
-    borderWidth: px2dp(2),
+    borderWidth: px2dp(0.8),
     fontSize: px2dp(20),
     textAlign: 'center',
     color: '#999999',

@@ -29,7 +29,7 @@ export default class HeadlineIndex extends React.Component {
         //testing
         if (!screenProps) {
             screenProps = {
-                route: "ActivitysSignUpManagement",
+                route: "ActivitysJoined",
                 params: {
                 }
             }

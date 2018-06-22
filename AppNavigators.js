@@ -96,7 +96,7 @@ const SimpleApp = createStackNavigator({
     },
     mode: 'float',
     headerMode: 'screen',
-    initialRouteName: 'HeadlineIndex',
+    initialRouteName: 'ActivitysMine',
     transitionConfig: () => {
         return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
             screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
