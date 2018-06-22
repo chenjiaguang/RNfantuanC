@@ -10,11 +10,6 @@ import { NativeModules } from 'react-native';
  * 跳转用户详情页
  * 
  * 
- * activityDetail 
- * 参数id:活动id
- * 跳转活动详情页
- * 
- * 
  * activityCodeScan
  * 跳转活动二维码扫描
  * 

@@ -11,47 +11,33 @@ import {
 import RefreshListView from 'react-native-refresh-list-view'
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
+import JumpNativeModule from '../modules/JumpNativeModule'
 
 export default class ActivitysJoined extends React.Component {
   activeStatus = [
     '待参与'
   ]
-  data = [{
-    id: '0',
-    img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-    title: '啤酒与烧烤，夏日里的绝佳搭配',
-    time: '01-30 16:00 开始',
-    status: '待参与',
-    price: '￥100 x 10'
-  },
-  {
-    id: '1',
-    img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-    title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
-    time: '01-30 16:00 开始',
-    status: '已结束',
-    price: '￥100 x 10'
-  }]
   constructor(props) {
     super(props)
     this.state = {
-      refreshState: 0,
-      dataList: this.data
+      dataList: []
     }
   }
   onJumpActivityCodeDetail = (id) => {
-    Alert.alert(
-      '跳转券码详情 id:' + id
-    )
+    JumpNativeModule && JumpNativeModule.activityCodeDetail(id)
   }
-  onHeaderRefresh = () => {
-    this.setState({ refreshState: 1 })
-    setTimeout(() => {
+  componentDidMount() {
+    this.getData()
+  }
+  getData = () => {
+    let rData = {
+    }
+    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
       this.setState({
-        dataList: this.data
+        dataList: this.state.dataList.concat(res.data.list)
       })
-      this.setState({ refreshState: 0 })
-    }, 1000);
+    }).catch(err => {
+    })
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -62,9 +48,7 @@ export default class ActivitysJoined extends React.Component {
     return <View style={styles.container}>
       {
         (this.state.dataList && this.state.dataList.length > 0) ?
-          <RefreshListView style={styles.list}
-            refreshState={this.state.refreshState}
-            onHeaderRefresh={this.onHeaderRefresh}
+          <FlatList style={styles.list}
             keyExtractor={(item) => item.id}
             data={this.state.dataList}
             renderItem={({ item }) =>
@@ -72,22 +56,22 @@ export default class ActivitysJoined extends React.Component {
                 <View style={styles.item}>
                   <Image
                     style={styles.img}
-                    source={{ uri: item.img }}
+                    source={{ uri: item.covers[0].compress }}
                   />
                   <View style={styles.right}>
 
                     <View style={styles.rightTop}>
                       <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-                      <Text style={[styles.status, this.activeStatus.indexOf(item.status) > -1 ? styles.statusEnable : null]}>{item.status}</Text>
+                      <Text style={[styles.status, this.activeStatus.indexOf(item.status_text) > -1 ? styles.statusEnable : null]}>{item.status_text}</Text>
                     </View>
 
                     <View style={styles.rightBottom}>
 
                       <View style={styles.rightBottomLeft}>
-                        <Text style={styles.time}>{item.time}</Text>
-                        <Text style={styles.price}>{item.price}</Text>
+                        <Text style={styles.time}>{item.time_text}</Text>
+                        <Text style={styles.price}>{item.money_text}</Text>
                       </View>
-                      <Text style={[styles.button, this.activeStatus.indexOf(item.status) > -1 ? styles.buttonEnable : null]}>查看券码</Text>
+                      <Text style={[styles.button, this.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>查看券码</Text>
                     </View>
                   </View>
                 </View>

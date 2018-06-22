@@ -44,66 +44,14 @@ export default class ActivitysMine extends React.Component {
     '报名中',
     '审核中'
   ]
-  data = [
-    {
-      id: '0',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配',
-      time: '01-30 16:00 开始',
-      status: '已结束',
-      price: '￥100 x 10'
-    },
-    {
-      id: '1',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~啤酒与烧烤，夏日里的绝佳搭配啤酒与烧烤，夏日里的绝佳搭配啤酒与烧烤，夏日里的绝佳搭配',
-      time: '01-30 16:00 开始',
-      status: '报名截止',
-      price: '￥100 x 10'
-    },
-    {
-      id: '2',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
-      time: '01-30 16:00 开始',
-      status: '报名中',
-      price: '￥100 x 10'
-    },
-    {
-      id: '3',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
-      time: '01-30 16:00 开始',
-      status: '审核中',
-      price: '￥100 x 10'
-    },
-    {
-      id: '4',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: '啤酒与烧烤，夏日里的绝佳搭配 沙滩BBQ，不要太馋人哦~',
-      time: '01-30 16:00 开始',
-      status: '已拒绝',
-      price: '￥100 x 10'
-    },
-  ]
   constructor(props) {
     super(props)
     this.state = {
-      refreshState: 0,
-      dataList: this.data
+      dataList: []
     }
   }
   onJumpActivitysSignUpManagement = (id) => {
     this.props.navigation.navigate('ActivitysSignUpManagement')
-  }
-  onHeaderRefresh = () => {
-    this.setState({ refreshState: 1 })
-    setTimeout(() => {
-      this.setState({
-        dataList: this.data
-      })
-      this.setState({ refreshState: 0 })
-    }, 1000);
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -111,13 +59,24 @@ export default class ActivitysMine extends React.Component {
       headerRight: <HeaderRight />,
     }
   }
+  getData = () => {
+    let rData = {
+    }
+    _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData).then(res => {
+      this.setState({
+        dataList: this.state.dataList.concat(res.data.list)
+      })
+    }).catch(err => {
+    })
+  }
+  componentDidMount() {
+    this.getData()
+  }
   render() {
     return <View style={styles.container}>
       {
         (this.state.dataList && this.state.dataList.length > 0) ?
-          <RefreshListView style={styles.list}
-            refreshState={this.state.refreshState}
-            onHeaderRefresh={this.onHeaderRefresh}
+          <FlatList style={styles.list}
             keyExtractor={(item) => item.id}
             data={this.state.dataList}
             renderItem={({ item }) =>
@@ -125,7 +84,7 @@ export default class ActivitysMine extends React.Component {
                 <View style={styles.item}>
                   <Image
                     style={styles.img}
-                    source={{ uri: item.img }}
+                    source={{ uri: item.covers[0].compress }}
                   />
                   <View style={styles.right}>
 
@@ -135,10 +94,10 @@ export default class ActivitysMine extends React.Component {
                     <View style={styles.rightBottom}>
 
                       <View style={styles.rightBottomLeft}>
-                        <Text style={styles.time}>{item.time}</Text>
-                        <Text style={styles.price}>{item.price}</Text>
+                        <Text style={styles.time}>{item.time_text}</Text>
+                        <Text style={styles.price}>{item.money}</Text>
                       </View>
-                      <Text style={[styles.button, this.activeStatus.indexOf(item.status) > -1 ? styles.buttonEnable : null]}>{item.status}</Text>
+                      <Text style={[styles.button, this.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
                     </View>
                   </View>
                 </View>
@@ -201,20 +160,20 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(20),
-    lineHeight: px2dp(20),
+    lineHeight: px2dp(22),
     height: px2dp(20),
     marginBottom: px2dp(24),
     color: '#999999',
   },
   price: {
     fontSize: px2dp(24),
-    lineHeight: px2dp(24),
+    lineHeight: px2dp(26),
     height: px2dp(24),
     color: '#FF3F53',
   },
   button: {
     height: px2dp(38),
-    lineHeight: px2dp(38),
+    lineHeight: px2dp(40),
     width: px2dp(109),
     borderRadius: px2dp(6),
     borderWidth: px2dp(0.8),

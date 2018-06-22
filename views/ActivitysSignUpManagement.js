@@ -8,10 +8,13 @@ import {
   TouchableWithoutFeedback,
   Alert,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  ListView
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { PullView } from 'react-native-pull';
+import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
+import JumpNativeModule from '../modules/JumpNativeModule'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -19,9 +22,7 @@ class HeaderRight extends React.Component {
     this.state = {}
   }
   onScan = () => {
-    Alert.alert(
-      '进入扫码'
-    )
+     JumpNativeModule.activityCodeScan()
   }
   render() {
     return <TouchableWithoutFeedback disabled={false} onPress={this.onScan}>
@@ -37,126 +38,29 @@ export default class ActivitysSignUpManagement extends React.Component {
     super(props)
     this.state = {
       refreshState: 0,
-      dataList: this.data,
-      dataCount1: "12",
-      dataCount2: "￥23"
+      dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.data),
+      dataCount1: "0",
+      dataCount2: "0"
     }
   }
   activeStatus = [
     '未验票'
   ]
   data = [
-    {
-      id: '0',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '已验票',
-      price: '￥100 x 10',
-      idNo: '460009898989899779',
-      gender: '男',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '1',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '460009898989899779',
-      gender: '',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '2',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '',
-      gender: '男',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '3',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '',
-      gender: '',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '4',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '460009898989899779',
-      gender: '男',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '5',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '460009898989899779',
-      gender: '男',
-      phone: '13337663721',
-      uid: '1433'
-    },
-    {
-      id: '6',
-      img: 'http://yanxuan.nosdn.127.net/3011d972cb4c1e72f38b9838dac7e21c.jpg?imageView&thumbnail=78x78&quality=95',
-      title: 'A票男生票C区20男生票C区',
-      name: '花花（陈晓华）',
-      time: '01-30 16:00 开始',
-      status: '未验票',
-      price: '￥100 x 10',
-      idNo: '460009898989899779',
-      gender: '男',
-      phone: '13337663721',
-      uid: '1433'
-    },
+    {//第一个留空，用于渲染头部统计数据
+    }
   ]
   keyExtractor = (item, index) => {
-    return item.id
+    return item.uid
   }
   onCall = (phone) => {
     Linking.openURL('tel:' + phone)
   }
   onJumpUserDetail = (id) => {
-    Alert.alert(
-      '跳转用户详情 id:' + id
-    )
+    JumpNativeModule && JumpNativeModule.userDetail(id)
   }
   onJumpActivityDetail = (id) => {
     this.props.navigation.navigate('ActivityDetail')
-  }
-  onPullRelease(resolve) {
-    //do something
-    setTimeout(() => {
-      resolve();
-    }, 1000);
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -164,61 +68,103 @@ export default class ActivitysSignUpManagement extends React.Component {
       headerRight: <HeaderRight />,
     }
   }
-  topIndicatorRender(pulling, pullok, pullrelease) {
+  componentDidMount = () => {
+    this._pullToRefreshListView.beginRefresh()
+  }
+  _renderHeader = (viewState) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60 }}>
         <ActivityIndicator size="small" color="#1eb0fd" />
       </View>
     );
   }
-  render() {
-    return <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <PullView onPullRelease={this.onPullRelease}
-          topIndicatorRender={this.topIndicatorRender} >
+  _renderRow = (item, sectionID, rowID) => {
+    return (
+      rowID == 0 ?
+        <View>
           <Text style={styles.countLine}>
             <Text>报名人数：</Text>
             <Text style={{ fontWeight: 'bold', marginRight: px2dp(20) }}>{this.state.dataCount1}</Text>
             <Text>    预计收入：</Text>
             <Text style={{ fontWeight: 'bold' }}>{this.state.dataCount2}</Text>
           </Text>
-          <FlatList style={styles.list}
-            keyExtractor={this.keyExtractor}
-            data={this.state.dataList}
-            renderItem={({ item }) =>
-              <View style={styles.item}>
+        </View> :
+        <View style={styles.item}>
 
-                <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid) }}>
-                  <Image
-                    style={styles.img}
-                    source={{ uri: item.img }}
-                  />
-                </TouchableWithoutFeedback>
-                <View style={styles.middle}>
-                  <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.price}>{item.price}</Text>
-                  <View style={styles.option}>
-                    {
-                      item.gender ? <Text style={styles.gender}>{item.gender}</Text> : null
-                    }
-                    {
-                      item.idNo ? <Text style={styles.idNo}>{item.idNo}</Text> : null
-                    }
-                  </View>
-                </View>
+          <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid) }}>
+            <Image
+              style={styles.img}
+              source={{ uri: item.avatar }}
+            />
+          </TouchableWithoutFeedback>
+          <View style={styles.middle}>
+            <Text style={styles.name}>{item.display_name}</Text>
+            <Text style={styles.title}>{item.feename}</Text>
+            <Text style={styles.price}>{item.money_text}</Text>
+            <View style={styles.option}>
+              {
+                item.sex ? <Text style={styles.gender}>{item.sex}</Text> : null
+              }
+              {
+                item.idcard ? <Text style={styles.idNo}>{item.idcard}</Text> : null
+              }
+            </View>
+          </View>
 
-                <View style={styles.right}>
-                  <TouchableWithoutFeedback onPress={() => { this.onCall(item.phone) }}>
-                    <View style={styles.callContainer}>
-                      <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <Text style={[styles.button, this.activeStatus.indexOf(item.status) > -1 ? styles.buttonEnable : null]}>{item.status}</Text>
-                </View>
-              </View>}
-          />
-        </PullView>
+          <View style={styles.right}>
+            <TouchableWithoutFeedback onPress={() => { this.onCall(item.phone) }}>
+              <View style={styles.callContainer}>
+                <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
+              </View>
+            </TouchableWithoutFeedback>
+            <Text style={[styles.button, this.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>{item.state_text}</Text>
+          </View>
+        </View>
+    )
+  }
+  _onRefresh = () => {
+    this.getData()
+  }
+  getData = () => {
+    let rData = {
+      id: 12,
+      pn: 1
+    }
+    _FetchData(_Api + '/jv/qz/v21/activity/joined', rData).then(res => {
+      this._pullToRefreshListView.endRefresh()
+      this.data = this.data.concat(res.data.list)
+      this.setState({
+        dataCount1: res.data.summary.ticket_count,
+        dataCount2: res.data.summary.income,
+        dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.data),
+      })
+    }, err => {
+      // 绑定出错
+      this._pullToRefreshListView.endRefresh()
+    }).catch(err => {
+      this._pullToRefreshListView.endRefresh()
+    })
+  }
+  render() {
+    return <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <PullToRefreshListView
+          ref={(component) => this._pullToRefreshListView = component}
+          viewType={PullToRefreshListView.constants.viewType.listView}
+          style={styles.list}
+          keyExtractor={this.keyExtractor}
+          renderRow={this._renderRow}
+          renderHeader={this._renderHeader}
+          dataSource={this.state.dataList}
+          onRefresh={this._onRefresh}
+          pullUpDistance={35}
+          pullUpStayDistance={50}
+          pullDownDistance={35}
+          pullDownStayDistance={50}
+          pageSize={20}
+          initialListSize={20}
+          enableEmptySections={true}
+        />
       </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(1111) }}>
         <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
@@ -235,8 +181,6 @@ const styles = StyleSheet.create({
   },
   countLine: {
     flexDirection: 'row',
-    marginLeft: px2dp(30),
-    marginRight: px2dp(30),
     marginTop: px2dp(60),
     paddingBottom: px2dp(30),
     borderBottomWidth: px2dp(1),
@@ -246,8 +190,8 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    marginLeft: px2dp(30),
-    marginRight: px2dp(30),
+    paddingLeft: px2dp(30),
+    paddingRight: px2dp(30),
   },
   item: {
     flex: 1,

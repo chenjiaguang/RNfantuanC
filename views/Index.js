@@ -27,16 +27,17 @@ export default class HeadlineIndex extends React.Component {
 
         let screenProps = this.props.screenProps;
         //testing
-        if (!screenProps) {
-            screenProps = {
-                route: "ActivitysJoined",
-                params: {
-                }
-            }
-        }
+        // if (!screenProps) {
+        //     screenProps = {
+        //         route: "ActivitysJoined",
+        //         params: {
+        //         }
+        //     }
+        // }
 
 
         if (screenProps.params) {
+            _Token=screenProps.params.token
             this.props.navigation.replace(screenProps.route, screenProps.params)
         } else {
             this.props.navigation.replace(screenProps.route)
