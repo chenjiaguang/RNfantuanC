@@ -14,13 +14,13 @@ import ActivityEmpty from '../components/ActivityEmpty'
 import JumpNativeModule from '../modules/JumpNativeModule'
 
 export default class ActivitysJoined extends React.Component {
-  activeStatus = [
-    '待参与'
-  ]
   constructor(props) {
     super(props)
     this.state = {
-      dataList: []
+      dataList: [],
+      activeStatus: [
+        '待参与'
+      ]
     }
   }
   onJumpActivityCodeDetail = (id) => {
@@ -62,7 +62,7 @@ export default class ActivitysJoined extends React.Component {
 
                     <View style={styles.rightTop}>
                       <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-                      <Text style={[styles.status, this.activeStatus.indexOf(item.status_text) > -1 ? styles.statusEnable : null]}>{item.status_text}</Text>
+                      <Text style={[styles.status, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.statusEnable : null]}>{item.status_text}</Text>
                     </View>
 
                     <View style={styles.rightBottom}>
@@ -71,7 +71,7 @@ export default class ActivitysJoined extends React.Component {
                         <Text style={styles.time}>{item.time_text}</Text>
                         <Text style={styles.price}>{item.money_text}</Text>
                       </View>
-                      <Text style={[styles.button, this.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>查看券码</Text>
+                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>查看券码</Text>
                     </View>
                   </View>
                 </View>

@@ -22,7 +22,7 @@ class HeaderRight extends React.Component {
     this.state = {}
   }
   onScan = () => {
-     JumpNativeModule.activityCodeScan()
+    JumpNativeModule.activityCodeScan()
   }
   render() {
     return <TouchableWithoutFeedback disabled={false} onPress={this.onScan}>
@@ -34,22 +34,24 @@ class HeaderRight extends React.Component {
   }
 }
 export default class ActivitysSignUpManagement extends React.Component {
+  defaultData = [{
+    //第一个留空，用于渲染头部统计数据
+  }]
   constructor(props) {
     super(props)
     this.state = {
       refreshState: 0,
-      dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.data),
+      data: this.defaultData,
+      dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.defaultData),
       dataCount1: "0",
-      dataCount2: "0"
+      dataCount2: "0",
+      aid: this.props.navigation.state.params.aid,
+      pn: 1,
+      activeStatus: [
+        '未验票'
+      ],
     }
   }
-  activeStatus = [
-    '未验票'
-  ]
-  data = [
-    {//第一个留空，用于渲染头部统计数据
-    }
-  ]
   keyExtractor = (item, index) => {
     return item.uid
   }
@@ -117,26 +119,33 @@ export default class ActivitysSignUpManagement extends React.Component {
                 <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
               </View>
             </TouchableWithoutFeedback>
-            <Text style={[styles.button, this.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>{item.state_text}</Text>
+            <Text style={[styles.button, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>{item.state_text}</Text>
           </View>
         </View>
     )
   }
   _onRefresh = () => {
-    this.getData()
+    this.getData(1)
   }
-  getData = () => {
+  getData = (pn) => {
     let rData = {
-      id: 12,
-      pn: 1
+      id: this.state.aid,
+      pn: pn
     }
     _FetchData(_Api + '/jv/qz/v21/activity/joined', rData).then(res => {
       this._pullToRefreshListView.endRefresh()
-      this.data = this.data.concat(res.data.list)
+      let data
+      if (pn == 1) {
+        data = this.defaultData.concat(res.data.list)
+      } else {
+        data = this.state.data.concat(res.data.list)
+      }
       this.setState({
+        pn: pn,
         dataCount1: res.data.summary.ticket_count,
         dataCount2: res.data.summary.income,
-        dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.data),
+        data: data,
+        dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(data),
       })
     }, err => {
       // 绑定出错

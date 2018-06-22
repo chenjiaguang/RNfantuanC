@@ -40,18 +40,19 @@ class HeaderRight extends React.Component {
   }
 }
 export default class ActivitysMine extends React.Component {
-  activeStatus = [
-    '报名中',
-    '审核中'
-  ]
+
   constructor(props) {
     super(props)
     this.state = {
-      dataList: []
+      dataList: [],
+      activeStatus: [
+        '报名中',
+        '审核中'
+      ]
     }
   }
   onJumpActivitysSignUpManagement = (id) => {
-    this.props.navigation.navigate('ActivitysSignUpManagement')
+    this.props.navigation.navigate('ActivitysSignUpManagement', { aid: id })
   }
   static navigationOptions = ({ navigation }) => {
     return {
@@ -97,7 +98,7 @@ export default class ActivitysMine extends React.Component {
                         <Text style={styles.time}>{item.time_text}</Text>
                         <Text style={styles.price}>{item.money}</Text>
                       </View>
-                      <Text style={[styles.button, this.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
+                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
                     </View>
                   </View>
                 </View>
