@@ -12,7 +12,6 @@ import {
   ListView
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-import { PullView } from 'react-native-pull';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import JumpNativeModule from '../modules/JumpNativeModule'
 

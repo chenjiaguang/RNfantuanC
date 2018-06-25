@@ -77,39 +77,47 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         console.log('调用原生显示地图页面')
     }
     animate = () => {
-        let {initialHeight, maxHeight, currentHeight} = this.state
-        console.log('animate', initialHeight, maxHeight, currentHeight)
-        if (this.state.currentHeight > this.state.maxHeight) {
+        let {initialHeight, maxHeight, currentHeight, animationHeight} = this.state
+        console.log('animate', initialHeight, maxHeight, currentHeight, animationHeight)
+        if (!animationHeight._offset || animationHeight._offset <= maxHeight) {
+            animationHeight.setOffset(initialHeight)
             Animated.timing(
-                this.state.currentHeight,
+                animationHeight,
                 {
-                    toValue: this.state.maxHeight
+                    initialHeight
                 }
-            ).start()
+            ).start((rep) => {
+                console.log('animation_rep', rep)
+            })
         } else {
+            animationHeight.setOffset(maxHeight)
             Animated.timing(
-                this.state.currentHeight,
+                animationHeight,
                 {
-                    toValue: this.state.initialHeight
+                    maxHeight
                 }
-            ).start()
+            ).start((rep) => {
+                console.log('animation_rep', rep)
+            })
         }
     }
     introBoxLayout = (event) => {
-        console.log('introBoxLayout', event.nativeEvent.layout.height)
+        console.log('introBoxLayout', event.nativeEvent.layout.height, px2dp(700))
         let {initialHeight, currentHeight, maxHeight} = this.state
         if (initialHeight && currentHeight && maxHeight) {
             return false
         }
+        let _currentHeight = event.nativeEvent.layout.height > px2dp(700) ? px2dp(700) : event.nativeEvent.layout.height
         this.setState({
             initialHeight: event.nativeEvent.layout.height,
             maxHeight: px2dp(700),
-            currentHeight: event.nativeEvent.layout.height > px2dp(700) ? px2dp(700) : event.nativeEvent.layout.height
+            currentHeight: _currentHeight,
+            animationHeight: new Animated.Value(_currentHeight)
         })
     }
     render() {
         let {bannerUrl, title, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags} = this.state.activity
-        let {initialHeight, currentHeight, maxHeight} = this.state
+        let {initialHeight, currentHeight, maxHeight, animationHeight} = this.state
         return <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
             <Image source={{uri: bannerUrl}} style={styles.header} />
             <View style={styles.contentWrapper}>
@@ -142,7 +150,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                         {tags.map((item, idx) => <View key={idx} style={styles.tagItem}><Text style={{fontSize: px2dp(24), color: '#666'}}>{item}</Text></View>)}
                     </View>
                 </View>
-                <View style={[styles.introBox, {height: currentHeight || 'auto'}]} onLayout={this.introBoxLayout}>
+                <Animated.View style={[styles.introBox, {height: animationHeight ? animationHeight : 'auto'}]} onLayout={this.introBoxLayout}>
                     <Text style={styles.introHeader}>活动介绍</Text>
                     <Text style={styles.introText}>工作两周，假期里养的肉都下去了么？</Text>
                     <Text style={styles.introText}>如果没有，</Text>
@@ -156,8 +164,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     <Text style={styles.introText}>主办单位：中国工商银行广东省分行</Text>
                     <Text style={styles.introText}>报名时间：近期</Text>
                     <Text style={styles.introText}>比赛时间：三月</Text>
-                    {initialHeight && currentHeight && maxHeight && <Text onPress={this.animate} style={{position: 'absolute', left: 0, bottom: 0}}>{currentHeight === maxHeight ? '展开' : '收起'}</Text>}
-                </View>
+                    {initialHeight && animationHeight && maxHeight && <Text onPress={this.animate} style={{position: 'absolute', left: 0, bottom: 0}}>{animationHeight._offset === maxHeight ? '展开' : '收起'}</Text>}
+                </Animated.View>
             </View>
         </ScrollView>
     }

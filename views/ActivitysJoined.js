@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   Alert
 } from 'react-native';
-import RefreshListView from 'react-native-refresh-list-view'
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 import JumpNativeModule from '../modules/JumpNativeModule'
