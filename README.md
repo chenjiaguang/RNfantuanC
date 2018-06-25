@@ -7,3 +7,10 @@ fantuanRN项目
 
 $ react-native log-ios
 $ react-native log-android
+
+
+
+
+TODO:
+下拉卡顿问题
+圆角锯齿

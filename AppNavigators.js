@@ -11,6 +11,9 @@ import BindPhone from './views/BindPhone';
 import ActivityDetail from './views/ActivityDetail';
 import Dynamic from './views/Dynamic';
 import WebPage from './views/WebPage';
+import ActivitysJoined from './views/ActivitysJoined';
+import ActivitysMine from './views/ActivitysMine';
+import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
@@ -53,13 +56,16 @@ const SimpleApp = createStackNavigator({
     BindPhone: { screen: BindPhone, path: '/phone/bind' }, // 绑定手机号，当传入isRebind时，认为时新绑手机号
     Dynamic: { screen: Dynamic, path: '/circle' }, // 圈子首页
     WebPage: { screen: WebPage, path: '/web' },
+    ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },
+    ActivitysMine: { screen: ActivitysMine, path: '/ActivitysMine' },
+    ActivitysSignUpManagement: { screen: ActivitysSignUpManagement, path: '/ActivitysSignUpManagement' },
 },{
     navigationOptions: ({navigation, screenProps}) => {
         return {
             headerTruncatedBackTitle: true,
             headerLeft: <HeaderLeft goBack={() => {
                 if (navigation.state.routeName === screenProps.route) {
-                    SwipBackModule.exit();
+                    SwipBackModule && SwipBackModule.exit();
                 } else {
                     navigation.pop()
                 }
@@ -90,7 +96,7 @@ const SimpleApp = createStackNavigator({
     },
     mode: 'float',
     headerMode: 'screen',
-    initialRouteName: 'ActivityDetail',
+    initialRouteName: 'Index',
     transitionConfig: () => {
         return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
             screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
@@ -137,9 +143,9 @@ SimpleApp.router.getStateForAction = (action, state) => {
             }
         }
         if (state.routes.length === 1 && Platform.OS === 'android') {
-            SwipBackModule.enable();
+            SwipBackModule && SwipBackModule.enable();
         } else if (state.routes.length === 2 && Platform.OS === 'android') {
-            SwipBackModule.disable();
+            SwipBackModule && SwipBackModule.disable();
         }
     }
     return defaultGetStateForAction(action, state);
