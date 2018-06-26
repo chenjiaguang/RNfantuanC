@@ -14,10 +14,6 @@ import {
   Easing
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-<<<<<<< HEAD
-=======
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
->>>>>>> e5c4ed00783e193ab035ffac1e957b46a29879cb
 import JumpNativeModule from '../modules/JumpNativeModule'
 import RefreshList from '../components/RefreshList'
 
