@@ -9,12 +9,13 @@ import {
   Alert,
   Linking,
   ActivityIndicator,
-  ListView
+  ListView,
+  Animated,
+  Easing
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-import { PullView } from 'react-native-pull';
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import JumpNativeModule from '../modules/JumpNativeModule'
+import RefreshList from '../components/RefreshList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -52,9 +53,6 @@ export default class ActivitysSignUpManagement extends React.Component {
       ],
     }
   }
-  keyExtractor = (item, index) => {
-    return item.uid
-  }
   onCall = (phone) => {
     Linking.openURL('tel:' + phone)
   }
@@ -71,16 +69,9 @@ export default class ActivitysSignUpManagement extends React.Component {
     }
   }
   componentDidMount = () => {
-    this._pullToRefreshListView.beginRefresh()
+    this.pullToRefreshListView.beginRefresh()
   }
-  _renderHeader = (viewState) => {
-    return (
-      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60 }}>
-        <ActivityIndicator size="small" color="#1eb0fd" />
-      </View>
-    );
-  }
-  _renderRow = (item, sectionID, rowID) => {
+  renderRow = (item, sectionID, rowID) => {
     return (
       rowID == 0 ?
         <View>
@@ -124,8 +115,11 @@ export default class ActivitysSignUpManagement extends React.Component {
         </View>
     )
   }
-  _onRefresh = () => {
+  onRefresh = () => {
     this.getData(1)
+  }
+  onLoadMore = () => {
+    this.getData(this.state.pn + 1)
   }
   getData = (pn) => {
     let rData = {
@@ -133,7 +127,12 @@ export default class ActivitysSignUpManagement extends React.Component {
       pn: pn
     }
     _FetchData(_Api + '/jv/qz/v21/activity/joined', rData).then(res => {
-      this._pullToRefreshListView.endRefresh()
+      if (pn == 1) {
+        this.pullToRefreshListView.endRefresh()
+      } else {
+        console.log(res.data.paging)
+        this.pullToRefreshListView.endLoadMore(res.data.paging.is_end)
+      }
       let data
       if (pn == 1) {
         data = this.defaultData.concat(res.data.list)
@@ -148,33 +147,32 @@ export default class ActivitysSignUpManagement extends React.Component {
         dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(data),
       })
     }, err => {
-      // 绑定出错
-      this._pullToRefreshListView.endRefresh()
+      if (pn == 1) {
+        this.pullToRefreshListView.endRefresh()
+      } else {
+        this.pullToRefreshListView.endLoadMore(true)
+      }
     }).catch(err => {
-      this._pullToRefreshListView.endRefresh()
+      if (pn == 1) {
+        this.pullToRefreshListView.endRefresh()
+      } else {
+        this.pullToRefreshListView.endLoadMore(true)
+      }
     })
   }
   render() {
     return <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <PullToRefreshListView
-          ref={(component) => this._pullToRefreshListView = component}
-          viewType={PullToRefreshListView.constants.viewType.listView}
+      <RefreshList
+          ref={(component) => this.pullToRefreshListView = component}
           style={styles.list}
-          keyExtractor={this.keyExtractor}
-          renderRow={this._renderRow}
-          renderHeader={this._renderHeader}
+          keyExtractor={(item) => item.uid}
+          renderRow={this.renderRow}
           dataSource={this.state.dataList}
-          onRefresh={this._onRefresh}
-          pullUpDistance={35}
-          pullUpStayDistance={50}
-          pullDownDistance={35}
-          pullDownStayDistance={50}
-          pageSize={20}
-          initialListSize={20}
-          enableEmptySections={true}
+          onRefresh={this.onRefresh}
+          onLoadMore={this.onLoadMore}
         />
-      </View>
+        </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(1111) }}>
         <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>
@@ -281,7 +279,7 @@ const styles = StyleSheet.create({
     lineHeight: px2dp(38),
     width: px2dp(109),
     borderRadius: px2dp(6),
-    borderWidth: px2dp(0.8),
+    borderWidth: px2dp(1),
     fontSize: px2dp(20),
     textAlign: 'center',
     color: '#999999',

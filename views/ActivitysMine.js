@@ -9,14 +9,14 @@ import {
   Alert,
   Linking
 } from 'react-native';
-import RefreshListView from 'react-native-refresh-list-view'
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 
 class HeaderRight extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+    }
   }
   onCall = () => {
     Alert.alert(
@@ -48,7 +48,8 @@ export default class ActivitysMine extends React.Component {
       activeStatus: [
         '报名中',
         '审核中'
-      ]
+      ],
+      loaded: false
     }
   }
   onJumpActivitysSignUpManagement = (id) => {
@@ -65,7 +66,8 @@ export default class ActivitysMine extends React.Component {
     }
     _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData).then(res => {
       this.setState({
-        dataList: this.state.dataList.concat(res.data.list)
+        dataList: this.state.dataList.concat(res.data.list),
+        loaded: true
       })
     }).catch(err => {
     })
@@ -76,36 +78,38 @@ export default class ActivitysMine extends React.Component {
   render() {
     return <View style={styles.container}>
       {
-        (this.state.dataList && this.state.dataList.length > 0) ?
-          <FlatList style={styles.list}
-            keyExtractor={(item) => item.id}
-            data={this.state.dataList}
-            renderItem={({ item }) =>
-              <TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
-                <View style={styles.item}>
-                  <Image
-                    style={styles.img}
-                    source={{ uri: item.covers[0].compress }}
-                  />
-                  <View style={styles.right}>
+        this.state.loaded ?
+          (this.state.dataList && this.state.dataList.length > 0) ?
+            <FlatList style={styles.list}
+              keyExtractor={(item) => item.id}
+              data={this.state.dataList}
+              renderItem={({ item }) =>
+                <TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
+                  <View style={styles.item}>
+                    <Image
+                      style={styles.img}
+                      source={{ uri: item.covers[0].compress }}
+                    />
+                    <View style={styles.right}>
 
 
-                    <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+                      <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
 
-                    <View style={styles.rightBottom}>
+                      <View style={styles.rightBottom}>
 
-                      <View style={styles.rightBottomLeft}>
-                        <Text style={styles.time}>{item.time_text}</Text>
-                        <Text style={styles.price}>{item.money}</Text>
+                        <View style={styles.rightBottomLeft}>
+                          <Text style={styles.time}>{item.time_text}</Text>
+                          <Text style={styles.price}>{item.money}</Text>
+                        </View>
+                        <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
                       </View>
-                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
                     </View>
                   </View>
-                </View>
-              </TouchableWithoutFeedback>
-            }
-          /> :
-          <ActivityEmpty mode={1} />
+                </TouchableWithoutFeedback>
+              }
+            /> :
+            <ActivityEmpty mode={1} />
+          : null
       }
 
     </View>
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
     lineHeight: px2dp(40),
     width: px2dp(109),
     borderRadius: px2dp(6),
-    borderWidth: px2dp(0.8),
+    borderWidth: px2dp(1),
     fontSize: px2dp(20),
     textAlign: 'center',
     color: '#999999',
