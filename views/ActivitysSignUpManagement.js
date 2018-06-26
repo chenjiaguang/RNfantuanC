@@ -14,7 +14,7 @@ import {
   Easing
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-import JumpNativeModule from '../modules/JumpNativeModule'
+import GoNativeModule from '../modules/GoNativeModule'
 import RefreshList from '../components/RefreshList'
 
 class HeaderRight extends React.Component {
@@ -23,9 +23,11 @@ class HeaderRight extends React.Component {
     this.state = {}
   }
   onScan = () => {
-    JumpNativeModule.activityCodeScan()
+    console.log('#################')
+    console.log(this.props)
+    GoNativeModule.goActivityCodeScan(this.props.aid)
   }
-  render() {
+  render = () => {
     return <TouchableWithoutFeedback disabled={false} onPress={this.onScan}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image style={styles.scanImg} source={require('../static/image/rn_ic_scan.png')} />
@@ -57,7 +59,7 @@ export default class ActivitysSignUpManagement extends React.Component {
     Linking.openURL('tel:' + phone)
   }
   onJumpUserDetail = (id) => {
-    JumpNativeModule && JumpNativeModule.userDetail(id)
+    GoNativeModule && GoNativeModule.goUserDetail(id)
   }
   onJumpActivityDetail = (id) => {
     this.props.navigation.navigate('ActivityDetail')
@@ -65,7 +67,7 @@ export default class ActivitysSignUpManagement extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "活动报名管理",
-      headerRight: <HeaderRight />,
+      headerRight: <HeaderRight aid={navigation.state.params.aid} />,
     }
   }
   componentDidMount = () => {
@@ -163,7 +165,7 @@ export default class ActivitysSignUpManagement extends React.Component {
   render() {
     return <View style={styles.container}>
       <View style={{ flex: 1 }}>
-      <RefreshList
+        <RefreshList
           ref={(component) => this.pullToRefreshListView = component}
           style={styles.list}
           keyExtractor={(item) => item.uid}
@@ -172,7 +174,7 @@ export default class ActivitysSignUpManagement extends React.Component {
           onRefresh={this.onRefresh}
           onLoadMore={this.onLoadMore}
         />
-        </View>
+      </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(1111) }}>
         <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>

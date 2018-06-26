@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
+import FantToastModule from '../modules/FantToastModule'
 
 class HeaderRight extends React.Component {
   constructor(props) {

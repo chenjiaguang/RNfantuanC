@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
-import JumpNativeModule from '../modules/JumpNativeModule'
+import GoNativeModule from '../modules/GoNativeModule'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class ActivitysJoined extends React.Component {
     }
   }
   onJumpActivityCodeDetail = (id) => {
-    JumpNativeModule && JumpNativeModule.activityCodeDetail(id)
+    GoNativeModule && GoNativeModule.goActivityCodeDetail(id)
   }
   componentDidMount() {
     this.getData()
