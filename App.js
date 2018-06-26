@@ -26,7 +26,9 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     StatusBar.setBarStyle('dark-content')
-    StatusBar.setTranslucent(true)
+    if (Platform.OS === 'android') {
+      StatusBar.setTranslucent(true)
+    }
   }
   componentWillMount () {
     // console.log('appWillMount', this.props, AppNavigators)
@@ -34,9 +36,7 @@ export default class App extends React.Component {
     //   CalendarManager.addEvent('Birthday Party', '4 Privet Drive, Surrey');
   }
   render() {
-    return <AppNavigators screenProps={this.props.screenProps} onNavigationStateChange={(prevNav, nav, action) => {
-      console.log('判断根栈', prevNav, nav, action)
-    }} />
+    return <AppNavigators screenProps={this.props.screenProps} />
   }
 }
 
