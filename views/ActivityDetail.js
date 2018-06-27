@@ -6,7 +6,8 @@ import {
     Image,
     StyleSheet,
     Linking,
-    Animated
+    Animated,
+    Platform
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
@@ -47,7 +48,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             title: navigation.state.params && navigation.state.params.isRebind ? '新的手机号' : '绑定手机',
             headerStyle: {
                 width: px2dp(750),
-                height: px2dp(90),
+                height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
+                paddingTop: Platform.OS === 'android' ? 25 : 0,
                 backgroundColor: 'rgba(250,250,250,' + ((navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0) + ')',
                 borderBottomWidth: 0,
                 elevation: 0,
