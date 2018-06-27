@@ -16,7 +16,7 @@ import {
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshList from '../components/RefreshList'
-import RefreshLayoutView from '../modules/RefreshLayoutView'
+import RefreshFlatList from '../modules/RefreshFlatList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -42,6 +42,8 @@ export default class ActivitysSignUpManagement extends React.Component {
     super(props)
     this.state = {
       pn: 1,
+      isend: false,
+      refreshing: false,
       refreshState: 0,
       data: null,
       dataCount1: "0",
@@ -124,6 +126,7 @@ export default class ActivitysSignUpManagement extends React.Component {
     this.onFetch(this.state.pn + 1)
   }
   onFetch = (pn) => {
+    console.log('onFetch' + pn)
     let rData = {
       id: this.state.aid,
       pn: pn
@@ -151,23 +154,20 @@ export default class ActivitysSignUpManagement extends React.Component {
   render() {
     return <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <RefreshLayoutView
+        <RefreshFlatList
           ref={(component) => this.pullToRefreshListView = component}
           style={styles.list}
           onLoadMore={this.onLoadMore}
           onRefresh={this.onRefresh}
-        >
-          <FlatList
-            data={this.state.data}
-            keyExtractor={(i) => i.uid}
-            renderItem={this.renderRow}
-          />
-        </RefreshLayoutView>
+          data={this.state.data}
+          keyExtractor={(i) => i.uid}
+          renderItem={this.renderRow}
+        />
       </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
         <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>
-    </View >
+    </View>
   }
 }
 

@@ -135,18 +135,41 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         return <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
             <Image source={{uri: bannerUrl}} style={styles.header} />
             
+            <View style={styles.tags}>
+            <View style={styles.tagItem}>            
             <TouchableWithoutFeedback onPress={() => this.onJumpPublishArticleDynamic(0,0,0)}>
             <Text>跳转晒长文</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => this.onJumpPublishDynamic(0,0,0)}>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpPublishDynamic(0,0,0)}>
             <Text>跳转晒动态</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => this.onJumpActivityMap(0,0,0)}>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityMap(0,0,0)}>
             <Text>跳转地图</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => this.onJumpActivityShow(0,0,0)}>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityShow(0,0,0)}>
             <Text>跳转大家都在晒</Text>
             </TouchableWithoutFeedback>
+            </View>
+
+
+
+
+            </View>
+
+            
+
             <View style={styles.contentWrapper}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.from}>来自"{from}"的活动</Text>
