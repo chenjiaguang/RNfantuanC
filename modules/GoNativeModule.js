@@ -15,7 +15,7 @@ import { NativeModules } from 'react-native';
  * 
  * 
  * goActivityCodeDetail
- * 参数id:券码id
+ * 参数code:券码code
  * 跳转活动券码详情页
  */
 export default NativeModules.GoNativeModule;
