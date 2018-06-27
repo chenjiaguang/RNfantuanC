@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Linking,
     Animated,
-    Platform
+    Platform,
+    TouchableWithoutFeedback
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
@@ -17,6 +18,7 @@ import CodeInput from '../components/CodeInput' // 自己封装的获取验证�
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle";
+import GoNativeModule from '../modules/GoNativeModule'
 
 export default class ActivityDetail extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
     constructor (props) {
@@ -56,6 +58,18 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 position: 'absolute'
             }
         }
+    }
+    onJumpPublishArticleDynamic=(id,name,actid)=>{
+        GoNativeModule&&GoNativeModule.goPublishArticleDynamic("4","测试测试测试","10")
+    }
+    onJumpPublishDynamic=(id,name,actid)=>{
+        GoNativeModule&&GoNativeModule.goPublishDynamic("4","测试测试测试","10")
+    }
+    onJumpActivityMap=(destName,latitude,longtitude)=>{
+        GoNativeModule&&GoNativeModule.goActivityMap("cccccccc","110.309207","20.025535")
+    }
+    onJumpActivityShow=(id,name)=>{
+        GoNativeModule&&GoNativeModule.goActivityShow("10","测试测试测试")
     }
     handleScroll = (event) => {
         this.props.navigation.setParams({'opacity': event.nativeEvent.contentOffset.y >= 0 ? event.nativeEvent.contentOffset.y / (px2dp(332) - getStatusBarHeight(true)) : 0})
@@ -122,6 +136,42 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         let {initialHeight, currentHeight, maxHeight, animationHeight} = this.state
         return <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
             <Image source={{uri: bannerUrl}} style={styles.header} />
+            
+            <View style={styles.tags}>
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback onPress={() => this.onJumpPublishArticleDynamic(0,0,0)}>
+            <Text>跳转晒长文</Text>
+            </TouchableWithoutFeedback>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpPublishDynamic(0,0,0)}>
+            <Text>跳转晒动态</Text>
+            </TouchableWithoutFeedback>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityMap(0,0,0)}>
+            <Text>跳转地图</Text>
+            </TouchableWithoutFeedback>
+            </View>
+
+            
+            <View style={styles.tagItem}>            
+            <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityShow(0,0,0)}>
+            <Text>跳转大家都在晒</Text>
+            </TouchableWithoutFeedback>
+            </View>
+
+
+
+
+            </View>
+
+            
+
             <View style={styles.contentWrapper}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.from}>来自"{from}"的活动</Text>

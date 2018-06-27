@@ -16,6 +16,7 @@ import {
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshList from '../components/RefreshList'
+import RefreshFlatList from '../modules/RefreshFlatList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -37,19 +38,17 @@ class HeaderRight extends React.Component {
   }
 }
 export default class ActivitysSignUpManagement extends React.Component {
-  defaultData = [{
-    //第一个留空，用于渲染头部统计数据
-  }]
   constructor(props) {
     super(props)
     this.state = {
+      pn: 1,
+      isend: false,
+      refreshing: false,
       refreshState: 0,
-      data: this.defaultData,
-      dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.defaultData),
+      data: null,
       dataCount1: "0",
       dataCount2: "0",
       aid: this.props.navigation.state.params.aid,
-      pn: 1,
       activeStatus: [
         '未验票'
       ],
@@ -71,9 +70,12 @@ export default class ActivitysSignUpManagement extends React.Component {
     }
   }
   componentDidMount = () => {
-    this.pullToRefreshListView.beginRefresh()
+    //  this.pullToRefreshListView.beginRefresh()
+    this.onRefresh()
   }
-  renderRow = (item, sectionID, rowID) => {
+  renderRow = (info) => {
+    let item = info.item
+    let rowID = info.index
     return (
       rowID == 0 ?
         <View>
@@ -118,26 +120,22 @@ export default class ActivitysSignUpManagement extends React.Component {
     )
   }
   onRefresh = () => {
-    this.getData(1)
+    this.onFetch(1)
   }
   onLoadMore = () => {
-    this.getData(this.state.pn + 1)
+    this.onFetch(this.state.pn + 1)
   }
-  getData = (pn) => {
+  onFetch = (pn) => {
+    console.log('onFetch' + pn)
     let rData = {
       id: this.state.aid,
       pn: pn
     }
     _FetchData(_Api + '/jv/qz/v21/activity/joined', rData).then(res => {
-      if (pn == 1) {
-        this.pullToRefreshListView.endRefresh()
-      } else {
-        console.log(res.data.paging)
-        this.pullToRefreshListView.endLoadMore(res.data.paging.is_end)
-      }
+      this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
       let data
       if (pn == 1) {
-        data = this.defaultData.concat(res.data.list)
+        data = [{ uid: '-1' }].concat(res.data.list)
       } else {
         data = this.state.data.concat(res.data.list)
       }
@@ -146,39 +144,30 @@ export default class ActivitysSignUpManagement extends React.Component {
         dataCount1: res.data.summary.ticket_count,
         dataCount2: res.data.summary.income,
         data: data,
-        dataList: (new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(data),
       })
     }, err => {
-      if (pn == 1) {
-        this.pullToRefreshListView.endRefresh()
-      } else {
-        this.pullToRefreshListView.endLoadMore(true)
-      }
+      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
-      if (pn == 1) {
-        this.pullToRefreshListView.endRefresh()
-      } else {
-        this.pullToRefreshListView.endLoadMore(true)
-      }
+      this.pullToRefreshListView.setLoaded(true)
     })
   }
   render() {
     return <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <RefreshList
+        <RefreshFlatList
           ref={(component) => this.pullToRefreshListView = component}
           style={styles.list}
-          keyExtractor={(item) => item.uid}
-          renderRow={this.renderRow}
-          dataSource={this.state.dataList}
-          onRefresh={this.onRefresh}
           onLoadMore={this.onLoadMore}
+          onRefresh={this.onRefresh}
+          data={this.state.data}
+          keyExtractor={(i) => i.uid}
+          renderItem={this.renderRow}
         />
       </View>
-      <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(1111) }}>
+      <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
         <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>
-    </View >
+    </View>
   }
 }
 
@@ -190,6 +179,8 @@ const styles = StyleSheet.create({
   },
   countLine: {
     flexDirection: 'row',
+    marginLeft: px2dp(30),
+    marginRight: px2dp(30),
     marginTop: px2dp(60),
     paddingBottom: px2dp(30),
     borderBottomWidth: px2dp(1),
@@ -199,11 +190,11 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    paddingLeft: px2dp(30),
-    paddingRight: px2dp(30),
   },
   item: {
     flex: 1,
+    marginLeft: px2dp(30),
+    marginRight: px2dp(30),
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: px2dp(30),
