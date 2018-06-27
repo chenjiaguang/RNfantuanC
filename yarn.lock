@@ -4280,6 +4280,17 @@ react-native-safe-area-view@^0.7.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
+react-native-smart-pull-to-refresh-listview@^1.6.11-beta.2:
+  version "1.6.11-beta.2"
+  resolved "http://registry.npm.taobao.org/react-native-smart-pull-to-refresh-listview/download/react-native-smart-pull-to-refresh-listview-1.6.11-beta.2.tgz#c24d7c1b7a1aa114fe02800ed71d70368d66740a"
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-smart-timer-enhance "^1.0.2"
+
+react-native-smart-timer-enhance@^1.0.2:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/react-native-smart-timer-enhance/download/react-native-smart-timer-enhance-1.0.3.tgz#47ddc19be5a6c19184449039495f25546bcd94fe"
+
 react-native-storage@^0.2.2:
   version "0.2.2"
   resolved "http://registry.npm.taobao.org/react-native-storage/download/react-native-storage-0.2.2.tgz#4449197f122b2da0650e3704e1f050260ed58d9f"
