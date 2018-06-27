@@ -14,6 +14,7 @@ import {
 import AppNavigators from './AppNavigators';
 import Resolution from "./lib/Resolution";
 import { NativeModules } from 'react-native';
+import SwipBackModule from './modules/SwipBackModule'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -23,14 +24,15 @@ const instructions = Platform.select({
 });
 
 export default class App extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     StatusBar.setBarStyle('dark-content')
     if (Platform.OS === 'android') {
-      StatusBar.setTranslucent(true)
+       StatusBar.setTranslucent(true)
     }
+
   }
-  componentWillMount () {
+  componentWillMount() {
     // console.log('appWillMount', this.props, AppNavigators)
     //   let CalendarManager = NativeModules.CalendarManager;
     //   CalendarManager.addEvent('Birthday Party', '4 Privet Drive, Surrey');
@@ -42,13 +44,13 @@ export default class App extends React.Component {
 
 const style = StyleSheet.create({
   container: {
-    width:Resolution.get().width,
-    height:Resolution.get().height,
+    width: Resolution.get().width,
+    height: Resolution.get().height,
     backgroundColor: '#fff',
-    transform:[{translateX:-Resolution.get().width*.5},
-      {translateY:-Resolution.get().height*.5},
-      {scale:Resolution.get().scale},
-      {translateX:Resolution.get().width*.5},
-      {translateY:Resolution.get().height*.5}]
+    transform: [{ translateX: -Resolution.get().width * .5 },
+    { translateY: -Resolution.get().height * .5 },
+    { scale: Resolution.get().scale },
+    { translateX: Resolution.get().width * .5 },
+    { translateY: Resolution.get().height * .5 }]
   }
 })

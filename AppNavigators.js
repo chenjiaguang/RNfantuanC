@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 import React, { componet } from "react";
-import {View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated,StatusBar,BackHandler} from 'react-native'
+import { View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated, StatusBar, BackHandler } from 'react-native'
 import Index from './views/Index';
 import HeadlineIndex from './views/HeadlineIndex';
 import HeadlineSelect from './views/HeadlineSelect';
@@ -22,28 +22,28 @@ import SwipBackModule from './modules/SwipBackModule';
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
 
 class HeaderLeft extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {}
-  }
-  render () {
-    return <TouchableWithoutFeedback disabled={false} onPress={this.props.goBack}>
-      <View style={{width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center'}}>
-        <Iconfont name='go_back' size={px2dp(38)} color='#333333' style={{paddingLeft: px2dp(18)}}/>
-      </View>
-    </TouchableWithoutFeedback>
-  }
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
+    render() {
+        return <TouchableWithoutFeedback disabled={false} onPress={this.props.goBack}>
+            <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
+                <Iconfont name='go_back' size={px2dp(38)} color='#333333' style={{ paddingLeft: px2dp(18) }} />
+            </View>
+        </TouchableWithoutFeedback>
+    }
 }
 class HeaderRight extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {}
-  }
-  render () {
-    return <TouchableWithoutFeedback disabled={false} onPress={() => {}} style={{width: px2dp(80), height: px2dp(90)}}>
-      <View></View>
-    </TouchableWithoutFeedback>
-  }
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
+    render() {
+        return <TouchableWithoutFeedback disabled={false} onPress={() => { }} style={{ width: px2dp(80), height: px2dp(90) }}>
+            <View></View>
+        </TouchableWithoutFeedback>
+    }
 }
 const SimpleApp = createStackNavigator({
     ActivityDetail: { screen: ActivityDetail, path: '/activity/detail' }, // "申请成为头条号"入口
@@ -59,57 +59,59 @@ const SimpleApp = createStackNavigator({
     ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },
     ActivitysMine: { screen: ActivitysMine, path: '/ActivitysMine' },
     ActivitysSignUpManagement: { screen: ActivitysSignUpManagement, path: '/ActivitysSignUpManagement' },
-},{
-    navigationOptions: ({navigation, screenProps}) => {
-        return {
-            headerTruncatedBackTitle: true,
-            headerLeft: <HeaderLeft goBack={() => {
-                if (navigation.state.routeName === screenProps.route) {
-                    SwipBackModule && SwipBackModule.exit();
-                } else {
-                    navigation.pop()
+}, {
+        navigationOptions: ({ navigation, screenProps }) => {
+            return {
+                headerTruncatedBackTitle: true,
+                headerLeft: <HeaderLeft goBack={() => {
+                    if (navigation.state.routeName === screenProps.route) {
+                        SwipBackModule && SwipBackModule.exit();
+                    } else {
+                        navigation.pop()
+                    }
+                }} />,
+                headerRight: <HeaderRight />,
+                headerStyle: {
+                    width: px2dp(750),
+                    height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
+                    paddingTop: 0,
+                    backgroundColor: '#fafafa',
+                    borderTopColor: Platform.Version >= 23 ? '#fafafa' : '#8c8c8c',//8c=fa*(256-112)/256
+                    borderTopWidth: Platform.OS === 'android' ? 25 : 0,
+                    borderBottomWidth: 0,
+                    elevation: 0,
+                },
+                headerTitleStyle: {
+                    fontSize: px2dp(34),
+                    color: '#333',
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                    flex: 1
+                },
+                headerBackTitleStyle: {
+                    color: '#333',
+                    fontSize: px2dp(34)
+                },
+                headerTintColor: '#333',
+                gesturesEnabled: true
+            }
+        },
+        mode: 'float',
+        headerMode: 'screen',
+        initialRouteName: 'Index',
+        transitionConfig: () => {
+            return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
+                screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
+                transitionSpec: {
+                    duration: 350
                 }
-            }}/>,
-            headerRight: <HeaderRight/>,
-            headerStyle: {
-                width: px2dp(750),
-                height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
-                paddingTop: Platform.OS === 'android' ? 25 : 0,
-                backgroundColor: '#fafafa',
-                borderBottomWidth: 0,
-                elevation: 0,
-            },
-            headerTitleStyle: {
-                fontSize: px2dp(34),
-                color: '#333',
-                alignSelf: 'center',
-                textAlign: 'center',
-                flex: 1
-            },
-            headerBackTitleStyle: {
-                color: '#333',
-                fontSize: px2dp(34)
-            },
-            headerTintColor: '#333',
-            gesturesEnabled: true
+            } : {
+                    transitionSpec: {
+                        duration: 250
+                    }
+                }
         }
-    },
-    mode: 'float',
-    headerMode: 'screen',
-    initialRouteName: 'Index',
-    transitionConfig: () => {
-        return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
-            screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
-            transitionSpec: {
-                duration: 350
-            }
-        } : {
-            transitionSpec: {
-                duration: 250
-            }
-        }
-    }
-});
+    });
 let stateIndex, oStateIndex = false, goBack = false;
 let lastBackPressed = false;
 const defaultGetStateForAction = SimpleApp.router.getStateForAction;
