@@ -16,8 +16,8 @@ import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
 
 export default class AndroidRefreshFlatList extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       isend: false,
       refreshing: false

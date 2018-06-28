@@ -13,6 +13,7 @@ import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 import FantToastModule from '../modules/FantToastModule'
 import RefreshFlatList from '../components/RefreshFlatList'
+import RoundBorderView from '../components/RoundBorderView'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -125,7 +126,13 @@ export default class ActivitysMine extends React.Component {
                         <Text style={styles.time}>{item.time_text}</Text>
                         <Text style={styles.price}>{item.money}</Text>
                       </View>
-                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
+                      <RoundBorderView
+                        borderWidth={px2dp(1)}
+                        borderRadius={px2dp(6)}
+                        fantBorderColor={this.state.activeStatus.indexOf(item.status_text) > -1 ? '#1EB0FD' : '#999999'}
+                        style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>
+                        <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonTextEnable : null]}>{item.status_text}</Text>
+                      </RoundBorderView>
                     </View>
                   </View>
                 </View>
@@ -187,30 +194,32 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(20),
-    height: px2dp(20),
     marginBottom: px2dp(24),
     color: '#999999',
     includeFontPadding: false,
   },
   price: {
     fontSize: px2dp(24),
-    height: px2dp(24),
     color: '#FF3F53',
     includeFontPadding: false,
   },
   button: {
     height: px2dp(38),
-    lineHeight: px2dp(40),
     width: px2dp(109),
     borderRadius: px2dp(6),
     borderWidth: px2dp(1),
-    fontSize: px2dp(20),
-    textAlign: 'center',
-    color: '#999999',
-    borderColor: '#999999'
+    borderColor: '#999999',
   },
   buttonEnable: {
-    color: '#1EB0FD',
     borderColor: '#1EB0FD'
+  },
+  buttonText: {
+    textAlign: 'center',
+    lineHeight: px2dp(36),
+    fontSize: px2dp(20),
+    color: '#999999',
+  },
+  buttonTextEnable: {
+    color: '#1EB0FD',
   }
 })

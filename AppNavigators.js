@@ -16,8 +16,8 @@ import ActivitysMine from './views/ActivitysMine';
 import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
-import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
 import SwipBackModule from './modules/SwipBackModule';
+import StackViewStyleInterpolator from './anim/StackViewStyleInterpolator'
 
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
 
