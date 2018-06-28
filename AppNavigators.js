@@ -76,7 +76,7 @@ const SimpleApp = createStackNavigator({
                     height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
                     paddingTop: 0,
                     backgroundColor: '#fafafa',
-                    borderTopColor: Platform.Version >= 23 ? '#fafafa' : '#8c8c8c',//8c=fa*(256-112)/256
+                    borderTopColor: Platform.OS === 'android' && Platform.Version < 23 ? '#8c8c8c' : '#fafafa',//8c=fa*(256-112)/256
                     borderTopWidth: Platform.OS === 'android' ? 25 : 0,
                     borderBottomWidth: 0,
                     elevation: 0,
