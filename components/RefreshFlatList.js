@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import FantToastModule from '../modules/FantToastModule'
 import px2dp from '../lib/px2dp';
+import LoadingView from '../components/LoadingView'
 
 export default class AndroidRefreshFlatList extends Component {
   constructor() {
@@ -48,25 +49,29 @@ export default class AndroidRefreshFlatList extends Component {
           refreshing={this.state.refreshing}
           ref={(component) => this._nativeSwipeRefreshLayout = component}
           onEndReachedThreshold={0.1}
-          ListFooterComponent={<View style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.state.isend ? null : <Text style={{height:px2dp(100),lineHeight:px2dp(100)}}>正在加载..</Text>}
+          ListFooterComponent={<View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            {this.state.isend ? null : <Text style={{ height: px2dp(100), lineHeight: px2dp(100) }}>正在加载..</Text>}
           </View>}
         /> :
-        <RefreshFlatList
-          {...this.props}
-          ref={(component) => this._nativeSwipeRefreshLayout = component}
-          onLoadMore={this._onLoadMore}
-          onRefresh={this._onRefresh}
-          refreshing={false}
-          isend={false}
-          showEmptyLoading={true}
-        >
-          <FlatList
-            data={this.props.data}
-            keyExtractor={this.props.keyExtractor}
-            renderItem={this.props.renderItem}
-          />
-        </RefreshFlatList>
+        <View style={{ flex: 1 }}>
+          <LoadingView style={{ display: this.props.data ? 'none' : 'flex', height: px2dp(100) }} />
+          <RefreshFlatList
+            {...this.props}
+            style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}
+            ref={(component) => this._nativeSwipeRefreshLayout = component}
+            onLoadMore={this._onLoadMore}
+            onRefresh={this._onRefresh}
+            refreshing={false}
+            isend={false}
+            showEmptyLoading={true}
+          >
+            <FlatList
+              data={this.props.data}
+              keyExtractor={this.props.keyExtractor}
+              renderItem={this.props.renderItem}
+            />
+          </RefreshFlatList>
+        </View>
     );
   }
 

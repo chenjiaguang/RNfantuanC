@@ -15,8 +15,7 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
-import RefreshList from '../components/RefreshList'
-import RefreshFlatList from '../modules/RefreshFlatList'
+import RefreshFlatList from '../components/RefreshFlatList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
