@@ -15,8 +15,7 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
-import RefreshList from '../components/RefreshList'
-import RefreshFlatList from '../modules/RefreshFlatList'
+import RefreshFlatList from '../components/RefreshFlatList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -126,7 +125,6 @@ export default class ActivitysSignUpManagement extends React.Component {
     this.onFetch(this.state.pn + 1)
   }
   onFetch = (pn) => {
-    console.log('onFetch' + pn)
     let rData = {
       id: this.state.aid,
       pn: pn
@@ -216,40 +214,40 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#333333',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginBottom: px2dp(16)
+    marginBottom: px2dp(16),
+    includeFontPadding: false,
   },
   title: {
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginBottom: px2dp(16)
+    marginBottom: px2dp(16),
+    includeFontPadding: false,
   },
   price: {
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
+    includeFontPadding: false,
   },
   option: {
     flexDirection: 'row',
   },
   gender: {
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
     marginRight: px2dp(24),
-    marginTop: px2dp(16)
+    marginTop: px2dp(16),
+    includeFontPadding: false,
   },
   idNo: {
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginTop: px2dp(16)
+    marginTop: px2dp(16),
+    includeFontPadding: false,
   },
   right: {
     flex: 1,

@@ -12,6 +12,7 @@ import {
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 import FantToastModule from '../modules/FantToastModule'
+import RefreshFlatList from '../components/RefreshFlatList'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -45,7 +46,8 @@ export default class ActivitysMine extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      dataList: [],
+      pn: 1,
+      data: null,
       activeStatus: [
         '报名中',
         '审核中'
@@ -62,55 +64,74 @@ export default class ActivitysMine extends React.Component {
       headerRight: <HeaderRight />,
     }
   }
-  getData = () => {
+  onRefresh = () => {
+    this.onFetch(1)
+  }
+  onLoadMore = () => {
+    this.onFetch(this.state.pn + 1)
+  }
+  onFetch = (pn) => {
     let rData = {
+      pn: pn
     }
     _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData).then(res => {
+      this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
+      let data
+      if (pn == 1) {
+        data = res.data.list
+      } else {
+        data = this.state.data.concat(res.data.list)
+      }
       this.setState({
-        dataList: this.state.dataList.concat(res.data.list),
-        loaded: true
+        pn: pn,
+        loaded: true,
+        data: data,
       })
+    }, err => {
+      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
+      this.pullToRefreshListView.setLoaded(true)
     })
   }
-  componentDidMount() {
-    this.getData()
+  componentDidMount = () => {
+    this.onRefresh()
   }
   render() {
     return <View style={styles.container}>
       {
-        this.state.loaded ?
-          (this.state.dataList && this.state.dataList.length > 0) ?
-            <FlatList style={styles.list}
-              keyExtractor={(item) => item.id}
-              data={this.state.dataList}
-              renderItem={({ item }) =>
-                <TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
-                  <View style={styles.item}>
-                    <Image
-                      style={styles.img}
-                      source={{ uri: item.covers[0].compress }}
-                    />
-                    <View style={styles.right}>
+        this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
+          <ActivityEmpty mode={1} /> :
+          <RefreshFlatList style={styles.list}
+            ref={(component) => this.pullToRefreshListView = component}
+            onLoadMore={this.onLoadMore}
+            onRefresh={this.onRefresh}
+            keyExtractor={(item) => item.id}
+            data={this.state.data}
+            renderItem={({ item }) =>
+              <TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
+                <View style={styles.item}>
+                  <Image
+                    style={styles.img}
+                    source={{ uri: item.covers[0].compress }}
+                  />
+                  <View style={styles.right}>
 
 
-                      <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+                    <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
 
-                      <View style={styles.rightBottom}>
+                    <View style={styles.rightBottom}>
 
-                        <View style={styles.rightBottomLeft}>
-                          <Text style={styles.time}>{item.time_text}</Text>
-                          <Text style={styles.price}>{item.money}</Text>
-                        </View>
-                        <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
+                      <View style={styles.rightBottomLeft}>
+                        <Text style={styles.time}>{item.time_text}</Text>
+                        <Text style={styles.price}>{item.money}</Text>
                       </View>
+                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>{item.status_text}</Text>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              }
-            /> :
-            <ActivityEmpty mode={1} />
-          : null
+                </View>
+              </TouchableWithoutFeedback>
+            }
+          />
       }
 
     </View>
@@ -125,11 +146,11 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    marginLeft: px2dp(30),
-    marginRight: px2dp(30),
   },
   item: {
     flex: 1,
+    marginLeft: px2dp(30),
+    marginRight: px2dp(30),
     flexDirection: 'row',
     paddingTop: px2dp(30),
     paddingBottom: px2dp(28),
@@ -166,16 +187,16 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(20),
-    lineHeight: px2dp(22),
     height: px2dp(20),
     marginBottom: px2dp(24),
     color: '#999999',
+    includeFontPadding: false,
   },
   price: {
     fontSize: px2dp(24),
-    lineHeight: px2dp(26),
     height: px2dp(24),
     color: '#FF3F53',
+    includeFontPadding: false,
   },
   button: {
     height: px2dp(38),
