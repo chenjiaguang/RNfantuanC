@@ -172,15 +172,15 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(24),
-    lineHeight: px2dp(26),
     height: px2dp(24),
+    includeFontPadding: false,
     marginBottom: px2dp(16),
     color: '#999999',
   },
   price: {
     fontSize: px2dp(24),
-    lineHeight: px2dp(26),
     height: px2dp(24),
+    includeFontPadding: false,
     color: '#FF3F53',
   },
   button: {

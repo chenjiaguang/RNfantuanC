@@ -187,16 +187,16 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(20),
-    lineHeight: px2dp(22),
     height: px2dp(20),
     marginBottom: px2dp(24),
     color: '#999999',
+    includeFontPadding: false,
   },
   price: {
     fontSize: px2dp(24),
-    lineHeight: px2dp(26),
     height: px2dp(24),
     color: '#FF3F53',
+    includeFontPadding: false,
   },
   button: {
     height: px2dp(38),

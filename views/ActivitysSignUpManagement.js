@@ -214,40 +214,40 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#333333',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginBottom: px2dp(16)
+    marginBottom: px2dp(16),
+    includeFontPadding: false,
   },
   title: {
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginBottom: px2dp(16)
+    marginBottom: px2dp(16),
+    includeFontPadding: false,
   },
   price: {
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
+    includeFontPadding: false,
   },
   option: {
     flexDirection: 'row',
   },
   gender: {
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
     marginRight: px2dp(24),
-    marginTop: px2dp(16)
+    marginTop: px2dp(16),
+    includeFontPadding: false,
   },
   idNo: {
     fontSize: px2dp(28),
-    lineHeight: px2dp(30),
     height: px2dp(28),
-    marginTop: px2dp(16)
+    marginTop: px2dp(16),
+    includeFontPadding: false,
   },
   right: {
     flex: 1,
