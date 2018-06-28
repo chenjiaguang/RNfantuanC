@@ -156,7 +156,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             <View style={styles.pageWrapper}>
                 <Image source={{uri: bannerUrl}} style={styles.header} />
                 
-                {/* <View style={styles.tags}>
+                <View style={styles.tags}>
                 <View style={styles.tagItem}>            
                 <TouchableWithoutFeedback onPress={() => this.onJumpPublishArticleDynamic(0,0,0)}>
                 <View><Text>跳转晒长文</Text></View>
@@ -187,7 +187,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
 
 
 
-                </View> */}
+                </View>
 
                 
 
