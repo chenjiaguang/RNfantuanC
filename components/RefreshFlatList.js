@@ -18,8 +18,6 @@ import LoadingView from '../components/LoadingView'
 export default class AndroidRefreshFlatList extends Component {
   constructor() {
     super()
-    this._onRefresh = this._onRefresh.bind(this);
-    this._onLoadMore = this._onLoadMore.bind(this);
     this.state = {
       isend: false,
       refreshing: false

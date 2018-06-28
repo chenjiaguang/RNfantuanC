@@ -125,7 +125,6 @@ export default class ActivitysSignUpManagement extends React.Component {
     this.onFetch(this.state.pn + 1)
   }
   onFetch = (pn) => {
-    console.log('onFetch' + pn)
     let rData = {
       id: this.state.aid,
       pn: pn
