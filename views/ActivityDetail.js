@@ -11,7 +11,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { ifIphoneX, getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import Iconfont from '../components/cxicon/CXIcon';
 import MyTextInput from '../components/MyTextInput' // 自己封装的输入框，解决ios中文输入问题
 import CodeInput from '../components/CodeInput' // 自己封装的获取验证码输入框，自带获取验证码处理逻辑
@@ -25,35 +25,50 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         super(props)
         this.state = {
             activity: {
-                bannerUrl: 'http://www.znsfagri.com/uploadfile/editor/image/20170626/20170626151136_11631.jpg',
-                title: '三月不减肥，四月徒伤悲 | 节后甩肉计划第一期 正式启动！羽毛球篇',
-                from: '周末去哪浪',
-                sponsorName: '海口禹讯信息技术有限公司',
-                sponsorPhone: '17508959493',
-                address: '海口市龙华区滨海大道百方大厦15楼BBBBBB',
+                bannerUrl: '',
+                title: '',
+                from: '',
+                sponsorName: '',
+                sponsorPhone: '',
+                address: '',
                 location: {
-                    lng: 55,
-                    lat: 55
+                    lng: '',
+                    lat: ''
                 },
-                date: '01-03 18:30 至 05-06 18:30',
-                cost: '15-16',
-                deadline: '02-15 18:30',
-                tags: [
-                    '不可退票',
-                    '费用中包含保险'
-                ],
-                join: []
+                date: '',
+                cost: '',
+                deadline: '',
+                tags: [],
+                join: [],
+                activityImages: [],
+                statusText: '',
+                content: [],
+                circle: null
             }
         }
     }
     static navigationOptions = ({navigation}) => {
+        let opacity = (navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0
+        let initialColor = 255
+        let decrease = (255 - 51) * opacity
+        let color = parseInt(initialColor - decrease)
+        const headerLeft = () => <TouchableWithoutFeedback disabled={false} onPress={() => navigation.goBack()}>
+            <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
+                <Iconfont name='go_back' size={px2dp(38)} color={'rgb(' + color + ',' + color + ',' + color + ')'} style={{ paddingLeft: px2dp(18) }} />
+            </View>
+        </TouchableWithoutFeedback>
+        const headerRight = () => <TouchableWithoutFeedback disabled={false} onPress={() => {console.log('share')}}>
+            <View style={{height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center'}}><Iconfont name="share" size={px2dp(36)} color={'rgb(' + color + ',' + color + ',' + color + ')'} /></View>
+        </TouchableWithoutFeedback>
         return{
-            title: navigation.state.params && navigation.state.params.isRebind ? '新的手机号' : '绑定手机',
+            title: '',
+            headerLeft: headerLeft(),
+            headerRight: headerRight(),
             headerStyle: {
                 width: px2dp(750),
                 height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
                 paddingTop: Platform.OS === 'android' ? 25 : 0,
-                backgroundColor: 'rgba(250,250,250,' + ((navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0) + ')',
+                backgroundColor: 'rgba(250,250,250,' + opacity + ')',
                 borderBottomWidth: 0,
                 elevation: 0,
                 position: 'absolute'
@@ -61,18 +76,24 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         }
     }
     onJumpPublishArticleDynamic=(id,name,actid)=>{
-        GoNativeModule&&GoNativeModule.goPublishArticleDynamic("4","测试测试测试","10")
+        GoNativeModule && GoNativeModule.goPublishArticleDynamic("4","测试测试测试","10")
     }
     onJumpPublishDynamic=(id,name,actid)=>{
-        GoNativeModule&&GoNativeModule.goPublishDynamic("4","测试测试测试","10")
+        GoNativeModule && GoNativeModule.goPublishDynamic("4","测试测试测试","10")
     }
     onJumpActivityMap=(destName,latitude,longtitude)=>{
-        GoNativeModule&&GoNativeModule.goActivityMap("cccccccc","110.309207","20.025535")
+        GoNativeModule && GoNativeModule.goActivityMap("cccccccc","110.309207","20.025535")
     }
     onJumpActivityShow=(id,name)=>{
-        GoNativeModule&&GoNativeModule.goActivityShow("10","测试测试测试")
+        GoNativeModule && GoNativeModule.goActivityShow("10","测试测试测试")
+    }
+    scanCode = () => {
+        GoNativeModule && GoNativeModule.goActivityCodeScan()
     }
     handleScroll = (event) => {
+        if (event.nativeEvent.contentOffset.y > (px2dp(332) - getStatusBarHeight(true)) + 100) {
+            return false
+        }
         this.props.navigation.setParams({'opacity': event.nativeEvent.contentOffset.y >= 0 ? event.nativeEvent.contentOffset.y / (px2dp(332) - getStatusBarHeight(true)) : 0})
     }
     callPhone = () => {
@@ -95,6 +116,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     animate = () => {
         let {initialHeight, maxHeight, animationHeight, iconRotate} = this.state
+        console.log(initialHeight, maxHeight, animationHeight, iconRotate)
         if (animationHeight._value < initialHeight) {
             Animated.parallel([
                 Animated.timing(
@@ -137,10 +159,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         if (initialHeight && maxHeight && animationHeight && iconRotate) {
             return false
         }
-        let height = event.nativeEvent.layout.height > px2dp(700) ? px2dp(700) : event.nativeEvent.layout.height
+        let height = event.nativeEvent.layout.height > px2dp(700) ? px2dp(700) : event.nativeEvent.layout.height + px2dp(84)
         let animation = new Animated.Value(height)
         this.setState({
-            initialHeight: event.nativeEvent.layout.height,
+            initialHeight: event.nativeEvent.layout.height + px2dp(84),
             maxHeight: px2dp(700),
             animationHeight: animation,
             iconRotate: new Animated.Value(0)
@@ -149,139 +171,238 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     goUser = () => {
         console.log('goUser')
     }
+    publish = () => {
+        console.log('publish')
+    }
+    goCircle = () => {
+        console.log('goCircle')
+    }
+    fetchActivity = () => {
+        let rData = {
+            token: 'lcaKiq5GIC_FHqubOBcI6FUKaL8N171U',
+            id: this.props.navigation.state.params.id
+        }
+        _FetchData(_Api + '/jv/qz/v21/activity', rData).then(res => {
+            let _tags = []
+            if (res.data.insurance) {
+                _tags.push('费用中包含保险')
+            }
+            if (!res.data.refund) {
+                _tags.push('不可退票')
+            }
+            let _obj = {
+                bannerUrl: res.data.covers[0].compress,
+                title: res.data.title,
+                from: res.data.circle.name,
+                sponsorName: res.data.oid,
+                sponsorPhone: res.data.phone,
+                address: res.data.address_text,
+                location: {
+                    lng: res.data.longitude,
+                    lat: res.data.latitude
+                },
+                date: res.data.time_text,
+                cost: res.data.money,
+                deadline: res.data.deadline,
+                tags: _tags,
+                join: res.data.joined_users,
+                activityImages: res.data.activity_images,
+                statusText: res.data.status_text,
+                content: res.data.content.filter(item => item.type.toString() !== '0').map(item => {
+                    return {
+                        type: item.type,
+                        content: item.type.toString() === '1' ? item.content : {
+                            image: item.imageUrl,
+                            description: item.des
+                        },
+                        width: item.width,
+                        height: item.height
+                    }
+                }),
+                circle: res.data.circle
+            }
+            console.log('_obj', _obj)
+            this.setState({
+                activity: _obj
+            })
+        }).catch(err => {
+            console.log('获取活动数据失败', err)
+        })
+    }
+    componentDidMount () {
+        this.fetchActivity()
+    }
     render() {
-        let {bannerUrl, title, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join} = this.state.activity
+        let {bannerUrl, title, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle} = this.state.activity
         let {initialHeight, maxHeight, animationHeight, iconRotate} = this.state
-        return <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
-            <View style={styles.pageWrapper}>
-                <Image source={{uri: bannerUrl}} style={styles.header} />
-                
-                <View style={styles.tags}>
-                <View style={styles.tagItem}>            
-                <TouchableWithoutFeedback onPress={() => this.onJumpPublishArticleDynamic(0,0,0)}>
-                <View><Text>跳转晒长文</Text></View>
-                </TouchableWithoutFeedback>
-                </View>
-
-                
-                <View style={styles.tagItem}>            
-                <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpPublishDynamic(0,0,0)}>
-                <View><Text>跳转晒动态</Text></View>
-                </TouchableWithoutFeedback>
-                </View>
-
-                
-                <View style={styles.tagItem}>            
-                <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityMap(0,0,0)}>
-                <View><Text>跳转地图</Text></View>
-                </TouchableWithoutFeedback>
-                </View>
-
-                
-                <View style={styles.tagItem}>            
-                <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityShow(0,0,0)}>
-                <View><Text>跳转大家都在晒</Text></View>
-                </TouchableWithoutFeedback>
-                </View>
-
-
-
-
-                </View>
-
-                
-
-                <View style={styles.contentWrapper}>
-                    <Text style={styles.title}>{title}</Text>
-                    <Text style={styles.from}>来自"{from}"的活动</Text>
-                    <View style={styles.infoBox}>
-                        <View style={styles.infoItem}>
-                            <Text style={styles.infoLeft}>主办方</Text>
-                            <Text style={[styles.infoRight, {fontWeight: '600'}]} numberOfLines={1}>{sponsorName}</Text>
-                            {sponsorPhone && <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(15), paddingBottom: px2dp(15)}}/>}
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={styles.infoLeft}>地点</Text>
-                            <Text style={styles.infoRight} numberOfLines={1}>{address || '线上活动'}</Text>
-                            {address && location && <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/>}
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={styles.infoLeft}>时间</Text>
-                            <Text style={styles.infoRight} numberOfLines={1}>{date}</Text>
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={styles.infoLeft}>费用</Text>
-                            <Text style={[styles.infoRight, {color: '#FF3F53'}]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={styles.infoLeft}>报名截止时间</Text>
-                            <Text style={styles.infoRight} numberOfLines={1}>{deadline}</Text>
-                        </View>
-                        <View style={styles.tags}>
-                            {tags.map((item, idx) => <View key={idx} style={styles.tagItem}><Text style={{fontSize: px2dp(24), color: '#666'}}>{item}</Text></View>)}
-                        </View>
+        return <View style={styles.page}>
+            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={10}>
+                <View style={styles.pageWrapper}>
+                    <Image source={{uri: bannerUrl}} style={styles.header} resizeMode="cover" />
+                    
+                    <View style={styles.tags}>
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback onPress={() => this.onJumpPublishArticleDynamic(0,0,0)}>
+                    <View><Text>跳转晒长文</Text></View>
+                    </TouchableWithoutFeedback>
                     </View>
-                    <Animated.View style={[styles.introBox, {height: animationHeight ? animationHeight : 'auto'}]} onLayout={this.introBoxLayout}>
-                        <Text style={styles.introHeader}>活动介绍</Text>
-                        <Text style={styles.introText}>工作两周，假期里养的肉都下去了么？</Text>
-                        <Text style={styles.introText}>如果没有，</Text>
-                        <Text style={styles.introText}>那就 来找点乐子吧！</Text>
-                        <Text style={styles.introText}>不想养膘？</Text>
-                        <Text style={styles.introText}>打球去吧！</Text>
-                        <Text style={styles.introText}>不想无所事事？</Text>
-                        <Text style={styles.introText}>打球去吧！</Text>
-                        <Image source={{uri: bannerUrl}} style={styles.introImage} resizeMode={'cover'} />
-                        <Text style={styles.introText}>羽毛球比赛即将于三月中旬举行，该比赛注重同学们的 身心健康发展，旨在宽阔学生们的业余活动，望大家踊 跃参与。</Text>
-                        <Text style={styles.introText}>主办单位：中国工商银行广东省分行</Text>
-                        <Text style={styles.introText}>报名时间：近期</Text>
-                        <Text style={styles.introText}>比赛时间：三月</Text>
-                        {initialHeight && animationHeight && maxHeight && <TouchableWithoutFeedback onPress={this.animate}>
-                            <View style={styles.showHideBtn}>
-                                <Text style={{fontSize: px2dp(24), color: '#333'}}>{animationHeight._value === initialHeight ? '收起' : '展开'}</Text>
-                                <Animated.View style={{marginLeft: px2dp(17), transform: [
-                                    {
-                                        rotateZ: iconRotate.interpolate({
-                                            inputRange: [0,1],
-                                            outputRange: ['0deg', '180deg'],
-                                        })
-                                    }
-                                    ]}}><Iconfont name='pull_down' size={px2dp(18)} color='#666666' /></Animated.View>
+
+                    
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpPublishDynamic(0,0,0)}>
+                    <View><Text>跳转晒动态</Text></View>
+                    </TouchableWithoutFeedback>
+                    </View>
+
+                    
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityMap(0,0,0)}>
+                    <View><Text>跳转地图</Text></View>
+                    </TouchableWithoutFeedback>
+                    </View>
+
+                    
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.onJumpActivityShow(0,0,0)}>
+                    <View><Text>跳转大家都在晒</Text></View>
+                    </TouchableWithoutFeedback>
+                    </View>
+
+
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback style={styles.tagItem} onPress={this.scanCode}>
+                    <View><Text>扫描</Text></View>
+                    </TouchableWithoutFeedback>
+                    </View>
+
+
+
+
+                    </View>
+
+                    
+
+                    <View style={styles.contentWrapper}>
+                        <Text style={styles.title}>{title}</Text>
+                        <Text style={styles.from}>来自"{from}"的活动</Text>
+                        <View style={styles.infoBox}>
+                            <View style={styles.infoItem}>
+                                <Text style={styles.infoLeft}>主办方</Text>
+                                <Text style={[styles.infoRight, {fontWeight: '600'}]} numberOfLines={1}>{sponsorName}</Text>
+                                {sponsorPhone && <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(15), paddingBottom: px2dp(15)}}/>}
                             </View>
-                        </TouchableWithoutFeedback>}
-                    </Animated.View>
-                </View>
-                <View style={styles.otherBox}>
-                    <View style={{height: px2dp(16), backgroundColor: '#F3F3F3'}}></View>
-                    {join && join.length > 0 && <View style={styles.joinBox}>
-                        <View style={styles.joinBoxHeader}><Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>已报名的小伙伴({join.length})</Text></View>
-                        <TouchableWithoutFeedback onPress={this.goUser}>
-                            <View style={styles.joinBoxContent}>
-                                {join.map((item, idx) => <Image key={item.uid} source={{uri: item.avatar}} style={{width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30)}} />)}
+                            <View style={styles.infoItem}>
+                                <Text style={styles.infoLeft}>地点</Text>
+                                <Text style={styles.infoRight} numberOfLines={1}>{address || '线上活动'}</Text>
+                                {address && location && <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/>}
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>}
-                    <View style={styles.dynamicBox}>
-                        <View style={styles.dynamicBoxHeader}>
-                            <Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>大家都在晒</Text>
-                            <View style={{height: px2dp(112), flexDirection: 'row', alignItems: 'center'}}><Text style={{color: '#333', fontSize: px2dp(28)}}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{marginLeft: px2dp(4)}} /></View>
+                            <View style={styles.infoItem}>
+                                <Text style={styles.infoLeft}>时间</Text>
+                                <Text style={styles.infoRight} numberOfLines={1}>{date}</Text>
+                            </View>
+                            <View style={styles.infoItem}>
+                                <Text style={styles.infoLeft}>费用</Text>
+                                <Text style={[styles.infoRight, {color: '#FF3F53'}]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
+                            </View>
+                            <View style={styles.infoItem}>
+                                <Text style={styles.infoLeft}>报名截止时间</Text>
+                                <Text style={styles.infoRight} numberOfLines={1}>{deadline}</Text>
+                            </View>
+                            <View style={styles.tags}>
+                                {tags.map((item, idx) => <View key={idx} style={styles.tagItem}><Text style={{fontSize: px2dp(24), color: '#666'}}>{item}</Text></View>)}
+                            </View>
                         </View>
+                        {content && content.length > 0 && <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, {height: animationHeight ? animationHeight : 'auto'}]} onLayout={this.introBoxLayout}>
+                            <Text style={styles.introHeader}>活动介绍</Text>
+                            {content.map((item, idx) => {
+                                if (item.type.toString() === '1') { // 文本
+                                    return <Text key={idx} style={styles.introText}>{item.content}</Text>
+                                } else if (item.type.toString() === '2') { // 图片
+                                    return <Image key={idx} source={{uri: item.content.image}} style={[styles.introImage, {height: px2dp((item.height / item.width) * 690 || 388)}]} resizeMode={'cover'} />
+                                }
+                            })}
+                            {initialHeight && animationHeight && maxHeight && <TouchableWithoutFeedback onPress={this.animate}>
+                                <View style={styles.showHideBtn}>
+                                    <Text style={{fontSize: px2dp(24), color: '#333'}}>{animationHeight._value === initialHeight ? '收起' : '展开'}</Text>
+                                    <Animated.View style={{marginLeft: px2dp(17), transform: [
+                                        {
+                                            rotateZ: iconRotate.interpolate({
+                                                inputRange: [0,1],
+                                                outputRange: ['0deg', '180deg'],
+                                            })
+                                        }
+                                        ]}}><Iconfont name='pull_down' size={px2dp(18)} color='#666666' /></Animated.View>
+                                </View>
+                            </TouchableWithoutFeedback>}
+                        </Animated.View>}
+                    </View>
+                    <View style={styles.otherBox}>
+                        <View style={{height: px2dp(16), backgroundColor: '#F3F3F3'}}></View>
+                        {join && join.length > 0 && <View style={styles.joinBox}>
+                            <View style={styles.joinBoxHeader}><Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>已报名的小伙伴({join.length})</Text></View>
+                            <TouchableWithoutFeedback onPress={this.goUser}>
+                                <View style={styles.joinBoxContent}>
+                                    {join.map((item, idx) => <Image key={item.uid} source={{uri: item.avatar}} style={{width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30)}} />)}
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>}
+                        <View style={styles.dynamicBox}>
+                            <View style={styles.dynamicBoxHeader}>
+                                <Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>大家都在晒</Text>
+                                {activityImages && activityImages.length > 0 && <View style={{height: px2dp(112), flexDirection: 'row', alignItems: 'center'}}><Text style={{color: '#333', fontSize: px2dp(28)}}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{marginLeft: px2dp(4)}} /></View>}
+                            </View>
+                            {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
+                                {activityImages.map((item, idx) => <Image key={idx} source={{uri: item}} style={{width: px2dp(155), height: px2dp(155), marginRight: px2dp(20)}} />)}
+                                <TouchableWithoutFeedback onPress={this.publish}>
+                                    <View style={{width: px2dp(155), height: px2dp(155), justifyContent: 'center', alignItems: 'center', backgroundColor: '#F4F4F4'}}>
+                                        <Iconfont name="camera" size={px2dp(48)} color="#BBBBBB" />
+                                        <Text style={{fontSize: px2dp(20), color: '#999'}}>晒美照</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View> : <View style={[styles.dynamicBoxImages, {height: px2dp(195), paddingRight: px2dp(5), flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}]}>
+                                <TouchableWithoutFeedback onPress={this.publish} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../static/image/rn_camera.png')} style={{width: px2dp(88), height: px2dp(67)}} />
+                                        <Text style={{fontSize: px2dp(24), color: '#999', marginTop: px2dp(24)}}>成为第一个晒照的小可爱</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>}
+                        </View>
+                        {circle && <View style={styles.circleBox}>
+                            <View style={styles.circleInfo}>
+                                <Image source={{uri: circle.cover.url}} style={styles.circleAvatar} />
+                                <View style={styles.circleText}>
+                                    <Text style={{fontSize: px2dp(30), color: '#333', lineHeight: px2dp(64)}}>{circle.name}</Text>
+                                    <Text style={{fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76)}} numberOfLines={2}>{circle.intro}</Text>
+                                </View>
+                            </View>
+                            <Button style={styles.circleButton} textStyle={styles.circleButtonText} onPress={this.goCircle} activeOpacity={1}>进入圈子参与该活动讨论</Button>
+                        </View>}
                     </View>
                 </View>
+            </ScrollView>
+            <View style={styles.fixedButtons}>
+                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} textStyle={{fontSize: px2dp(30), color: '#333'}}>晒图</Button>
+                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB'}} textStyle={{fontSize: px2dp(30), color: '#fff', fontWeight: '600'}}>{statusText}</Button>
             </View>
-        </ScrollView>
+        </View>
     }
 }
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1
+    },
     scrollView: {
         backgroundColor: '#fff',
+        flex: 1
     },
     pageWrapper: {
         alignItems: 'stretch',
         ...ifIphoneX({
-            paddingBottom: px2dp(124)
+            paddingBottom: px2dp(204)
         }, {
-            paddingBottom: px2dp(80)
+            paddingBottom: px2dp(160)
         })
     },
     contentWrapper: {
@@ -355,7 +476,6 @@ const styles = StyleSheet.create({
     },
     introImage: {
         alignSelf: 'stretch',
-        height: px2dp(388),
         marginTop: px2dp(20),
         marginBottom: px2dp(20),
     },
@@ -397,6 +517,63 @@ const styles = StyleSheet.create({
         height: px2dp(112),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: px2dp(1),
+        borderBottomColor: '#E5E5E5'
+    },
+    dynamicBoxImages: {
+        flexDirection: 'row',
+        paddingLeft: px2dp(5),
+        paddingTop: px2dp(20),
+        paddingBottom: px2dp(20),
+        borderTopWidth: px2dp(1),
+        borderBottomWidth: px2dp(1),
+        borderColor: '#E5E5E5',
+        marginRight: px2dp(8)
+    },
+    circleBox: {
+        paddingTop: px2dp(43),
+        paddingRight: px2dp(30),
+        paddingLeft: px2dp(30)
+    },
+    circleInfo: {
+        flexDirection: 'row'
+    },
+    circleAvatar: {
+        width: px2dp(116),
+        height: px2dp(116),
+        marginTop: px2dp(17),
+        marginRight: px2dp(30)
+    },
+    circleText: {
+        flex: 1
+    },
+    circleButton: {
+        width: px2dp(360),
+        height: px2dp(68),
+        borderColor: '#1EB0FD',
+        borderRadius: px2dp(6),
+        marginTop: px2dp(53),
+        alignSelf: 'center'
+    },
+    circleButtonText: {
+        fontSize: px2dp(28),
+        color: '#1EB0FD'
+    },
+    fixedButtons: {
+        width: px2dp(750),
+        ...ifIphoneX(
+            {
+                height: px2dp(144)
+            },
+            {
+                height: px2dp(100)
+            }
+        ),
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        position: 'absolute',
+        left: 0,
+        bottom: 0
     }
 })
