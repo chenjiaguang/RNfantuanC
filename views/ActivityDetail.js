@@ -310,12 +310,12 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                             <View style={styles.infoItem}>
                                 <Text style={styles.infoLeft}>主办方</Text>
                                 <Text style={[styles.infoRight, {fontWeight: '600'}]} numberOfLines={1}>{sponsorName}</Text>
-                                {sponsorPhone && <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(15), paddingBottom: px2dp(15)}}/>}
+                                {sponsorPhone ? <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(15), paddingBottom: px2dp(15)}}/> : null}
                             </View>
                             <View style={styles.infoItem}>
                                 <Text style={styles.infoLeft}>地点</Text>
                                 <Text style={styles.infoRight} numberOfLines={1}>{address}</Text>
-                                {address && location && location.lng && location.lat && <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/>}
+                                {(address && location && location.lng && location.lat) ? <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/> : null}
                             </View>
                             <View style={styles.infoItem}>
                                 <Text style={styles.infoLeft}>时间</Text>
@@ -333,7 +333,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                                 {tags.map((item, idx) => <View key={idx} style={styles.tagItem}><Text style={{fontSize: px2dp(24), color: '#666'}}>{item}</Text></View>)}
                             </View>
                         </View>
-                        {content && content.length > 0 && <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, {height: animationHeight ? animationHeight : 'auto'}]} onLayout={this.introBoxLayout}>
+                        {(content && content.length > 0) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, {height: animationHeight ? animationHeight : 'auto'}]} onLayout={this.introBoxLayout}>
                             <Text style={styles.introHeader}>活动介绍</Text>
                             {content.map((item, idx) => {
                                 if (item.type.toString() === '1') { // 文本
@@ -342,7 +342,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                                     return <Image key={idx} source={{uri: item.content.image}} style={[styles.introImage, {height: px2dp((item.height / item.width) * 690 || 388)}]} resizeMode={'cover'} />
                                 }
                             })}
-                            {initialHeight && animationHeight && maxHeight && <TouchableWithoutFeedback onPress={this.animate}>
+                            {(initialHeight && animationHeight && maxHeight) ? <TouchableWithoutFeedback onPress={this.animate}>
                                 <View style={styles.showHideBtn}>
                                     <Text style={{fontSize: px2dp(24), color: '#333'}}>{animationHeight._value === initialHeight ? '收起' : '展开'}</Text>
                                     <Animated.View style={{marginLeft: px2dp(17), transform: [
@@ -354,23 +354,23 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                                         }
                                         ]}}><Iconfont name='pull_down' size={px2dp(18)} color='#666666' /></Animated.View>
                                 </View>
-                            </TouchableWithoutFeedback>}
-                        </Animated.View>}
+                            </TouchableWithoutFeedback> : null}
+                        </Animated.View> : null}
                     </View>
                     <View style={styles.otherBox}>
                         <View style={{height: px2dp(16), backgroundColor: '#F3F3F3'}}></View>
-                        {join && join.length > 0 && <View style={styles.joinBox}>
+                        {(join && join.length > 0) ? <View style={styles.joinBox}>
                             <View style={styles.joinBoxHeader}><Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>已报名的小伙伴({join.length})</Text></View>
                             <TouchableOpacity onPress={this.goJoiners} activeOpacity={0.8}>
                                 <View style={styles.joinBoxContent}>
                                     {join.map((item, idx) => <Image key={item.uid} source={{uri: item.avatar}} style={{width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30)}} />)}
                                 </View>
                             </TouchableOpacity>
-                        </View>}
+                        </View> : null}
                         <View style={styles.dynamicBox}>
                             <View style={styles.dynamicBoxHeader}>
                                 <Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>大家都在晒</Text>
-                                {activityImages && activityImages.length > 0 && <View style={{height: px2dp(112), flexDirection: 'row', alignItems: 'center'}}><Text style={{color: '#333', fontSize: px2dp(28)}}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{marginLeft: px2dp(4)}} /></View>}
+                                {(activityImages && activityImages.length > 0) ? <View style={{height: px2dp(112), flexDirection: 'row', alignItems: 'center'}}><Text style={{color: '#333', fontSize: px2dp(28)}}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{marginLeft: px2dp(4)}} /></View> : null}
                             </View>
                             {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
                                 {activityImages.map((item, idx) => <Image key={idx} source={{uri: item}} style={{width: px2dp(155), height: px2dp(155), marginRight: px2dp(20)}} />)}
@@ -389,7 +389,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                                 </TouchableOpacity>
                             </View>}
                         </View>
-                        {circle && <View style={styles.circleBox}>
+                        {circle ? <View style={styles.circleBox}>
                             <View style={styles.circleInfo}>
                                 <Button onPress={this.goCircle} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{uri: circle.cover.url}} style={{flex: 1}} /></Button>
                                 <View style={styles.circleText}>
@@ -398,7 +398,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                                 </View>
                             </View>
                             <Button style={styles.circleButton} textStyle={styles.circleButtonText} onPress={this.goCircle} activeOpacity={1}>进入圈子参与该活动讨论</Button>
-                        </View>}
+                        </View> : null}
                     </View>
                 </View>
             </ScrollView>
