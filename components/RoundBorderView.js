@@ -33,4 +33,4 @@ export default class AndroidRoundBorderView extends Component {
   }
 }
 
-const RoundBorderView = Platform.OS != 'ios' ? View : requireNativeComponent('RCTRoundBorderView', AndroidRoundBorderView)
+const RoundBorderView = Platform.OS == 'ios' ? View : requireNativeComponent('RCTRoundBorderView', AndroidRoundBorderView)

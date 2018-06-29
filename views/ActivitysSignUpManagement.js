@@ -24,8 +24,6 @@ class HeaderRight extends React.Component {
     this.state = {}
   }
   onScan = () => {
-    console.log('#################')
-    console.log(this.props)
     GoNativeModule.goActivityCodeScan(this.props.aid)
   }
   render = () => {

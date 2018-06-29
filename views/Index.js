@@ -23,7 +23,7 @@ export default class HeadlineIndex extends React.Component {
         title: ''
     };
     componentWillMount() {
-        console.log('componentWillMount', this.props)
+        // console.log('componentWillMount', this.props)
 
         let screenProps = this.props.screenProps;
         //testing

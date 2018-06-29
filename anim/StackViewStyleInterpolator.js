@@ -38,8 +38,8 @@ function forHorizontal(props) {
     const translateX = position.interpolate({
       inputRange: [first, index, last],
       outputRange: I18nManager.isRTL
-        ? [-width, 0, width * 0]
-        : [width, 0, width * -0],
+        ? [-width, 0, width * 0.3]
+        : [width, 0, width * -0.3],
     });
     const translateY = 0;
   
