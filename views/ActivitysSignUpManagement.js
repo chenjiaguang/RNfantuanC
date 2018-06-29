@@ -16,6 +16,7 @@ import {
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
+import RoundBorderView from '../components/RoundBorderView'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -23,8 +24,6 @@ class HeaderRight extends React.Component {
     this.state = {}
   }
   onScan = () => {
-    console.log('#################')
-    console.log(this.props)
     GoNativeModule.goActivityCodeScan(this.props.aid)
   }
   render = () => {
@@ -113,7 +112,13 @@ export default class ActivitysSignUpManagement extends React.Component {
                 <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
               </View>
             </TouchableWithoutFeedback>
-            <Text style={[styles.button, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>{item.state_text}</Text>
+            <RoundBorderView
+              borderWidth={px2dp(1)}
+              borderRadius={px2dp(6)}
+              fantBorderColor={this.state.activeStatus.indexOf(item.state_text) > -1 ? '#1EB0FD' : '#999999'}
+              style={[styles.button, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>
+              <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
+            </RoundBorderView>
           </View>
         </View>
     )
@@ -214,7 +219,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#333333',
     fontSize: px2dp(28),
-    height: px2dp(28),
     marginBottom: px2dp(16),
     includeFontPadding: false,
   },
@@ -222,7 +226,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    height: px2dp(28),
     marginBottom: px2dp(16),
     includeFontPadding: false,
   },
@@ -230,7 +233,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#666666',
     fontSize: px2dp(28),
-    height: px2dp(28),
     includeFontPadding: false,
   },
   option: {
@@ -238,14 +240,12 @@ const styles = StyleSheet.create({
   },
   gender: {
     fontSize: px2dp(28),
-    height: px2dp(28),
     marginRight: px2dp(24),
     marginTop: px2dp(16),
     includeFontPadding: false,
   },
   idNo: {
     fontSize: px2dp(28),
-    height: px2dp(28),
     marginTop: px2dp(16),
     includeFontPadding: false,
   },
@@ -267,18 +267,22 @@ const styles = StyleSheet.create({
   },
   button: {
     height: px2dp(38),
-    lineHeight: px2dp(38),
     width: px2dp(109),
     borderRadius: px2dp(6),
     borderWidth: px2dp(1),
-    fontSize: px2dp(20),
-    textAlign: 'center',
-    color: '#999999',
     borderColor: '#999999'
   },
   buttonEnable: {
-    color: '#1EB0FD',
     borderColor: '#1EB0FD'
+  },
+  buttonText: {
+    lineHeight: px2dp(36),
+    fontSize: px2dp(20),
+    textAlign: 'center',
+    color: '#999999',
+  },
+  buttonTextEnable: {
+    color: '#1EB0FD',
   },
   bottomButton: {
     height: px2dp(100),

@@ -16,8 +16,8 @@ import ActivitysMine from './views/ActivitysMine';
 import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
-import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
 import SwipBackModule from './modules/SwipBackModule';
+import StackViewStyleInterpolator from './anim/StackViewStyleInterpolator'
 
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
 
@@ -103,7 +103,7 @@ const SimpleApp = createStackNavigator({
             return Platform.OS === 'android' ? { // 修改android页面切换动画（android默认从下往上，现改为从右向左）
                 screenInterpolator: StackViewStyleInterpolator.forHorizontal, // 从右向左
                 transitionSpec: {
-                    duration: 350
+                    duration: 300
                 }
             } : {
                     transitionSpec: {
@@ -144,10 +144,15 @@ SimpleApp.router.getStateForAction = (action, state) => {
                 }
             }
         }
+
         if (state.routes.length === 1 && Platform.OS === 'android') {
-            SwipBackModule && SwipBackModule.enable();
-        } else if (state.routes.length === 2 && Platform.OS === 'android') {
-            SwipBackModule && SwipBackModule.disable();
+            if (action.type === 'Navigation/REPLACE' ||
+                action.type === 'Navigation/COMPLETE_TRANSITION'
+            ) {
+                SwipBackModule && SwipBackModule.enable();
+            } else {
+                SwipBackModule && SwipBackModule.disable();
+            }
         }
     }
     return defaultGetStateForAction(action, state);

@@ -12,6 +12,7 @@ import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
+import RoundBorderView from '../components/RoundBorderView'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -96,7 +97,13 @@ export default class ActivitysJoined extends React.Component {
                         <Text style={styles.time}>{item.time_text}</Text>
                         <Text style={styles.price}>{item.money_text}</Text>
                       </View>
-                      <Text style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>查看券码</Text>
+                      <RoundBorderView
+                        borderWidth={px2dp(1)}
+                        borderRadius={px2dp(6)}
+                        fantBorderColor={this.state.activeStatus.indexOf(item.status_text) > -1 ? '#1EB0FD' : '#999999'}
+                        style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>
+                        <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonTextEnable : null]}>查看券码</Text>
+                      </RoundBorderView>
                     </View>
                   </View>
                 </View>
@@ -107,6 +114,7 @@ export default class ActivitysJoined extends React.Component {
 
   }
 }
+StyleSheet.flatten
 
 const styles = StyleSheet.create({
   container: {
@@ -172,31 +180,33 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: px2dp(24),
-    height: px2dp(24),
     includeFontPadding: false,
     marginBottom: px2dp(16),
     color: '#999999',
   },
   price: {
     fontSize: px2dp(24),
-    height: px2dp(24),
     includeFontPadding: false,
     color: '#FF3F53',
   },
   button: {
     height: px2dp(38),
-    lineHeight: px2dp(38),
     width: px2dp(106),
     marginRight: px2dp(1),
     borderRadius: px2dp(6),
     borderWidth: px2dp(1),
-    fontSize: px2dp(20),
-    textAlign: 'center',
-    color: '#999999',
     borderColor: '#999999',
   },
   buttonEnable: {
-    color: '#1EB0FD',
     borderColor: '#1EB0FD'
-  }
+  },
+  buttonText: {
+    lineHeight: px2dp(36),
+    fontSize: px2dp(20),
+    textAlign: 'center',
+    color: '#999999',
+  },
+  buttonTextEnable: {
+    color: '#1EB0FD',
+  },
 })
