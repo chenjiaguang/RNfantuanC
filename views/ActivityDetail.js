@@ -8,23 +8,25 @@ import {
     Linking,
     Animated,
     Platform,
-    TouchableWithoutFeedback
+    StatusBar,
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX, getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import Iconfont from '../components/cxicon/CXIcon';
-import MyTextInput from '../components/MyTextInput' // 自己封装的输入框，解决ios中文输入问题
-import CodeInput from '../components/CodeInput' // 自己封装的获取验证码输入框，自带获取验证码处理逻辑
+import ActionSheet from 'react-native-actionsheet' // RN官方提供ios的ActionSheet，此处引入双平台的ActionSheet(ios/android)
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 import Toast from  '../components/Toast'
-import commonStyle from "../static/commonStyle";
 import GoNativeModule from '../modules/GoNativeModule'
+import SwipBackModule from '../modules/SwipBackModule';
 
 export default class ActivityDetail extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
     constructor (props) {
         super(props)
         this.state = {
             activity: {
+                id: '',
                 bannerUrl: '',
                 title: '',
                 from: '',
@@ -47,12 +49,18 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             }
         }
     }
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({navigation, screenProps}) => {
         let opacity = (navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0
         let initialColor = 255
         let decrease = (255 - 51) * opacity
         let color = parseInt(initialColor - decrease)
-        const headerLeft = () => <TouchableWithoutFeedback disabled={false} onPress={() => navigation.goBack()}>
+        const headerLeft = () => <TouchableWithoutFeedback disabled={false} onPress={() => {
+            if (screenProps && screenProps.route && navigation.state.routeName === screenProps.route) {
+                SwipBackModule && SwipBackModule.exit();
+            } else {
+                navigation.pop()
+            }
+        }}>
             <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
                 <Iconfont name='go_back' size={px2dp(38)} color={'rgb(' + color + ',' + color + ',' + color + ')'} style={{ paddingLeft: px2dp(18) }} />
             </View>
@@ -95,6 +103,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             return false
         }
         this.props.navigation.setParams({'opacity': event.nativeEvent.contentOffset.y >= 0 ? event.nativeEvent.contentOffset.y / (px2dp(332) - getStatusBarHeight(true)) : 0})
+        if (event.nativeEvent.contentOffset.y > (px2dp(332) - getStatusBarHeight(true))) {
+            StatusBar.setBarStyle('dark-content')
+        } else {
+            StatusBar.setBarStyle('light-content')
+        }
     }
     callPhone = () => {
         console.log('callPhone')
@@ -168,11 +181,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             iconRotate: new Animated.Value(0)
         })
     }
-    goUser = () => {
-        console.log('goUser')
+    goJoiners = () => {
+        console.log('goJoiners')
     }
     publish = () => {
-        console.log('publish')
+        this.ActionSheet.show()
     }
     goCircle = () => {
         console.log('goCircle')
@@ -191,6 +204,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 _tags.push('不可退票')
             }
             let _obj = {
+                id: res.data.id,
                 bannerUrl: res.data.covers[0].compress,
                 title: res.data.title,
                 from: res.data.circle.name,
@@ -230,13 +244,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         })
     }
     componentDidMount () {
+        StatusBar.setBarStyle('light-content')
         this.fetchActivity()
     }
     render() {
-        let {bannerUrl, title, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle} = this.state.activity
+        let {id, bannerUrl, title, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle} = this.state.activity
         let {initialHeight, maxHeight, animationHeight, iconRotate} = this.state
         return <View style={styles.page}>
-            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={10}>
+            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
                 <View style={styles.pageWrapper}>
                     <Image source={{uri: bannerUrl}} style={styles.header} resizeMode="cover" />
                     
@@ -275,6 +290,12 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     </TouchableWithoutFeedback>
                     </View>
 
+                    <View style={styles.tagItem}>            
+                    <TouchableWithoutFeedback style={styles.tagItem} onPress={() => this.props.navigation.navigate('HeadlineIndex')}>
+                    <View><Text>进入HeadlineIndex</Text></View>
+                    </TouchableWithoutFeedback>
+                    </View>
+
 
 
 
@@ -293,8 +314,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                             </View>
                             <View style={styles.infoItem}>
                                 <Text style={styles.infoLeft}>地点</Text>
-                                <Text style={styles.infoRight} numberOfLines={1}>{address || '线上活动'}</Text>
-                                {address && location && <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/>}
+                                <Text style={styles.infoRight} numberOfLines={1}>{address}</Text>
+                                {address && location && location.lng && location.lat && <Iconfont name='location' onPress={this.showMap} size={px2dp(24)} color='#1EB0FD' style={{paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20)}}/>}
                             </View>
                             <View style={styles.infoItem}>
                                 <Text style={styles.infoLeft}>时间</Text>
@@ -340,11 +361,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                         <View style={{height: px2dp(16), backgroundColor: '#F3F3F3'}}></View>
                         {join && join.length > 0 && <View style={styles.joinBox}>
                             <View style={styles.joinBoxHeader}><Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '600'}}>已报名的小伙伴({join.length})</Text></View>
-                            <TouchableWithoutFeedback onPress={this.goUser}>
+                            <TouchableOpacity onPress={this.goJoiners} activeOpacity={0.8}>
                                 <View style={styles.joinBoxContent}>
                                     {join.map((item, idx) => <Image key={item.uid} source={{uri: item.avatar}} style={{width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30)}} />)}
                                 </View>
-                            </TouchableWithoutFeedback>
+                            </TouchableOpacity>
                         </View>}
                         <View style={styles.dynamicBox}>
                             <View style={styles.dynamicBoxHeader}>
@@ -353,24 +374,24 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                             </View>
                             {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
                                 {activityImages.map((item, idx) => <Image key={idx} source={{uri: item}} style={{width: px2dp(155), height: px2dp(155), marginRight: px2dp(20)}} />)}
-                                <TouchableWithoutFeedback onPress={this.publish}>
+                                <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>
                                     <View style={{width: px2dp(155), height: px2dp(155), justifyContent: 'center', alignItems: 'center', backgroundColor: '#F4F4F4'}}>
                                         <Iconfont name="camera" size={px2dp(48)} color="#BBBBBB" />
                                         <Text style={{fontSize: px2dp(20), color: '#999'}}>晒美照</Text>
                                     </View>
-                                </TouchableWithoutFeedback>
+                                </TouchableOpacity>
                             </View> : <View style={[styles.dynamicBoxImages, {height: px2dp(195), paddingRight: px2dp(5), flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}]}>
-                                <TouchableWithoutFeedback onPress={this.publish} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableOpacity onPress={this.publish} style={{justifyContent: 'center', alignItems: 'center'}} activeOpacity={0.8}>
                                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                         <Image source={require('../static/image/rn_camera.png')} style={{width: px2dp(88), height: px2dp(67)}} />
                                         <Text style={{fontSize: px2dp(24), color: '#999', marginTop: px2dp(24)}}>成为第一个晒照的小可爱</Text>
                                     </View>
-                                </TouchableWithoutFeedback>
+                                </TouchableOpacity>
                             </View>}
                         </View>
                         {circle && <View style={styles.circleBox}>
                             <View style={styles.circleInfo}>
-                                <Image source={{uri: circle.cover.url}} style={styles.circleAvatar} />
+                                <Button onPress={this.goCircle} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{uri: circle.cover.url}} style={{flex: 1}} /></Button>
                                 <View style={styles.circleText}>
                                     <Text style={{fontSize: px2dp(30), color: '#333', lineHeight: px2dp(64)}}>{circle.name}</Text>
                                     <Text style={{fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76)}} numberOfLines={2}>{circle.intro}</Text>
@@ -382,9 +403,26 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 </View>
             </ScrollView>
             <View style={styles.fixedButtons}>
-                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} textStyle={{fontSize: px2dp(30), color: '#333'}}>晒图</Button>
-                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB'}} textStyle={{fontSize: px2dp(30), color: '#fff', fontWeight: '600'}}>{statusText}</Button>
+                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} textStyle={{fontSize: px2dp(30), color: '#333'}} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
+                <Button style={{flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53'}} disabledStyle={{backgroundColor:  '#BBBBBB'}} textStyle={{fontSize: px2dp(30), color: '#fff', fontWeight: '600'}} activeOpacity={0.8} isDisabled={statusText !== '购票'}>{statusText}</Button>
             </View>
+            <ActionSheet
+                ref={el => this.ActionSheet = el}
+                options={['动态', '长文', '取消']}
+                cancelButtonIndex={2}
+                onPress={(index) => {
+                switch (index) {
+                    case 0: // 选择照片
+                        console.log('动态')
+                    break;
+                    case 1:
+                        console.log('长文')
+                    break;
+                    default:
+                    // do nothing
+                }
+                }}
+            />
         </View>
     }
 }
@@ -543,7 +581,10 @@ const styles = StyleSheet.create({
         width: px2dp(116),
         height: px2dp(116),
         marginTop: px2dp(17),
-        marginRight: px2dp(30)
+        marginRight: px2dp(30),
+        alignItems: 'stretch',
+        borderRadius: 0,
+        borderWidth: 0
     },
     circleText: {
         flex: 1
