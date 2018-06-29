@@ -23,8 +23,6 @@ export default class HeadlineIndex extends React.Component {
         title: ''
     };
     componentWillMount() {
-        console.log('componentWillMount', this.props)
-
         let screenProps = this.props.screenProps;
         //testing
         // if (!screenProps) {
@@ -34,6 +32,10 @@ export default class HeadlineIndex extends React.Component {
         //         }
         //     }
         // }
+        if (!screenProps) {
+            this.props.navigation.replace('ActivityDetail', {id: 10})
+            return false
+        }
 
 
         if (screenProps.params) {
