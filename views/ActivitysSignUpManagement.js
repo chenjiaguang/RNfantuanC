@@ -59,7 +59,7 @@ export default class ActivitysSignUpManagement extends React.Component {
     GoNativeModule && GoNativeModule.goUserDetail(id)
   }
   onJumpActivityDetail = (id) => {
-    this.props.navigation.navigate('ActivityDetail')
+    this.props.navigation.navigate('ActivityDetail', { id: id })
   }
   static navigationOptions = ({ navigation }) => {
     return {
