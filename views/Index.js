@@ -36,8 +36,8 @@ export default class HeadlineIndex extends React.Component {
         // }
 
 
-        if (screenProps.params) {
-            _Token=screenProps.params.token
+        if (screenProps && screenProps.params) {
+            _Token = screenProps.params.token
             this.props.navigation.replace(screenProps.route, screenProps.params)
         } else {
             this.props.navigation.replace(screenProps.route)
