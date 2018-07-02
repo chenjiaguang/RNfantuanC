@@ -277,12 +277,12 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         }),
         circle: res.data.circle
       }
-      console.log('_obj', _obj)
       this.setState({
         activity: _obj
       })
       this.props.navigation.setParams({ 'activity': _obj })
       StatusBar.setBarStyle('light-content')
+      StatusBar.setTranslucent(true)
 
     }).catch(err => {
       console.log('获取活动数据失败', err)
@@ -293,6 +293,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   componentWillUnmount() {
     StatusBar.setBarStyle('dark-content')
+    StatusBar.setTranslucent(true)
   }
   render() {
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle } = this.state.activity
