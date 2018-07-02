@@ -22,7 +22,7 @@ export default class HeadlineSubmitted extends React.Component {
     title: '申请成功'
   };
   complete = () => {
-    // 点击完成需要的操作
+    // 点击完成需要的操作,关闭rn页面,回到原生
 
   }
   render() {
