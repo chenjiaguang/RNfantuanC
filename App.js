@@ -30,7 +30,6 @@ export default class App extends React.Component {
     if (Platform.OS === 'android') {
        StatusBar.setTranslucent(true)
     }
-
   }
   componentWillMount() {
     // console.log('appWillMount', this.props, AppNavigators)

@@ -127,26 +127,29 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   handleScroll = (event) => {
     let newY = event.nativeEvent.contentOffset.y
-    let r = (px2dp(332) - getStatusBarHeight(true))
+    let range = (px2dp(332) - getStatusBarHeight(true))
     if (Platform.OS === 'android') {
-      if (newY > r && this.lastY <= r) {
+      if (newY > range && this.lastY <= range) {
         this.props.navigation.setParams({ 'opacity': 1 })
         StatusBar.setBarStyle('dark-content')
-      } else if (newY < r && this.lastY >= r) {
+      } else if (newY < range && this.lastY >= range) {
         this.props.navigation.setParams({ 'opacity': 0 })
         StatusBar.setBarStyle('light-content')
       }
     } else {
-      let opacity = event.nativeEvent.contentOffset.y >= 0 ? event.nativeEvent.contentOffset.y / (px2dp(332) - getStatusBarHeight(true)) : 0;
+      let opacity = newY >= 0 ? newY / range : 0;
       opacity = opacity > 1 ? 1 : opacity
+      if (newY > range + 100) {
+        return false
+      }
       this.props.navigation.setParams({ 'opacity': opacity })
-      if (event.nativeEvent.contentOffset.y > (px2dp(332) - getStatusBarHeight(true))) {
+      if (newY > range) {
         StatusBar.setBarStyle('dark-content')
       } else {
         StatusBar.setBarStyle('light-content')
       }
     }
-    this.lastY = event.nativeEvent.contentOffset.y
+    this.lastY = newY
   }
   callPhone = () => {
     console.log('callPhone')
