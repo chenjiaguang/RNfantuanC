@@ -33,7 +33,7 @@ export default class HeadlineIndex extends React.Component {
         //     }
         // }
         if (!screenProps) {
-            this.props.navigation.replace('ActivityDetail', {id: 10})
+            this.props.navigation.replace('HeadlineIndex')
             return false
         }
 

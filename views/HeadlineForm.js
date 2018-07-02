@@ -501,7 +501,7 @@ export default class HeadlineForm extends React.Component {
                 <Iconfont name={this.state.form.agreement ? 'checked' : 'uncheck'} size={px2dp(24)} color={this.state.form.agreement ? commonStyle.color.themePrimary : commonStyle.color.text.para_secondary} style={{marginRight: px2dp(20), marginTop: Platform.OS === 'ios' ? px2dp(4) : 0, overflow: 'visible'}}></Iconfont>
                 <Text style={{paddingTop: px2dp(4), fontSize: px2dp(24), lineHeight: px2dp(24)}}>
                   <Text style={{color: commonStyle.color.text.para_primary}}>我已同意</Text>
-                  <Text style={{color: commonStyle.color.text.positive}} onPress={() => this.props.navigation.navigate('WebPage',{title: '范团头条号用户协议', url: 'https://www.baidu.com'})}>《范团头条号用户协议》</Text>
+                  <Text style={{color: commonStyle.color.text.positive}} onPress={() => this.props.navigation.navigate('WebPage',{title: '范团头条号用户协议', url: _Api + '/cweb/index.html#/agreement?type=author'})}>《范团头条号用户协议》</Text>
                 </Text>
               </View>
             </TouchableWithoutFeedback>
