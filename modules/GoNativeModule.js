@@ -31,13 +31,24 @@ import { NativeModules } from 'react-native';
  * 
  * 
  * goActivityShow
- * 参数: 活动id 圈子名称
+ * 参数: 圈子id 圈子名称 活动id
  * 跳转大家都在晒
  * 
  * 
  * goActivityMap
- * 参数: 地点名称 lat lng
+ * 参数: 地点名称 lng lat
  * 跳转地图页
  * 
+ * goCircleDetail
+ * 参数：圈子id 圈子名 封面图url
+ * 跳转圈子详情页
+ * 
+ * goActivityOrder
+ * 参数：活动id
+ * 跳转购票页
+ * 
+ * shareActivity
+ * 参数：活动id
+ * 活动分享
  */
 export default NativeModules.GoNativeModule;
