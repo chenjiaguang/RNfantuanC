@@ -32,10 +32,10 @@ export default class HeadlineIndex extends React.Component {
         //         }
         //     }
         // }
-        if (!screenProps) {
-            this.props.navigation.replace('HeadlineIndex')
-            return false
-        }
+        // if (!screenProps) {
+        //     this.props.navigation.replace('HeadlineIndex')
+        //     return false
+        // }
 
 
         if (screenProps && screenProps.params) {

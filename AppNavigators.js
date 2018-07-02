@@ -14,6 +14,7 @@ import WebPage from './views/WebPage';
 import ActivitysJoined from './views/ActivitysJoined';
 import ActivitysMine from './views/ActivitysMine';
 import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
+import ActivityJoiners from './views/ActivityJoiners';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import SwipBackModule from './modules/SwipBackModule';
@@ -59,6 +60,7 @@ const SimpleApp = createStackNavigator({
     ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },
     ActivitysMine: { screen: ActivitysMine, path: '/ActivitysMine' },
     ActivitysSignUpManagement: { screen: ActivitysSignUpManagement, path: '/ActivitysSignUpManagement' },
+    ActivityJoiners: { screen: ActivityJoiners, path: '/ActivityJoiners' },
 }, {
         navigationOptions: ({ navigation, screenProps }) => {
             return {
