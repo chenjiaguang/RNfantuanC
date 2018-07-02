@@ -25,6 +25,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   constructor(props) {
     super(props)
     this.state = {
+      isOpen: false,
       activity: {
         id: '',
         bannerUrl: '',
@@ -53,8 +54,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
   }
   static navigationOptions = ({ navigation, screenProps }) => {
-    let share = (id) => {
-      GoNativeModule && GoNativeModule.shareActivity(id)
+    let share = () => {
+      let activity = navigation.state.params.activity
+      GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
+        activity.title,
+        activity.content.map((i) => {
+          return typeof (i.content) == 'string' ? i.content : ''
+        }).join(''),
+        "http://www.baidu.com")
     }
     let opacity = (navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0
     let initialColor = 255
@@ -71,7 +78,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         <Iconfont name='go_back' size={px2dp(38)} color={'rgb(' + color + ',' + color + ',' + color + ')'} style={{ paddingLeft: px2dp(18) }} />
       </View>
     </TouchableWithoutFeedback>
-    const headerRight = () => <TouchableWithoutFeedback disabled={false} onPress={() => { share(navigation.state.params.id) }}>
+    const headerRight = () => <TouchableWithoutFeedback disabled={false} onPress={() => { share() }}>
       <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}><Iconfont name="share" size={px2dp(36)} color={'rgb(' + color + ',' + color + ',' + color + ')'} /></View>
     </TouchableWithoutFeedback>
     return {
@@ -136,47 +143,51 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
     }).catch(err => console.error('An error occurred', err));
   }
-  showMap = () => {
-    console.log('调用原生显示地图页面')
-  }
   animate = () => {
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
-    console.log(initialHeight, maxHeight, animationHeight, iconRotate)
+    console.log('value', animationHeight._value, initialHeight)
+    // console.log(initialHeight, maxHeight, animationHeight, iconRotate)
     if (animationHeight._value < initialHeight) {
-      Animated.parallel([
-        Animated.timing(
-          animationHeight,
-          {
-            toValue: initialHeight,
-            duration: 300
-          }
-        ),
-        Animated.timing(
-          iconRotate,
-          {
-            toValue: 1,
-            duration: 300
-          }
-        )
-      ]).start()
+      animationHeight.setValue(initialHeight)
+      iconRotate.setValue(1)
+      this.setState({isOpen:true})
+      // Animated.parallel([
+      //   Animated.timing(
+      //     animationHeight,
+      //     {
+      //       toValue: initialHeight,
+      //       duration: 300
+      //     }
+      //   ),
+      //   Animated.timing(
+      //     iconRotate,
+      //     {
+      //       toValue: 1,
+      //       duration: 300
+      //     }
+      //   )
+      // ]).start()
 
     } else {
-      Animated.parallel([
-        Animated.timing(
-          animationHeight,
-          {
-            toValue: maxHeight,
-            duration: 300
-          }
-        ),
-        Animated.timing(
-          iconRotate,
-          {
-            toValue: 0,
-            duration: 300
-          }
-        )
-      ]).start()
+      animationHeight.setValue(maxHeight)
+      iconRotate.setValue(0)
+      this.setState({isOpen:false})
+      // Animated.parallel([
+      //   Animated.timing(
+      //     animationHeight,
+      //     {
+      //       toValue: maxHeight,
+      //       duration: 300
+      //     }
+      //   ),
+      //   Animated.timing(
+      //     iconRotate,
+      //     {
+      //       toValue: 0,
+      //       duration: 300
+      //     }
+      //   )
+      // ]).start()
     }
   }
   introBoxLayout = (event) => {
@@ -198,9 +209,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   publish = () => {
     this.ActionSheet.show()
-  }
-  goCircle = () => {
-    console.log('goCircle')
   }
   fetchActivity = () => {
     let rData = {
@@ -251,6 +259,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       this.setState({
         activity: _obj
       })
+      this.props.navigation.setParams({ 'activity': _obj })
+
     }).catch(err => {
       console.log('获取活动数据失败', err)
     })
@@ -307,7 +317,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               })}
               {(initialHeight && animationHeight && maxHeight) ? <TouchableWithoutFeedback onPress={this.animate}>
                 <View style={styles.showHideBtn}>
-                  <Text style={{ fontSize: px2dp(24), color: '#333' }}>{animationHeight._value === initialHeight ? '收起' : '展开'}</Text>
+                  <Text style={{ fontSize: px2dp(24), color: '#333' }}>{this.state.isOpen ?
+                    '收起' :
+                    '展开'}</Text>
                   <Animated.View style={{
                     marginLeft: px2dp(17), transform: [
                       {
