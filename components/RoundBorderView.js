@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, {
   Component,
 } from 'react'
+import px2dp from '../lib/px2dp';
 
 
 
@@ -24,9 +25,9 @@ export default class AndroidRoundBorderView extends Component {
     return (
       <RoundBorderView
         {...this.props}
-        borderRadius={this.props.borderRadius}
-        borderWidth={this.props.borderWidth}
-        fantBorderColor={this.props.fantBorderColor}
+        borderRadius={this.props.borderRadius == undefined ? px2dp(6) : this.props.borderRadius}
+        borderWidth={this.props.borderWidth == undefined ? px2dp(1) : this.props.borderWidth}
+        fantBorderColor={this.props.fantBorderColor == undefined ? '#333333' : this.props.fantBorderColor}
       >
       </RoundBorderView>
     )

@@ -64,8 +64,39 @@ export default class ActivitysJoined extends React.Component {
       title: "我参加的活动"
     }
   }
-  render() {
+  renderItem = ({ item }) => {
     let active = this.state.activeStatus.indexOf(item.status_text) > -1
+    return (<TouchableWithoutFeedback onPress={() => this.onJumpActivityCodeDetail(item.check_code)}>
+      <View style={styles.item}>
+        <Image
+          style={styles.img}
+          source={{ uri: item.covers[0].compress }}
+        />
+        <View style={styles.right}>
+
+          <View style={styles.rightTop}>
+            <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+            <Text style={[styles.status, active ? styles.statusEnable : null]}>{item.status_text}</Text>
+          </View>
+
+          <View style={styles.rightBottom}>
+
+            <View style={styles.rightBottomLeft}>
+              <Text style={styles.time}>{item.time_text}</Text>
+              <Text style={styles.price}>{item.money_text}</Text>
+            </View>
+            <RoundBorderView
+              fantBorderColor={active ? '#1EB0FD' : '#999999'}
+              style={[styles.button, active ? styles.buttonEnable : null]}>
+              <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>查看券码</Text>
+            </RoundBorderView>
+          </View>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>)
+
+  }
+  render() {
     return <View style={styles.container}>
       {
         this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
@@ -76,37 +107,7 @@ export default class ActivitysJoined extends React.Component {
             onRefresh={this.onRefresh}
             keyExtractor={(item) => item.id}
             data={this.state.data}
-            renderItem={({ item }) =>
-              <TouchableWithoutFeedback onPress={() => this.onJumpActivityCodeDetail(item.check_code)}>
-                <View style={styles.item}>
-                  <Image
-                    style={styles.img}
-                    source={{ uri: item.covers[0].compress }}
-                  />
-                  <View style={styles.right}>
-
-                    <View style={styles.rightTop}>
-                      <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-                      <Text style={[styles.status, active ? styles.statusEnable : null]}>{item.status_text}</Text>
-                    </View>
-
-                    <View style={styles.rightBottom}>
-
-                      <View style={styles.rightBottomLeft}>
-                        <Text style={styles.time}>{item.time_text}</Text>
-                        <Text style={styles.price}>{item.money_text}</Text>
-                      </View>
-                      <RoundBorderView
-                        borderWidth={px2dp(1)}
-                        borderRadius={px2dp(6)}
-                        fantBorderColor={active ? '#1EB0FD' : '#999999'}
-                        style={[styles.button, active ? styles.buttonEnable : null]}>
-                        <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>查看券码</Text>
-                      </RoundBorderView>
-                    </View>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>}
+            renderItem={this.renderItem}
           />
       }
     </View>
