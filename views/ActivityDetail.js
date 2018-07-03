@@ -21,6 +21,9 @@ import Toast from '../components/Toast'
 import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule';
 import LoadingView from '../components/LoadingView'
+import HeadNav from '../components/HeadNav'
+
+
 
 export default class ActivityDetail extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
   constructor(props) {
@@ -58,44 +61,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
   }
   static navigationOptions = ({ navigation, screenProps }) => {
-    let share = () => {
-      let activity = navigation.state.params.activity
-      GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
-        activity.title,
-        activity.content.map((i) => {
-          return typeof (i.content) == 'string' ? i.content : ''
-        }).join(''),
-        activity.shareUrl)
-    }
-    let opacity = (navigation.state.params && navigation.state.params.opacity) ? navigation.state.params.opacity : 0
-    let initialColor = 255
-    let decrease = (255 - 51) * opacity
-    let color = parseInt(initialColor - decrease)
-    const headerLeft = () => <TouchableWithoutFeedback disabled={false} onPress={() => {
-      if (screenProps && screenProps.route && navigation.state.routeName === screenProps.route) {
-        SwipBackModule && SwipBackModule.exit();
-      } else {
-        navigation.pop()
-      }
-    }}>
-      <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
-        <Iconfont name='go_back' size={px2dp(38)} color={'rgb(' + color + ',' + color + ',' + color + ')'} style={{ paddingLeft: px2dp(18) }} />
-      </View>
-    </TouchableWithoutFeedback>
-    const headerRight = () => <TouchableWithoutFeedback disabled={false} onPress={() => { share() }}>
-      <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}><Iconfont name="share" size={px2dp(36)} color={'rgb(' + color + ',' + color + ',' + color + ')'} /></View>
-    </TouchableWithoutFeedback>
     return {
       title: '',
-      headerLeft: headerLeft(),
-      headerRight: headerRight(),
+      headerLeft: null,
+      headerRight: null,
       headerStyle: {
         width: px2dp(750),
-        height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
-        paddingTop: Platform.OS === 'android' ? 25 : 0,
-        backgroundColor: 'rgba(250,250,250,' + opacity + ')',
-        borderBottomWidth: 0,
-        elevation: 0,
+        height: 0,
+        backgroundColor: 'rgba(250,250,250,' + 0 + ')',
         position: 'absolute'
       }
     }
@@ -128,31 +101,17 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   handleScroll = (event) => {
     let newY = event.nativeEvent.contentOffset.y
     let range = (px2dp(332) - getStatusBarHeight(true))
-    if (Platform.OS === 'android') {
-      if (newY > range && this.lastY <= range) {
-        this.props.navigation.setParams({ 'opacity': 1 })
-        StatusBar.setBarStyle('dark-content')
-      } else if (newY < range && this.lastY >= range) {
-        this.props.navigation.setParams({ 'opacity': 0 })
-        StatusBar.setBarStyle('light-content')
-      }
+    let value = newY / range
+    value = value > 1 ? 1 : value
+    if (value > 0.5) {
+      StatusBar.setBarStyle('dark-content')
     } else {
-      let opacity = newY >= 0 ? newY / range : 0;
-      opacity = opacity > 1 ? 1 : opacity
-      if (newY > range + 100) {
-        return false
-      }
-      this.props.navigation.setParams({ 'opacity': opacity })
-      if (newY > range) {
-        StatusBar.setBarStyle('dark-content')
-      } else {
-        StatusBar.setBarStyle('light-content')
-      }
+      StatusBar.setBarStyle('light-content')
     }
+    this._headNav.setState({ value: value })
     this.lastY = newY
   }
   callPhone = () => {
-    console.log('callPhone')
     let { sponsorPhone } = this.state.activity
     if (!sponsorPhone) {
       return false
@@ -160,7 +119,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     let url = 'tel:' + sponsorPhone
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
-        console.log('Can\'t handle url: ' + url);
       } else {
         return Linking.openURL(url);
       }
@@ -168,7 +126,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   animate = () => {
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
-    console.log('value', animationHeight._value, initialHeight)
+    // console.log('value', animationHeight._value, initialHeight)
     // console.log(initialHeight, maxHeight, animationHeight, iconRotate)
     if (animationHeight._value < initialHeight) {
       animationHeight.setValue(initialHeight)
@@ -295,6 +253,15 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     StatusBar.setBarStyle('dark-content')
     StatusBar.setTranslucent(true)
   }
+  share = () => {
+    let activity = this.props.navigation.state.params.activity
+    GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
+      activity.title,
+      activity.content.map((i) => {
+        return typeof (i.content) == 'string' ? i.content : ''
+      }).join(''),
+      activity.shareUrl)
+  }
   render() {
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
@@ -303,6 +270,17 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         this.state.activity.id == '' ?
           <LoadingView style={{ height: px2dp(500), marginTop: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90) }} /> :
           <View style={styles.page}>
+            <HeadNav
+              ref={(component) => this._headNav = component}
+              navigation={this.props.navigation}
+              headerRight={(rgb) => {
+                return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
+                  <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>
+                    <Iconfont name="share" size={px2dp(36)} color={rgb} />
+                  </View>
+                </TouchableWithoutFeedback>
+              }}
+            />
             <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
               <View style={styles.pageWrapper}>
                 <Image source={{ uri: bannerUrl }} style={styles.header} resizeMode="cover" />

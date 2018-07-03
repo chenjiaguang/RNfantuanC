@@ -25,11 +25,12 @@ export default class Index extends React.Component {
     componentWillMount() {
         let screenProps = this.props.screenProps;
         //testing
-        // if (!screenProps) {
-        //     screenProps = {
-        //         route: "ActivitysJoined",
-        //         params: {
-        //         }
+
+        // console.log('################', screenProps)
+        // if (screenProps) {
+        //     screenProps.route = 'ActivityDetail'
+        //     if (screenProps.params) {
+        //         screenProps.params.id = '12'
         //     }
         // }
         // if (!screenProps) {
