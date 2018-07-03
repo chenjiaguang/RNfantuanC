@@ -15,7 +15,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 const bg = require('../static/image/rn_apply_banner.png')
 // 申请头条首页
 
-export default class HeadlineIndex extends React.Component {
+export default class WebPage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {

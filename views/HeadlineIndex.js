@@ -29,7 +29,7 @@ export default class HeadlineIndex extends React.Component {
     navigate('HeadlineSelect')
   }
   componentDidMount () {
-    console.log('qwer', this.props)
+    console.log('ruzhushenqing')
   }
   render() {
     let {showPage} = this.state
