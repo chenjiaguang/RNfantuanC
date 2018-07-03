@@ -103,12 +103,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     let range = (px2dp(332) - getStatusBarHeight(true))
     let value = newY / range
     value = value > 1 ? 1 : value
-    if (value > 0.5) {
-      StatusBar.setBarStyle('dark-content')
-    } else {
-      StatusBar.setBarStyle('light-content')
+    if (newY < range + 100) {
+      if (value > 0.5) {
+        StatusBar.setBarStyle('dark-content')
+      } else {
+        StatusBar.setBarStyle('light-content')
+      }
+      this._headNav.setState({ value: value })
     }
-    this._headNav.setState({ value: value })
     this.lastY = newY
   }
   callPhone = () => {
@@ -172,6 +174,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
   }
   introBoxLayout = (event) => {
+    console.log('introBoxLayout')
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     if (initialHeight && maxHeight && animationHeight && iconRotate) {
       return false
@@ -364,7 +367,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
                       {activityImages.map((item, idx) =>
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
+                          <Image key={item.id} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
                         </TouchableOpacity>
                       )}
                       <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>

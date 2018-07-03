@@ -149,7 +149,8 @@ SimpleApp.router.getStateForAction = (action, state) => {
 
         if (state.routes.length === 1 && Platform.OS === 'android') {
             if (action.type === 'Navigation/REPLACE' ||
-                action.type === 'Navigation/COMPLETE_TRANSITION'
+                action.type === 'Navigation/COMPLETE_TRANSITION'||
+                action.type === 'Navigation/SET_PARAMS'
             ) {
                 SwipBackModule && SwipBackModule.enable();
             } else {
