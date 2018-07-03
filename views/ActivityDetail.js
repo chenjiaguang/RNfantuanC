@@ -276,9 +276,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
       activity.title,
-      activity.content.map((i) => {
-        return typeof (i.content) == 'string' ? i.content : ''
-      }).join(''),
+      '和我一起参加吧!',
       activity.shareUrl)
   }
   render() {
