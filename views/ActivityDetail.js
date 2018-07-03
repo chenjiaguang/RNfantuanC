@@ -20,7 +20,7 @@ import Button from 'apsl-react-native-button' // 第三方button库，RN官方�
 import Toast from '../components/Toast'
 import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule';
-import LoadingView from '../components/LoadingView'
+import LoadingView from '../components/LoadingView' // _todo ios未封装loadingView
 import HeadNav from '../components/HeadNav'
 
 
@@ -49,6 +49,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         tags: [],
         join: [],
         activityImages: [],
+        activityImageLength: 0,
         status: '',
         statusText: '',
         content: [],
@@ -74,10 +75,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
     }
   }
-  onJumpPublishArticleDynamic = (id, name, actid) => { // ios未实现
+  onJumpPublishArticleDynamic = (id, name, actid) => {
     GoNativeModule && GoNativeModule.goPublishArticleDynamic(id, name, actid)
   }
-  onJumpPublishDynamic = (id, name, actid) => { // ios未实现
+  onJumpPublishDynamic = (id, name, actid) => {
     GoNativeModule && GoNativeModule.goPublishDynamic(id, name, actid)
   }
   onJumpActivityMap = (destName, longtitude, latitude) => {
@@ -89,7 +90,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   onJumpActivityOrder = (id) => {
     GoNativeModule && GoNativeModule.goActivityOrder(id)
   }
-  onJumpCircleDetail = (id, name, coverUrl) => { // ios未实现
+  onJumpCircleDetail = (id, name, coverUrl) => {
     GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl)
   }
   onJumpActivityJoiners = (id) => {
@@ -227,7 +228,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         deadline: res.data.deadline,
         tags: _tags,
         join: res.data.joined_users,
-        activityImages: res.data.activity_images,
+        activityImages: res.data.activity_images.map((item, idx) => idx < 3),
+        activityImageLength: res.data.activity_images.length,
         statusText: res.data.status_text,
         joinedTotal: res.data.joined_total,
         shareUrl: res.data.share_url,
@@ -250,8 +252,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       })
       this.props.navigation.setParams({ 'activity': _obj })
       StatusBar.setBarStyle('light-content')
-      StatusBar.setTranslucent(true)
-
+      if (Platform.OS === 'android') {
+        StatusBar.setTranslucent(true)
+      }
     }).catch(err => {
       console.log('获取活动数据失败', err)
     })
@@ -261,9 +264,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   componentWillUnmount() {
     StatusBar.setBarStyle('dark-content')
-    StatusBar.setTranslucent(true)
+    if (Platform.OS === 'android') {
+      StatusBar.setTranslucent(true)
+    }
   }
-  share = () => { // ios未实现
+  share = () => {
     let activity = this.props.navigation.state.params.activity
     let {status} = this.state.activity
     if (!status) { // 未拉取到数据时操作无效
@@ -281,7 +286,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       activity.shareUrl)
   }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle } = this.state.activity
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, activityImageLength, statusText, content, circle } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     return <View style={styles.page}>
       {
@@ -374,13 +379,13 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                   <View style={styles.dynamicBox}>
                     <View style={styles.dynamicBoxHeader}>
                       <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
-                      {(activityImages && activityImages.length > 0) ?
+                      {activityImageLength ?
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
                           <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}><Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} /></View>
                         </TouchableOpacity> : null
                       }
                     </View>
-                    {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
+                    {activityImageLength ? <View style={styles.dynamicBoxImages}>
                       {activityImages.map((item, idx) =>
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
                           <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
@@ -415,7 +420,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               </View>
             </ScrollView>
             <View style={styles.fixedButtons}>
-              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
+              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={() => this.props.navigation.navigate('ActivitysJoined')}>晒图</Button>
               <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
                 onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
             </View>
