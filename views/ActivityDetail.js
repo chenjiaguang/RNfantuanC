@@ -49,6 +49,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         tags: [],
         join: [],
         activityImages: [],
+        status: '',
         statusText: '',
         content: [],
         circle: null,
@@ -128,8 +129,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   animate = () => {
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
-    // console.log('value', animationHeight._value, initialHeight)
-    // console.log(initialHeight, maxHeight, animationHeight, iconRotate)
     if (animationHeight._value < initialHeight) {
       animationHeight.setValue(initialHeight)
       iconRotate.setValue(1)
@@ -174,15 +173,22 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
   }
   introBoxLayout = (event) => {
-    console.log('introBoxLayout')
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     if (initialHeight && maxHeight && animationHeight && iconRotate) {
       return false
     }
-    let height = event.nativeEvent.layout.height > px2dp(700) ? px2dp(700) : event.nativeEvent.layout.height + px2dp(84)
+    let height = 0
+    let _initialHeight = 0
+    if (event.nativeEvent.layout.height > 700) {
+      height = px2dp(700)
+      _initialHeight = event.nativeEvent.layout.height + px2dp(84)
+    } else {
+      height = event.nativeEvent.layout.height + px2dp(40)
+      _initialHeight = event.nativeEvent.layout.height + px2dp(40)
+    }
     let animation = new Animated.Value(height)
     this.setState({
-      initialHeight: event.nativeEvent.layout.height + px2dp(84),
+      initialHeight: _initialHeight,
       maxHeight: px2dp(700),
       animationHeight: animation,
       iconRotate: new Animated.Value(0)
@@ -236,7 +242,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             height: item.height
           }
         }),
-        circle: res.data.circle
+        circle: res.data.circle,
+        status: res.data.status
       }
       this.setState({
         activity: _obj
@@ -258,6 +265,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   share = () => { // ios未实现
     let activity = this.props.navigation.state.params.activity
+    let {status} = this.state.activity
+    if (!status) { // 未拉取到数据时操作无效
+      return false
+    }
+    if (status.toString() !== '1') { // 活动未上线
+      Toast.show('活动未上线，还不能操作哦~')
+      return false
+    }
     GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
       activity.title,
       activity.content.map((i) => {
@@ -266,7 +281,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       activity.shareUrl)
   }
   render() {
-    console.log('getStatusBarHeight(true)', getStatusBarHeight(true))
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     return <View style={styles.page}>
@@ -327,7 +341,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                         return <Image key={idx} source={{ uri: item.content.image }} style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]} resizeMode={'cover'} />
                       }
                     })}
-                    {(initialHeight && animationHeight && maxHeight) ? <TouchableWithoutFeedback onPress={this.animate}>
+                    {(initialHeight && animationHeight && maxHeight && initialHeight > px2dp(700)) ? <TouchableWithoutFeedback onPress={this.animate}>
                       <View style={styles.showHideBtn}>
                         <Text style={{ fontSize: px2dp(24), color: '#333' }}>{this.state.isOpen ?
                           '收起' :
