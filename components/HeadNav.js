@@ -19,19 +19,19 @@ class HeadNav extends Component {
         }
     }
     getRGB() {
-        let color= 250 * (1 - this.state.value)
+        let color = 250 * (1 - this.state.value)
         return 'rgb(' + color + ',' + color + ',' + color + ')';
     }
     render() {
         let rgb = this.getRGB()
-        let text = this.state.value.toString() === '1' ? '活动详情' : ''
+        let text = this.state.value.toString() === '1' ? this.props.title : ''
         return <View style={[styles.container, { backgroundColor: 'rgba(250,250,250,' + this.state.value + ')' }]}>
             <TouchableWithoutFeedback disabled={false} onPress={() => { this.props.navigation.pop() }}>
                 <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
                     <Iconfont name='go_back' size={px2dp(38)} color={rgb} style={{ paddingLeft: px2dp(18) }} />
                 </View>
             </TouchableWithoutFeedback>
-            <Text style={{alignSelf: 'center', fontSize: px2dp(34), color: '#333'}}>{text}</Text>
+            <Text style={{ alignSelf: 'center', fontSize: px2dp(34), color: '#333', fontWeight: 'bold' }}>{text}</Text>
             {this.props.headerRight(rgb)}
 
         </View >;

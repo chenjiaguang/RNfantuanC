@@ -1,12 +1,10 @@
 import React from "react";
 import {
-  FlatList,
   Text,
   View,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
-  Alert
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
@@ -67,6 +65,7 @@ export default class ActivitysJoined extends React.Component {
     }
   }
   render() {
+    let active = this.state.activeStatus.indexOf(item.status_text) > -1
     return <View style={styles.container}>
       {
         this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
@@ -88,7 +87,7 @@ export default class ActivitysJoined extends React.Component {
 
                     <View style={styles.rightTop}>
                       <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-                      <Text style={[styles.status, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.statusEnable : null]}>{item.status_text}</Text>
+                      <Text style={[styles.status, active ? styles.statusEnable : null]}>{item.status_text}</Text>
                     </View>
 
                     <View style={styles.rightBottom}>
@@ -100,9 +99,9 @@ export default class ActivitysJoined extends React.Component {
                       <RoundBorderView
                         borderWidth={px2dp(1)}
                         borderRadius={px2dp(6)}
-                        fantBorderColor={this.state.activeStatus.indexOf(item.status_text) > -1 ? '#1EB0FD' : '#999999'}
-                        style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>
-                        <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonTextEnable : null]}>查看券码</Text>
+                        fantBorderColor={active ? '#1EB0FD' : '#999999'}
+                        style={[styles.button, active ? styles.buttonEnable : null]}>
+                        <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>查看券码</Text>
                       </RoundBorderView>
                     </View>
                   </View>

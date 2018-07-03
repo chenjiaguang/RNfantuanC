@@ -105,7 +105,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     let value = newY / range
     value = value > 1 ? 1 : value
     if (newY < range + 100) {
-      if (value > 0.5) {
+      if (value >= 1) {
         StatusBar.setBarStyle('dark-content')
       } else {
         StatusBar.setBarStyle('light-content')
@@ -291,6 +291,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             <HeadNav
               ref={(component) => this._headNav = component}
               navigation={this.props.navigation}
+              title={'活动详情'}
               headerRight={(rgb) => {
                 return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
                   <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>

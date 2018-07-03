@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FlatList,
   Text,
   View,
   Image,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
-import FantToastModule from '../modules/FantToastModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
 
@@ -98,6 +96,7 @@ export default class ActivitysMine extends React.Component {
     this.onRefresh()
   }
   render() {
+    let active = this.state.activeStatus.indexOf(item.status_text) > -1
     return <View style={styles.container}>
       {
         this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
@@ -129,9 +128,9 @@ export default class ActivitysMine extends React.Component {
                       <RoundBorderView
                         borderWidth={px2dp(1)}
                         borderRadius={px2dp(6)}
-                        fantBorderColor={this.state.activeStatus.indexOf(item.status_text) > -1 ? '#1EB0FD' : '#999999'}
-                        style={[styles.button, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonEnable : null]}>
-                        <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.status_text) > -1 ? styles.buttonTextEnable : null]}>{item.status_text}</Text>
+                        fantBorderColor={active ? '#1EB0FD' : '#999999'}
+                        style={[styles.button, active ? styles.buttonEnable : null]}>
+                        <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.status_text}</Text>
                       </RoundBorderView>
                     </View>
                   </View>
