@@ -427,7 +427,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               </View>
             </ScrollView>
             <View style={styles.fixedButtons}>
-              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={() => this.props.navigation.navigate('ActivitysJoined')}>晒图</Button>
+              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
               <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
                 onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
             </View>
