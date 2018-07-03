@@ -59,7 +59,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         longitude: '',
         address_text: '',
         joinedTotal: '',
-        shareUrl: ''
+        shareUrl: '',
+        share_content: ''
       }
     }
   }
@@ -236,6 +237,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         statusText: res.data.status_text,
         joinedTotal: res.data.joined_total,
         shareUrl: res.data.share_url,
+        share_content: res.data.share_content,
         content: res.data.content.filter(item => item.type.toString() !== '0').map(item => {
           return {
             type: item.type,
@@ -274,7 +276,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   share = () => {
     let activity = this.props.navigation.state.params.activity
-    let {status} = this.state.activity
+    let { status } = this.state.activity
     if (!status) { // 未拉取到数据时操作无效
       return false
     }
@@ -284,9 +286,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
       activity.title,
-      activity.content.map((i) => {
-        return typeof (i.content) == 'string' ? i.content : ''
-      }).join(''),
+      activity.share_content,
       activity.shareUrl)
   }
   render() {
