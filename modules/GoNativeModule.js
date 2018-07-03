@@ -47,8 +47,15 @@ import { NativeModules } from 'react-native';
  * 参数：活动id
  * 跳转购票页
  * 
+ * goReLogin
+ * 跳转登陆页
+ * 
+ * goForgetPassWord
+ * 跳转忘记密码页
+ * 
  * shareActivity
  * 参数：图片url 标题 内容 跳转url
  * 活动分享
+ * 
  */
 export default NativeModules.GoNativeModule;
