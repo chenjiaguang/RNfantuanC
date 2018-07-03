@@ -1,17 +1,11 @@
 import React from "react";
 import {
-  FlatList,
   Text,
   View,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
-  Alert,
   Linking,
-  ActivityIndicator,
-  ListView,
-  Animated,
-  Easing
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
@@ -74,6 +68,7 @@ export default class ActivitysSignUpManagement extends React.Component {
   renderRow = (info) => {
     let item = info.item
     let rowID = info.index
+    let active = this.state.activeStatus.indexOf(item.state_text) > -1
     return (
       rowID == 0 ?
         <View>
@@ -115,9 +110,9 @@ export default class ActivitysSignUpManagement extends React.Component {
             <RoundBorderView
               borderWidth={px2dp(1)}
               borderRadius={px2dp(6)}
-              fantBorderColor={this.state.activeStatus.indexOf(item.state_text) > -1 ? '#1EB0FD' : '#999999'}
-              style={[styles.button, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonEnable : null]}>
-              <Text style={[styles.buttonText, this.state.activeStatus.indexOf(item.state_text) > -1 ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
+              fantBorderColor={active ? '#1EB0FD' : '#999999'}
+              style={[styles.button, active ? styles.buttonEnable : null]}>
+              <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
             </RoundBorderView>
           </View>
         </View>

@@ -1,18 +1,14 @@
 import React from "react";
 import {
-  FlatList,
   Text,
   View,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
-  Alert
 } from 'react-native';
 import px2dp from '../lib/px2dp'
-import ActivityEmpty from '../components/ActivityEmpty'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
-import RoundBorderView from '../components/RoundBorderView'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
