@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import Iconfont from '../components/cxicon/CXIcon';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+
 
 class HeadNav extends Component {
     constructor(props) {
@@ -22,12 +24,14 @@ class HeadNav extends Component {
     }
     render() {
         let rgb = this.getRGB()
+        let text = this.state.value.toString() === '1' ? '活动详情' : ''
         return <View style={[styles.container, { backgroundColor: 'rgba(250,250,250,' + this.state.value + ')' }]}>
             <TouchableWithoutFeedback disabled={false} onPress={() => { this.props.navigation.pop() }}>
                 <View style={{ width: px2dp(80), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
                     <Iconfont name='go_back' size={px2dp(38)} color={rgb} style={{ paddingLeft: px2dp(18) }} />
                 </View>
             </TouchableWithoutFeedback>
+            <Text style={{alignSelf: 'center', fontSize: px2dp(34), color: '#333'}}>{text}</Text>
             {this.props.headerRight(rgb)}
 
         </View >;
@@ -38,13 +42,13 @@ class HeadNav extends Component {
 const styles = StyleSheet.create({
     container: {
         width: px2dp(750),
-        height: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90),
+        height: px2dp(90) + getStatusBarHeight(true),
         flexDirection: 'row',
         justifyContent: 'space-between',
         position: 'absolute',
         top: 0,
         zIndex: 9999,
-        paddingTop: Platform.OS === 'android' ? 25 : 0,
+        paddingTop: getStatusBarHeight(true),
         alignItems: 'flex-end',
     },
 })

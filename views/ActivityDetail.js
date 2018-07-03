@@ -73,10 +73,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
     }
   }
-  onJumpPublishArticleDynamic = (id, name, actid) => {
+  onJumpPublishArticleDynamic = (id, name, actid) => { // ios未实现
     GoNativeModule && GoNativeModule.goPublishArticleDynamic(id, name, actid)
   }
-  onJumpPublishDynamic = (id, name, actid) => {
+  onJumpPublishDynamic = (id, name, actid) => { // ios未实现
     GoNativeModule && GoNativeModule.goPublishDynamic(id, name, actid)
   }
   onJumpActivityMap = (destName, longtitude, latitude) => {
@@ -88,7 +88,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   onJumpActivityOrder = (id) => {
     GoNativeModule && GoNativeModule.goActivityOrder(id)
   }
-  onJumpCircleDetail = (id, name, coverUrl) => {
+  onJumpCircleDetail = (id, name, coverUrl) => { // ios未实现
     GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl)
   }
   onJumpActivityJoiners = (id) => {
@@ -256,7 +256,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     StatusBar.setBarStyle('dark-content')
     StatusBar.setTranslucent(true)
   }
-  share = () => {
+  share = () => { // ios未实现
     let activity = this.props.navigation.state.params.activity
     GoNativeModule && GoNativeModule.shareActivity(activity.bannerUrl,
       activity.title,
@@ -266,6 +266,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       activity.shareUrl)
   }
   render() {
+    console.log('getStatusBarHeight(true)', getStatusBarHeight(true))
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, statusText, content, circle } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     return <View style={styles.page}>
@@ -284,7 +285,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 </TouchableWithoutFeedback>
               }}
             />
-            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} scrollEventThrottle={15}>
+            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
               <View style={styles.pageWrapper}>
                 <Image source={{ uri: bannerUrl }} style={styles.header} resizeMode="cover" />
                 <View style={styles.contentWrapper}>
@@ -351,7 +352,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     <View style={styles.joinBoxHeader}><Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>已报名的小伙伴({joinedTotal})</Text></View>
                     <TouchableOpacity onPress={() => this.onJumpActivityJoiners(id)} activeOpacity={0.8}>
                       <View style={styles.joinBoxContent}>
-                        {join.map((item, idx) => <Image key={item.uid} source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }} />)}
+                        {join.map((item, idx) => <Image key={idx} source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }} />)}
                       </View>
                     </TouchableOpacity>
                   </View> : null}
@@ -367,7 +368,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     {(activityImages && activityImages.length > 0) ? <View style={styles.dynamicBoxImages}>
                       {activityImages.map((item, idx) =>
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <Image key={item.id} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
+                          <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
                         </TouchableOpacity>
                       )}
                       <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>
