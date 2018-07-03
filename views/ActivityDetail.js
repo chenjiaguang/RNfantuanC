@@ -22,6 +22,7 @@ import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule';
 import LoadingView from '../components/LoadingView'
 import HeadNav from '../components/HeadNav'
+import RoundBorderView from '../components/RoundBorderView'
 
 
 
@@ -316,7 +317,13 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       <Text style={styles.infoRight} numberOfLines={1}>{deadline}</Text>
                     </View>
                     <View style={styles.tags}>
-                      {tags.map((item, idx) => <View key={idx} style={styles.tagItem}><Text style={{ fontSize: px2dp(24), color: '#666' }}>{item}</Text></View>)}
+                      {tags.map((item, idx) =>
+                        <RoundBorderView
+                          key={idx}
+                          style={styles.tagItem}>
+                          <Text style={{ fontSize: px2dp(24), color: '#666' }}>{item}</Text>
+                        </RoundBorderView>
+                      )}
                     </View>
                   </View>
                   {(content && content.length > 0) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>

@@ -108,8 +108,6 @@ export default class ActivitysSignUpManagement extends React.Component {
               </View>
             </TouchableWithoutFeedback>
             <RoundBorderView
-              borderWidth={px2dp(1)}
-              borderRadius={px2dp(6)}
               fantBorderColor={active ? '#1EB0FD' : '#999999'}
               style={[styles.button, active ? styles.buttonEnable : null]}>
               <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
