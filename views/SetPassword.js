@@ -21,8 +21,8 @@ import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule'
 // 申请头条首页
 
-export default class HeadlineIndex extends React.Component {
-  constructor (props) {
+export default class SetPassword extends React.Component {
+  constructor(props) {
     super(props)
     this.state = {
       password: '',
@@ -35,64 +35,64 @@ export default class HeadlineIndex extends React.Component {
   };
   confirm = () => {
     console.log('确定')
-    let {password, submitting} = this.state
+    let { password, submitting } = this.state
     if (!password || password.length < 6 || password.length > 24) {
-        Toast.show('请输入6-24个字符')
-        return false
+      Toast.show('请输入6-24个字符')
+      return false
     }
     if (submitting) {
-        Toast.show('正在提交，请稍后...')
-        return false
+      Toast.show('正在提交，请稍后...')
+      return false
     }
     let rData = {
-        password: password
+      password: password
     }
     this.setState({
-        submitting: true
+      submitting: true
     })
     _FetchData(_Api + '/jv/user/password/create', rData).then(res => {
-        this.setState({
-            submitting: false
-        })
-        if (res && Boolean(res.error) && res.msg) {
-            Toast.show(res.msg)
-            return false
-        } else if (res && !Boolean(res.error)) {
-            this.confirmComplete()
-        }
+      this.setState({
+        submitting: false
+      })
+      if (res && Boolean(res.error) && res.msg) {
+        Toast.show(res.msg)
+        return false
+      } else if (res && !Boolean(res.error)) {
+        this.confirmComplete()
+      }
     }).catch(err => {
-        console.log('设置密码出错', err)
-        this.setState({
-            submitting: false
-        })
+      console.log('设置密码出错', err)
+      this.setState({
+        submitting: false
+      })
     })
   }
   confirmComplete = () => {
-      // 完成验证，设置密码成功，关闭rn页面
-      console.log('设置密码成功')
-      if (Platform.OS === 'ios') { // ios
-        GoNativeModule && GoNativeModule.goReLogin()
-        SwipBackModule && SwipBackModule.exit()
-      } else { // android _todo
-
-      }
+    // 完成验证，设置密码成功，关闭rn页面
+    console.log('设置密码成功')
+    if (Platform.OS === 'ios') { // ios
+      GoNativeModule && GoNativeModule.goReLogin()
+      SwipBackModule && SwipBackModule.exit()
+    } else { // android _todo
+      GoNativeModule && GoNativeModule.goReLogin()
+    }
   }
   showHidePassword = () => {
     this.setState({
-        hide: !this.state.hide
+      hide: !this.state.hide
     })
   }
   render() {
-    let {password, hide} = this.state
+    let { password, hide } = this.state
     return <ScrollView style={styles.scrollView}>
-        <View style={styles.contentWrapper}>
-            <View style={styles.passwordBox}>
-                <TextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="请输入密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({password: value})} keyboardType={'phone-pad'} style={{flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0}} underlineColorAndroid="transparent"/>
-                <Iconfont name={hide ? 'password-hidden' : 'password-visible'} size={px2dp(42)} color="#C4C5CA" onPress={this.showHidePassword} />
-            </View>
-            <Text style={styles.passwordTip}>密码长度至少6个字符，最多24个字符</Text>
-            <Button style={styles.confirmButton} textStyle={styles.confirmButtonText} activeOpacity={0.8} onPress={this.confirm}>确定</Button>
+      <View style={styles.contentWrapper}>
+        <View style={styles.passwordBox}>
+          <TextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="请输入密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({ password: value })} keyboardType={'phone-pad'} style={{ flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0 }} underlineColorAndroid="transparent" />
+          <Iconfont name={hide ? 'password-hidden' : 'password-visible'} size={px2dp(42)} color="#C4C5CA" onPress={this.showHidePassword} />
         </View>
+        <Text style={styles.passwordTip}>密码长度至少6个字符，最多24个字符</Text>
+        <Button style={styles.confirmButton} textStyle={styles.confirmButtonText} activeOpacity={0.8} onPress={this.confirm}>确定</Button>
+      </View>
     </ScrollView>
   }
 }
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       paddingBottom: px2dp(124)
     }, {
-      paddingBottom: px2dp(80)
-    })
+        paddingBottom: px2dp(80)
+      })
   },
   passwordBox: {
     flexDirection: 'row',

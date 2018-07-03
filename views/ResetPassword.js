@@ -21,8 +21,8 @@ import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule'
 // 申请头条首页
 
-export default class HeadlineIndex extends React.Component {
-  constructor (props) {
+export default class ResetPassword extends React.Component {
+  constructor(props) {
     super(props)
     this.state = {
       password: '',
@@ -34,85 +34,85 @@ export default class HeadlineIndex extends React.Component {
     title: '修改登录密码'
   };
   confirm = () => {
-    let {password, oldPassword, submitting} = this.state
+    let { password, oldPassword, submitting } = this.state
     if (!oldPassword || oldPassword.length < 6 || oldPassword.length > 24) {
-        Toast.show('请输入6-24个字符的原密码')
-        return false
+      Toast.show('请输入6-24个字符的原密码')
+      return false
     }
     if (!password || password.length < 6 || password.length > 24) {
-        Toast.show('请输入6-24个字符的新密码')
-        return false
+      Toast.show('请输入6-24个字符的新密码')
+      return false
     }
     if (oldPassword && password && oldPassword === password) {
-        Toast.show('原密码与新密码不能一致')
-        return false
+      Toast.show('原密码与新密码不能一致')
+      return false
     }
     if (submitting) {
-        Toast.show('正在提交，请稍后...')
-        return false
+      Toast.show('正在提交，请稍后...')
+      return false
     }
     let rData = {
-        password: password,
-        oldPassword: oldPassword
+      password: password,
+      oldPassword: oldPassword
     }
     this.setState({
-        submitting: true
+      submitting: true
     })
     _FetchData(_Api + '/jv/user/password/change', rData).then(res => {
-        this.setState({
-            submitting: false
-        })
-        if (res && Boolean(res.error) && res.msg) {
-            Toast.show(res.msg)
-            return false
-        } else if (res && !Boolean(res.error)) {
-            this.confirmComplete()
-        }
+      this.setState({
+        submitting: false
+      })
+      if (res && Boolean(res.error) && res.msg) {
+        Toast.show(res.msg)
+        return false
+      } else if (res && !Boolean(res.error)) {
+        this.confirmComplete()
+      }
     }).catch(err => {
-        console.log('修改密码出错', err)
-        this.setState({
-            submitting: false
-        })
+      console.log('修改密码出错', err)
+      this.setState({
+        submitting: false
+      })
     })
   }
   confirmComplete = () => {
     // 完成验证，修改密码成功，跳转原生登录界面,关闭rn页面
     console.log('修改密码成功')
     if (Platform.OS === 'ios') { // ios
-        GoNativeModule && GoNativeModule.goReLogin()
-        SwipBackModule && SwipBackModule.exit()
-      } else { // android _todo
-
-      }
-}
+      GoNativeModule && GoNativeModule.goReLogin()
+      SwipBackModule && SwipBackModule.exit()
+    } else { // android _todo
+      GoNativeModule && GoNativeModule.goReLogin()
+    }
+  }
   forgetPassword = () => {
-      // 跳转修改重置密码页面（通过手机短信验证）
-      if (Platform.OS === 'ios') { // ios
-        GoNativeModule && GoNativeModule.goForgetPassWord('')
-      } else { // android _todo
-
-      }
+    // 跳转修改重置密码页面（通过手机短信验证）
+    if (Platform.OS === 'ios') { // ios
+      GoNativeModule && GoNativeModule.goForgetPassWord('')
+    } else { // android _todo
+      GoNativeModule && GoNativeModule.goForgetPassWord()
+    }
   }
   showHidePassword = () => {
     this.setState({
-        hide: !this.state.hide
+      hide: !this.state.hide
     })
   }
   render() {
-    let {password, oldPassword, hide} = this.state
+    let { password, oldPassword, hide } = this.state
     return <ScrollView style={styles.scrollView}>
-        <View style={styles.contentWrapper}>
-            <View style={styles.passwordBox}>
-                <TextInput secureTextEntry={hide} autoCorrect={false} value={oldPassword} autoCapitalize="none" placeholder="原密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({oldPassword: value})} keyboardType={'phone-pad'} style={{flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0}} underlineColorAndroid="transparent"/>
-            </View>
-            <View style={styles.confirmPasswordBox}>
-                <TextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="新密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({password: value})} keyboardType={'phone-pad'} style={{flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0}} underlineColorAndroid="transparent"/>
-                <Iconfont name={hide ? 'password-hidden' : 'password-visible'} size={px2dp(42)} color="#C4C5CA" onPress={this.showHidePassword} />
-            </View>
-            <Text style={styles.passwordTip}>密码长度至少6个字符，最多24个字符</Text>
-            <Button style={styles.confirmButton} textStyle={styles.confirmButtonText} activeOpacity={0.8} onPress={this.confirm}>确定</Button>
-            <Button style={styles.forgetButton} textStyle={styles.forgetButtonText} activeOpacity={0.8} onPress={this.forgetPassword}>忘记原密码</Button>
+      <View style={styles.contentWrapper}>
+        <View style={styles.passwordBox}>
+          <TextInput secureTextEntry={hide} autoCorrect={false} value={oldPassword} autoCapitalize="none" placeholder="原密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({ oldPassword: value })} keyboardType={'phone-pad'} style={{ flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0 }} underlineColorAndroid="transparent" />
         </View>
+        <View style={styles.confirmPasswordBox}>
+          <TextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="新密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({ password: value })} keyboardType={'phone-pad'} style={{ flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0 }} underlineColorAndroid="transparent" />
+          <Iconfont name={hide ? 'password-hidden' : 'password-visible'} size={px2dp(42)} color="#C4C5CA" onPress={this.showHidePassword} />
+        </View>
+        <Text style={styles.passwordTip}>密码长度至少6个字符，最多24个字符</Text>
+        <Button style={styles.confirmButton} textStyle={styles.confirmButtonText} activeOpacity={0.8} onPress={this.confirm}>确定</Button>
+        <Button style={styles.forgetButton} textStyle={styles.forgetButtonText} activeOpacity={0.8} onPress={this.forgetPassword}>忘记原密码</Button>
+      </View>
     </ScrollView>
   }
 }
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       paddingBottom: px2dp(124)
     }, {
-      paddingBottom: px2dp(80)
-    })
+        paddingBottom: px2dp(80)
+      })
   },
   passwordBox: {
     flexDirection: 'row',

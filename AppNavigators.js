@@ -70,11 +70,7 @@ const SimpleApp = createStackNavigator({
             return {
                 headerTruncatedBackTitle: true,
                 headerLeft: <HeaderLeft goBack={() => {
-                    if (navigation.state.routeName === screenProps.route) {
-                        SwipBackModule && SwipBackModule.exit();
-                    } else {
-                        navigation.pop()
-                    }
+                    navigation.pop()
                 }} />,
                 headerRight: <HeaderRight />,
                 headerStyle: {
@@ -152,8 +148,10 @@ SimpleApp.router.getStateForAction = (action, state) => {
         }
 
         if (state.routes.length === 1 && Platform.OS === 'android') {
-            if (action.type === 'Navigation/REPLACE' ||
-                action.type === 'Navigation/COMPLETE_TRANSITION'||
+            if (action.type === 'Navigation/POP') {
+                SwipBackModule && SwipBackModule.exit();
+            } else if (action.type === 'Navigation/REPLACE' ||
+                action.type === 'Navigation/COMPLETE_TRANSITION' ||
                 action.type === 'Navigation/SET_PARAMS'
             ) {
                 SwipBackModule && SwipBackModule.enable();
