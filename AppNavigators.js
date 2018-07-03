@@ -149,7 +149,7 @@ SimpleApp.router.getStateForAction = (action, state) => {
             }
         }
 
-        if (state.routes.length === 1 && Platform.OS === 'android') {
+        if (state.routes.length === 1) {
             if (action.type === 'Navigation/POP') {
                 SwipBackModule && SwipBackModule.exit();
             } else if (action.type === 'Navigation/REPLACE' ||
