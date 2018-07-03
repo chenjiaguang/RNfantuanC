@@ -8,6 +8,8 @@ import HeadlineForm from './views/HeadlineForm';
 import HeadlineSubmitted from './views/HeadlineSubmitted';
 import VerifyPhone from './views/VerifyPhone';
 import BindPhone from './views/BindPhone';
+import SetPassword from './views/SetPassword';
+import ResetPassword from './views/ResetPassword';
 import ActivityDetail from './views/ActivityDetail';
 import Dynamic from './views/Dynamic';
 import WebPage from './views/WebPage';
@@ -54,6 +56,8 @@ const SimpleApp = createStackNavigator({
     HeadlineSubmitted: { screen: HeadlineSubmitted, path: '/headline/submitted' }, // "申请成为头条号"提交成功
     VerifyPhone: { screen: VerifyPhone, path: '/phone/verify' }, // 发送短信验证手机号，此页面接受一个手机号和一个方法{phone: xxx, verifySuccess: function}，在验证成功后调用（可用于验证成功后跳转指定页面）
     BindPhone: { screen: BindPhone, path: '/phone/bind' }, // 绑定手机号，当传入isRebind时，认为时新绑手机号
+    SetPassword: { screen: SetPassword, path: '/password/set' }, // 首次设置密码
+    ResetPassword: { screen: ResetPassword, path: '/password/reset' }, // 修改密码（通过验证原密码修改）
     Dynamic: { screen: Dynamic, path: '/circle' }, // 圈子首页
     WebPage: { screen: WebPage, path: '/web' },
     ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },

@@ -11,5 +11,7 @@
   "pull_down": 58909,
   "location": 58952,
   "camera": 58984,
-  "share": 58983
+  "share": 58983,
+  "password-visible": 59006,
+  "password-hidden": 59005
 }

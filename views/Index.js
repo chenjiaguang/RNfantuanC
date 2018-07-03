@@ -33,7 +33,7 @@ export default class HeadlineIndex extends React.Component {
         //     }
         // }
         if (!screenProps) {
-            this.props.navigation.replace('HeadlineIndex')
+            this.props.navigation.replace('ResetPassword')
             return false
         }
 

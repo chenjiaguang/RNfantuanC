@@ -10,6 +10,7 @@ import px2dp from '../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import Button from 'apsl-react-native-button'
 import commonStyle from "../static/commonStyle"; // 第三方button库，RN官方的库会根据平台不同区别，这里统一
+import SwipBackModule from '../modules/SwipBackModule'
 // 提交头条申请成功页面
 
 export default class HeadlineSubmitted extends React.Component {
@@ -23,7 +24,7 @@ export default class HeadlineSubmitted extends React.Component {
   };
   complete = () => {
     // 点击完成需要的操作,关闭rn页面,回到原生
-
+    SwipBackModule && SwipBackModule.exit()
   }
   render() {
     return <ScrollView style={style.scrollView}>

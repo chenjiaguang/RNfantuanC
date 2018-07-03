@@ -12,6 +12,7 @@ import CodeInput from '../components/CodeInput' // 自己封装的获取验证�
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle";
+import SwipBackModule from '../modules/SwipBackModule'
 
 export default class BindPhone extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
   constructor (props) {
@@ -39,7 +40,6 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
       return false
     }
     let rData = {
-      token: '',
       phone: phone,
       code: code
     }
@@ -50,11 +50,13 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
       this.setState({
         submitting: false
       })
-      if (Boolean(res.error)) {
+      if (res && Boolean(res.error) && res.msg) {
         res.msg && Toast.show(res.msg)
         return false
+      } else if (res && !Boolean(res.error)) {
+        // 绑定成功，退出页面
+        SwipBackModule && SwipBackModule.exit()
       }
-      // 绑定成功，退出页面
     }, err => {
       // 绑定出错
       this.setState({

@@ -122,7 +122,6 @@ export default class HeadlineForm extends React.Component {
       return false
     }
     let rData = {
-      token: '',
       account_type: this.props.navigation.state.params && this.props.navigation.state.params.type || 1, // 默认个人
       name: form.name,
       avatar: form.avatar,
