@@ -72,7 +72,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         width: px2dp(750),
         height: 0,
         backgroundColor: 'rgba(250,250,250,' + 0 + ')',
-        position: 'absolute'
+        position: 'absolute',
+        borderBottomWidth: 0,
+        elevation: 0
       }
     }
   }
@@ -181,7 +183,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     let height = 0
     let _initialHeight = 0
-    if (event.nativeEvent.layout.height > 700) {
+    if (event.nativeEvent.layout.height > px2dp(700)) {
       height = px2dp(700)
       _initialHeight = event.nativeEvent.layout.height + px2dp(84)
     } else {
@@ -229,7 +231,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         deadline: res.data.deadline,
         tags: _tags,
         join: res.data.joined_users,
-        activityImages: res.data.activity_images.map((item, idx) => idx < 3),
+        activityImages: res.data.activity_images.filter((item, idx) => idx < 3),
         activityImageLength: res.data.activity_images.length,
         statusText: res.data.status_text,
         joinedTotal: res.data.joined_total,
@@ -248,6 +250,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         circle: res.data.circle,
         status: res.data.status
       }
+      console.log('activityImages', _obj.activityImages)
       this.setState({
         activity: _obj
       })
