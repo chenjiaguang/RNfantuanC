@@ -9,6 +9,7 @@ import {
 import px2dp from '../lib/px2dp'
 import Iconfont from '../components/cxicon/CXIcon';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import commonStyle from '../static/commonStyle'
 
 
 class HeadNav extends Component {
@@ -31,7 +32,7 @@ class HeadNav extends Component {
                     <Iconfont name='go_back' size={px2dp(38)} color={rgb} style={{ paddingLeft: px2dp(18) }} />
                 </View>
             </TouchableWithoutFeedback>
-            <Text style={{ alignSelf: 'center', fontSize: px2dp(34), color: '#333', fontWeight: 'bold' }}>{text}</Text>
+            <Text style={commonStyle.headerTitleStyle}>{text}</Text>
             {this.props.headerRight(rgb)}
 
         </View >;

@@ -208,11 +208,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     _FetchData(_Api + '/jv/qz/v21/activity', rData).then(res => {
       let _tags = []
-      if (res.data.insurance) {
-        _tags.push('费用中包含保险')
-      }
       if (!res.data.refund) {
         _tags.push('不可退票')
+      }
+      if (res.data.insurance) {
+        _tags.push('费用中包含保险')
       }
       let _obj = {
         id: res.data.id,
@@ -230,6 +230,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         date: res.data.time_text,
         cost: res.data.money,
         deadline: res.data.deadline,
+        deadline_text: res.data.deadline_text,
         tags: _tags,
         join: res.data.joined_users,
         activityImages: res.data.activity_images.filter((item, idx) => idx < 3),
@@ -290,7 +291,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       activity.shareUrl)
   }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline, tags, join, activityImages, activityImageLength, statusText, content, circle } = this.state.activity
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
     return <View style={styles.page}>
       {
@@ -336,7 +337,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     </View>
                     <View style={styles.infoItem}>
                       <Text style={styles.infoLeft}>报名截止时间</Text>
-                      <Text style={styles.infoRight} numberOfLines={1}>{deadline}</Text>
+                      <Text style={styles.infoRight} numberOfLines={1}>{deadline_text}</Text>
                     </View>
                     <View style={styles.tags}>
                       {tags.map((item, idx) =>
@@ -396,7 +397,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       }
                     </View>
                     {activityImageLength ? <View style={styles.dynamicBoxImages}>
-                      {activityImages.map((item, idx) =>
+                      {activityImages.slice(0, 3).map((item, idx) =>
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
                           <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
                         </TouchableOpacity>
@@ -439,8 +440,16 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
       <ActionSheet
         ref={el => this.ActionSheet = el}
-        options={['动态', '长文', '取消']}
+        options={[<Text style={{ color: '#333' }}>动态</Text>,
+        <Text style={{ color: '#333' }}>长文</Text>,
+        <Text style={{ color: '#333' }}>取消</Text>]}
         cancelButtonIndex={2}
+        styles={{
+          color: '#333333',
+          titleText: {
+            color: '#333333'
+          }
+        }}
         onPress={(index) => {
           switch (index) {
             case 0: // 选择照片
