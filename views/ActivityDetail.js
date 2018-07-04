@@ -268,7 +268,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         circle: res.data.circle,
         status: res.data.status
       }
-      console.log('activityImages', _obj.activityImages)
       this.setState({
         activity: _obj
       })

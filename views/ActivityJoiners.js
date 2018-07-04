@@ -49,8 +49,6 @@ export default class ActivitysJoined extends React.Component {
         data: data,
         loaded: true
       })
-    }, err => {
-      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
       this.pullToRefreshListView.setLoaded(true)
     })

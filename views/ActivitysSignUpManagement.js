@@ -141,8 +141,6 @@ export default class ActivitysSignUpManagement extends React.Component {
         dataCount2: res.data.summary.income,
         data: data,
       })
-    }, err => {
-      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
       this.pullToRefreshListView.setLoaded(true)
     })

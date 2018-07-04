@@ -40,7 +40,7 @@ export default class ActivitysJoined extends React.Component {
     let rData = {
       pn: pn
     }
-    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity/myjoine', rData).then(res => {
       this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -53,8 +53,6 @@ export default class ActivitysJoined extends React.Component {
         data: data,
         loaded: true
       })
-    }, err => {
-      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
       this.pullToRefreshListView.setLoaded(true)
     })
