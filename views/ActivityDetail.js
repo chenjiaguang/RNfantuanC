@@ -23,6 +23,7 @@ import SwipBackModule from '../modules/SwipBackModule';
 import LoadingView from '../components/LoadingView' // _todo ios未封装loadingView
 import HeadNav from '../components/HeadNav'
 import RoundBorderView from '../components/RoundBorderView'
+import UtilsModule from '../modules/UtilsModule'
 
 
 
@@ -199,8 +200,17 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       iconRotate: new Animated.Value(0)
     })
   }
-  publish = () => {
-    this.ActionSheet.show()
+  publish = async () => {
+    if (UtilsModule) {
+      console.log('UtilsModule')
+      try {
+        await UtilsModule.canCreateDynamic()
+        this.ActionSheet.show()
+      } catch (error) {
+      }
+    } else {
+      this.ActionSheet.show()
+    }
   }
   fetchActivity = () => {
     let rData = {
@@ -320,12 +330,12 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     <View style={styles.infoItem}>
                       <Text style={styles.infoLeft}>主办方</Text>
                       <Text style={[styles.infoRight, { fontWeight: '600' }]} numberOfLines={1}>{sponsorName}</Text>
-                      {sponsorPhone ? <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{ width: px2dp(50), paddingLeft: px2dp(20), paddingTop: px2dp(15), paddingBottom: px2dp(15) }} /> : null}
+                      {sponsorPhone ? <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{ width: px2dp(60), paddingTop: px2dp(15), paddingBottom: px2dp(15), textAlign: 'right' }} /> : null}
                     </View>
                     <View style={styles.infoItem}>
                       <Text style={styles.infoLeft}>地点</Text>
                       <Text style={styles.infoRight} numberOfLines={1}>{address}</Text>
-                      {(address && location && location.lng && location.lat) ? <Iconfont name='location' onPress={() => this.onJumpActivityMap(location.name, location.lng, location.lat)} size={px2dp(24)} color='#1EB0FD' style={{ width: px2dp(50), paddingLeft: px2dp(20), paddingTop: px2dp(20), paddingBottom: px2dp(20) }} /> : null}
+                      {(address && location && location.lng && location.lat) ? <Iconfont name='location' onPress={() => this.onJumpActivityMap(location.name, location.lng, location.lat)} size={px2dp(24)} color='#1EB0FD' style={{ width: px2dp(60), textAlign: 'right', paddingTop: px2dp(20), paddingBottom: px2dp(20) }} /> : null}
                     </View>
                     <View style={styles.infoItem}>
                       <Text style={styles.infoLeft}>时间</Text>

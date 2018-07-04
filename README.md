@@ -8,9 +8,14 @@ fantuanRN项目
 $ react-native log-ios
 $ react-native log-android
 
+需要抑制的错误输出
+- 三指截屏问题 
+- react-native/libraries/renderer/ReactNativeRenderer-dev 
+- Ended a touch event which was not counted in `trackedTouchCount`
+- Cannot record touch end without a touch start.
+- Cannot record touch move without a touch start.
+- react-native/libraries/renderer/ReactNativeRenderer-prod
+- Ended a touch event which was not counted in `trackedTouchCount`
+- Cannot record touch end without a touch start.
+- Cannot record touch move without a touch start.
 
-
-
-TODO:
-下拉卡顿问题
-圆角锯齿
