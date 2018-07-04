@@ -495,7 +495,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: px2dp(32),
     lineHeight: px2dp(46),
-    paddingTop: px2dp(27)
+    paddingTop: px2dp(27),
+    color: '#333'
   },
   from: {
     fontSize: px2dp(24),
@@ -520,6 +521,7 @@ const styles = StyleSheet.create({
   },
   infoRight: {
     fontSize: px2dp(28),
+    color: '#333',
     flex: 1
   },
   tags: {
@@ -551,7 +553,8 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: px2dp(28),
-    lineHeight: px2dp(46)
+    lineHeight: px2dp(46),
+    color: '#333'
   },
   introImage: {
     alignSelf: 'stretch',
