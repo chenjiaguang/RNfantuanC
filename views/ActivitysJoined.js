@@ -40,7 +40,7 @@ export default class ActivitysJoined extends React.Component {
     let rData = {
       pn: pn
     }
-    _FetchData(_Api + '/jv/qz/v21/activity/myjoine', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
       this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
       let data
       if (pn == 1) {
