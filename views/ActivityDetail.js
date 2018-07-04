@@ -392,7 +392,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
                       {activityImageLength ?
                         <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}><Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text><Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} /></View>
+                          <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text>
+                            <Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} />
+                          </View>
                         </TouchableOpacity> : null
                       }
                     </View>
@@ -593,7 +596,7 @@ const styles = StyleSheet.create({
   dynamicBox: {
     paddingTop: px2dp(20),
     paddingLeft: px2dp(30),
-    paddingRight: px2dp(22)
+    paddingRight: px2dp(30)
   },
   dynamicBoxHeader: {
     height: px2dp(112),
@@ -608,10 +611,8 @@ const styles = StyleSheet.create({
     paddingLeft: px2dp(5),
     paddingTop: px2dp(20),
     paddingBottom: px2dp(20),
-    borderTopWidth: px2dp(1),
     borderBottomWidth: px2dp(1),
     borderColor: '#E5E5E5',
-    marginRight: px2dp(8)
   },
   circleBox: {
     paddingTop: px2dp(43),
