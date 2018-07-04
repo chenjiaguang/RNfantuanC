@@ -22,6 +22,7 @@ import px2dp from './lib/px2dp'
 import SwipBackModule from './modules/SwipBackModule';
 import StackViewStyleInterpolator from './anim/StackViewStyleInterpolator'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import commonStyle from './static/commonStyle'
 
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
 
@@ -85,13 +86,7 @@ const SimpleApp = createStackNavigator({
                     borderBottomWidth: 0,
                     elevation: 0,
                 },
-                headerTitleStyle: {
-                    fontSize: px2dp(34),
-                    color: '#333',
-                    alignSelf: 'center',
-                    textAlign: 'center',
-                    flex: 1
-                },
+                headerTitleStyle: commonStyle.headerTitleStyle,
                 headerBackTitleStyle: {
                     color: '#333',
                     fontSize: px2dp(34)

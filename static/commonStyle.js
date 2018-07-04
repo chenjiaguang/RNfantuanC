@@ -1,4 +1,5 @@
 import px2dp from "../lib/px2dp";
+import { Platform } from 'react-native';
 const commonStyle = {
   /** color **/
   // 常用颜色
@@ -42,7 +43,21 @@ const commonStyle = {
     height: px2dp(90), // 导航高度
     left: px2dp(18), // 导航左侧距离
     right: px2dp(18) // 导航右侧距离
-  }
+  },
+  headerTitleStyle: Platform.OS == 'android' ? {
+    fontSize: 19,//不用px2dp
+    color: '#333',
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex: 1,
+    fontWeight: 'normal'
+  } : {
+      fontSize: px2dp(34),
+      color: '#333',
+      alignSelf: 'center',
+      textAlign: 'center',
+      flex: 1
+    },
 }
 
 export default commonStyle
