@@ -201,6 +201,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     })
   }
   publish = async () => {
+    let { status } = this.state.activity
+    if (status.toString() !== '1') { // 活动未上线
+      Toast.show('活动未上线，还不能操作哦~')
+      return false
+    }
     if (UtilsModule) {
       console.log('UtilsModule')
       try {
