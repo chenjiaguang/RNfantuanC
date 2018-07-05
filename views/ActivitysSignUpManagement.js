@@ -93,7 +93,7 @@ export default class ActivitysSignUpManagement extends React.Component {
             <Text style={styles.price}>{item.money_text}</Text>
             <View style={styles.option}>
               {
-                item.sex ? <Text style={styles.gender}>{item.sex}</Text> : null
+                item.sex && item.sex != 0 ? <Text style={styles.gender}>{item.sex == '1' ? '男' : '女'}</Text> : null
               }
               {
                 item.idcard ? <Text style={styles.idNo}>{item.idcard}</Text> : null
@@ -141,8 +141,6 @@ export default class ActivitysSignUpManagement extends React.Component {
         dataCount2: res.data.summary.income,
         data: data,
       })
-    }, err => {
-      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
       this.pullToRefreshListView.setLoaded(true)
     })

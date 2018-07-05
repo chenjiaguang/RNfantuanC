@@ -86,8 +86,6 @@ export default class ActivitysMine extends React.Component {
         loaded: true,
         data: data,
       })
-    }, err => {
-      this.pullToRefreshListView.setLoaded(true)
     }).catch(err => {
       this.pullToRefreshListView.setLoaded(true)
     })
