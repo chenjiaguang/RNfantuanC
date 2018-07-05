@@ -102,8 +102,13 @@ export default class HeadlineForm extends React.Component {
   goNext = () => { // 下一步
     let {form, validates, buttonClicked, submitting} = this.state
     let has_error = false
+    let _validates = Object.assign({}, validates)
+    if (this.props.navigation.state.params && this.props.navigation.state.params.type.toString() === '1') {
+      _validates.organizationName = v => true
+      _validates.organizationAddress = v => true
+    }
     for (let key in form) {
-      if (!validates[key](form[key])) { // 有不满足条件的表单项时
+      if (!_validates[key](form[key])) { // 有不满足条件的表单项时
         has_error = true
         break
       }
@@ -122,7 +127,7 @@ export default class HeadlineForm extends React.Component {
       return false
     }
     let rData = {
-      account_type: this.props.navigation.state.params && this.props.navigation.state.params.type || 1, // 默认个人
+      account_type: (this.props.navigation.state.params && this.props.navigation.state.params.type) || 1, // 默认个人
       name: form.name,
       avatar: form.avatar,
       intro: form.intro,
@@ -317,7 +322,6 @@ export default class HeadlineForm extends React.Component {
       autoSync: false,
       syncInBackground: true
     }).then(res => {
-      console.log('AppStorage_res', res)
       let storage_form = {}
       for (let key in res) {
         if (key !== 'avatar' && key !== 'idCardImage' && key !== 'area') { // 不获取头像、身份证照片、专注领域，避免结构有变导致报错崩溃

@@ -207,7 +207,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       return false
     }
     if (UtilsModule) {
-      console.log('UtilsModule')
       try {
         await UtilsModule.canCreateDynamic()
         this.ActionSheet.show()
