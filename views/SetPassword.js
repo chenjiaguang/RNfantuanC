@@ -34,7 +34,6 @@ export default class SetPassword extends React.Component {
     title: '设置新密码'
   };
   confirm = () => {
-    console.log('确定')
     let { password, submitting } = this.state
     if (!password || password.length < 6 || password.length > 24) {
       Toast.show('请输入6-24个字符')
@@ -69,11 +68,10 @@ export default class SetPassword extends React.Component {
   }
   confirmComplete = () => {
     // 完成验证，设置密码成功，关闭rn页面
-    console.log('设置密码成功')
     if (Platform.OS === 'ios') { // ios
       GoNativeModule && GoNativeModule.goReLogin()
       SwipBackModule && SwipBackModule.exit()
-    } else { // android _todo
+    } else { // android 
       GoNativeModule && GoNativeModule.goReLogin()
     }
   }

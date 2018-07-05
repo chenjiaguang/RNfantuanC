@@ -28,9 +28,6 @@ export default class HeadlineIndex extends React.Component {
     const { navigate } = this.props.navigation;
     navigate('HeadlineSelect')
   }
-  componentDidMount () {
-    console.log('ruzhushenqing')
-  }
   render() {
     let {showPage} = this.state
     return showPage ? <ScrollView style={style.scrollView}>
@@ -65,7 +62,6 @@ export default class HeadlineIndex extends React.Component {
       </View>
     </ScrollView> : <ScrollView style={style.scrollView}>
       <Image source={bg} onLoad={() => {
-        console.log('sdkfuwjweuf')
         this.setState({
           showPage: true
         })

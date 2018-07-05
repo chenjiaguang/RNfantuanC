@@ -24,9 +24,9 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
     }
   }
   static navigationOptions = ({navigation}) => {
-    console.log('navigation', navigation)
+    let _title = (navigation.state.params && navigation.state.params.rebind) ? '新的手机号' : '绑定手机'
     return{
-      title: navigation.state.params && navigation.state.params.isRebind ? '新的手机号' : '绑定手机'
+      title: _title
     }
   }
   bindPhone = () => { // 绑定手机

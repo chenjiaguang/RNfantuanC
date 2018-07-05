@@ -77,11 +77,10 @@ export default class ResetPassword extends React.Component {
   }
   confirmComplete = () => {
     // 完成验证，修改密码成功，跳转原生登录界面,关闭rn页面
-    console.log('修改密码成功')
     if (Platform.OS === 'ios') { // ios
       GoNativeModule && GoNativeModule.goReLogin()
       SwipBackModule && SwipBackModule.exit()
-    } else { // android _todo
+    } else { // android
       GoNativeModule && GoNativeModule.goReLogin()
     }
   }
@@ -89,7 +88,7 @@ export default class ResetPassword extends React.Component {
     // 跳转修改重置密码页面（通过手机短信验证）
     if (Platform.OS === 'ios') { // ios
       GoNativeModule && GoNativeModule.goForgetPassWord('')
-    } else { // android _todo
+    } else { // android
       GoNativeModule && GoNativeModule.goForgetPassWord()
     }
   }
