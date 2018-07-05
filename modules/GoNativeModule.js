@@ -40,7 +40,7 @@ import { NativeModules } from 'react-native';
  * 跳转地图页
  * 
  * goCircleDetail
- * 参数：圈子id 圈子名 封面图url
+ * 参数：圈子id 圈子名 封面图url bool是否有活动
  * 跳转圈子详情页
  * 
  * goActivityOrder

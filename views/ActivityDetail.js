@@ -95,8 +95,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   onJumpActivityOrder = (id) => {
     GoNativeModule && GoNativeModule.goActivityOrder(id)
   }
-  onJumpCircleDetail = (id, name, coverUrl) => {
-    GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl)
+  onJumpCircleDetail = (id, name, coverUrl, hasActivity) => {
+    GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl, hasActivity)
   }
   onJumpActivityJoiners = (id) => {
     StatusBar.setBarStyle('dark-content')
@@ -436,13 +436,13 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                   </View>
                   {circle ? <View style={styles.circleBox}>
                     <View style={styles.circleInfo}>
-                      <Button onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress)} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{ uri: circle.cover.url }} style={{ flex: 1 }} /></Button>
+                      <Button onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{ uri: circle.cover.url }} style={{ flex: 1 }} /></Button>
                       <View style={styles.circleText}>
                         <Text style={{ fontSize: px2dp(30), color: '#333', lineHeight: px2dp(64) }}>{circle.name}</Text>
                         <Text style={{ fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76) }} numberOfLines={2}>{circle.intro}</Text>
                       </View>
                     </View>
-                    <Button style={styles.circleButton} textStyle={styles.circleButtonText} onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress)} activeOpacity={1}>进入圈子参与该活动讨论</Button>
+                    <Button style={styles.circleButton} textStyle={styles.circleButtonText} onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)} activeOpacity={1}>进入圈子参与该活动讨论</Button>
                   </View> : null}
                 </View>
               </View>
