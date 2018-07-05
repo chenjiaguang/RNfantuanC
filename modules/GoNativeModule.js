@@ -5,8 +5,11 @@ import { NativeModules } from 'react-native';
 
 
 /**
+ * 无特殊说明 参数全部用字符串型 bool转string的用(0=false,1=true)
+ * 
+ * 
  * goUserDetail 
- * 参数: 用户id 
+ * 参数: 用户id type=1动态=2文章 是否是头条号(string)
  * 跳转用户详情页
  * 
  * 
@@ -40,7 +43,7 @@ import { NativeModules } from 'react-native';
  * 跳转地图页
  * 
  * goCircleDetail
- * 参数：圈子id 圈子名 封面图url bool是否有活动
+ * 参数：圈子id 圈子名 封面图url 是否有活动(string)
  * 跳转圈子详情页
  * 
  * goActivityOrder

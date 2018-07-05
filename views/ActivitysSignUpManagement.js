@@ -49,8 +49,8 @@ export default class ActivitysSignUpManagement extends React.Component {
   onCall = (phone) => {
     Linking.openURL('tel:' + phone)
   }
-  onJumpUserDetail = (id) => {
-    GoNativeModule && GoNativeModule.goUserDetail(id)
+  onJumpUserDetail = (id, is_news) => {
+    GoNativeModule && GoNativeModule.goUserDetail(id, "1", is_news ? '1' : '0')
   }
   onJumpActivityDetail = (id) => {
     this.props.navigation.navigate('ActivityDetail', { id: id })
@@ -81,7 +81,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         </View> :
         <View style={styles.item}>
 
-          <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid) }}>
+          <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid, item.is_news) }}>
             <Image
               style={styles.img}
               source={{ uri: item.avatar }}

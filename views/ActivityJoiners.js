@@ -19,8 +19,8 @@ export default class ActivitysJoined extends React.Component {
       loaded: false
     }
   }
-  onJumpUserDetail = (id) => {
-    GoNativeModule && GoNativeModule.goUserDetail(id)
+  onJumpUserDetail = (id, is_news) => {
+    GoNativeModule && GoNativeModule.goUserDetail(id, "1", is_news ? '1' : '0')
   }
   componentDidMount() {
     this.onRefresh()
@@ -67,7 +67,7 @@ export default class ActivitysJoined extends React.Component {
         keyExtractor={(item) => item.uid}
         data={this.state.data}
         renderItem={({ item }) =>
-          <TouchableWithoutFeedback onPress={() => this.onJumpUserDetail(item.uid)}>
+          <TouchableWithoutFeedback onPress={() => this.onJumpUserDetail(item.uid, item.is_news)}>
             <View style={styles.item}>
               <Image
                 style={styles.img}

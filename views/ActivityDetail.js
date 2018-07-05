@@ -96,7 +96,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     GoNativeModule && GoNativeModule.goActivityOrder(id)
   }
   onJumpCircleDetail = (id, name, coverUrl, hasActivity) => {
-    GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl, hasActivity)
+    GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl, hasActivity ? "1" : "0")
   }
   onJumpActivityJoiners = (id) => {
     StatusBar.setBarStyle('dark-content')
