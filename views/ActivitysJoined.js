@@ -103,7 +103,7 @@ export default class ActivitysJoined extends React.Component {
             ref={(component) => this.pullToRefreshListView = component}
             onLoadMore={this.onLoadMore}
             onRefresh={this.onRefresh}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.check_code}
             data={this.state.data}
             renderItem={this.renderItem}
           />

@@ -457,9 +457,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
       <ActionSheet
         ref={el => this.ActionSheet = el}
-        options={[<Text style={{ color: '#333' }}>动态</Text>,
-        <Text style={{ color: '#333' }}>长文</Text>,
-        <Text style={{ color: '#333' }}>取消</Text>]}
+        options={[<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
+        <Text style={{ color: '#333333', fontSize: px2dp(34) }}>长文</Text>,
+        <Text style={{ color: '#333333', fontSize: px2dp(34) }}>取消</Text>]}
         cancelButtonIndex={2}
         styles={{
           color: '#333333',
