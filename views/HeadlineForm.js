@@ -34,6 +34,9 @@ export default class HeadlineForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      actionSheetOptions: Platform.OS === 'android' ? [<Text style={{ color: '#333333', fontSize: px2dp(34) }}>选择照片</Text>,
+      <Text style={{ color: '#333333', fontSize: px2dp(34) }}>拍照上传</Text>,
+      <Text style={{ color: '#333333', fontSize: px2dp(34) }}>取消</Text>] : ['选择照片', '拍照上传', '取消'],
       form: { // 提交前表单存储，需做过滤筛选，此处为了方便展示表单内容
         avatar: {
           value: '',
@@ -518,7 +521,7 @@ export default class HeadlineForm extends React.Component {
           <Button style={style.button} textStyle={style.buttonText} disabledStyle={{opacity: 0.8}} onPress={this.goNext} activeOpacity={0.8}>下一步</Button>
           <ActionSheet
             ref={el => this.ActionSheet = el}
-            options={['选择照片', '拍照上传', '取消']}
+            options={this.state.actionSheetOptions}
             cancelButtonIndex={2}
             onPress={(index) => {
               let {activePic} = this.state

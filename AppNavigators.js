@@ -143,8 +143,7 @@ SimpleApp.router.getStateForAction = (action, state) => {
                 }
             }
         }
-
-        if (state.routes.length === 1) {
+        if (state.routes.length === 1 && (!action.params || !action.params.stopBack)) {
             if (action.type === 'Navigation/POP') {
                 SwipBackModule && SwipBackModule.exit();
             } else if (action.type === 'Navigation/REPLACE' ||
@@ -155,6 +154,8 @@ SimpleApp.router.getStateForAction = (action, state) => {
             } else {
                 SwipBackModule && SwipBackModule.disable();
             }
+        } else if (action.params && action.params.stopBack) {
+            SwipBackModule && SwipBackModule.disable();
         }
     }
     return defaultGetStateForAction(action, state);

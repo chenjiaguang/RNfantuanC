@@ -4231,6 +4231,16 @@ react-native-image-crop-picker@^0.20.3:
   version "0.20.3"
   resolved "http://registry.npm.taobao.org/react-native-image-crop-picker/download/react-native-image-crop-picker-0.20.3.tgz#565d69c1764e96abef23871fe4d6d58b1ee35e18"
 
+react-native-image-pan-zoom@^2.1.7:
+  version "2.1.7"
+  resolved "http://registry.npm.taobao.org/react-native-image-pan-zoom/download/react-native-image-pan-zoom-2.1.7.tgz#1c066e66f8f345f5e1fc187f02d92c482952bb59"
+
+react-native-image-zoom-viewer@^2.2.13:
+  version "2.2.13"
+  resolved "http://registry.npm.taobao.org/react-native-image-zoom-viewer/download/react-native-image-zoom-viewer-2.2.13.tgz#05d085dae399129970c3c6e58b03276bf25f032e"
+  dependencies:
+    react-native-image-pan-zoom "^2.1.7"
+
 react-native-iphone-x-helper@^1.0.1, react-native-iphone-x-helper@^1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.0.3.tgz#7a2f1e0574e899a0f1d426e6167fd98990083214"
@@ -4279,17 +4289,6 @@ react-native-safe-area-view@^0.7.0:
   resolved "http://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
   dependencies:
     hoist-non-react-statics "^2.3.1"
-
-react-native-smart-pull-to-refresh-listview@^1.6.11-beta.2:
-  version "1.6.11-beta.2"
-  resolved "http://registry.npm.taobao.org/react-native-smart-pull-to-refresh-listview/download/react-native-smart-pull-to-refresh-listview-1.6.11-beta.2.tgz#c24d7c1b7a1aa114fe02800ed71d70368d66740a"
-  dependencies:
-    prop-types "^15.5.10"
-    react-native-smart-timer-enhance "^1.0.2"
-
-react-native-smart-timer-enhance@^1.0.2:
-  version "1.0.3"
-  resolved "http://registry.npm.taobao.org/react-native-smart-timer-enhance/download/react-native-smart-timer-enhance-1.0.3.tgz#47ddc19be5a6c19184449039495f25546bcd94fe"
 
 react-native-storage@^0.2.2:
   version "0.2.2"

@@ -24,6 +24,7 @@ import LoadingView from '../components/LoadingView' // _todo ios未封装loading
 import HeadNav from '../components/HeadNav'
 import RoundBorderView from '../components/RoundBorderView'
 import UtilsModule from '../modules/UtilsModule'
+import ImageBrowser from '../components/ImageBrowser'
 
 
 
@@ -33,6 +34,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     this.lastY = 0
     this.state = {
       isOpen: false,
+      browserIndex: 0,
+      actionSheetOptions: Platform.OS === 'android' ? [<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
+      <Text style={{ color: '#333333', fontSize: px2dp(34) }}>长文</Text>,
+      <Text style={{ color: '#333333', fontSize: px2dp(34) }}>取消</Text>] : ['动态', '长文', '取消'],
       activity: {
         id: '',
         bannerUrl: '',
@@ -61,7 +66,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         address_text: '',
         joinedTotal: '',
         shareUrl: '',
-        share_content: ''
+        share_content: '',
+        contentImages: []
       }
     }
   }
@@ -77,7 +83,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         position: 'absolute',
         borderBottomWidth: 0,
         elevation: 0
-      }
+      },
+      gesturesEnabled: (navigation.state.params && navigation.state.params.gesturesEnabled) ? navigation.state.params.gesturesEnabled : true
     }
   }
   onJumpPublishArticleDynamic = (id, name, actid) => {
@@ -253,20 +260,29 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         joinedTotal: res.data.joined_total,
         shareUrl: res.data.share_url,
         share_content: res.data.share_content,
-        content: res.data.content.filter(item => item.type.toString() !== '0').map(item => {
+        content: res.data.content.filter(item => item.type.toString() !== '0').map((item, idx) => {
           return {
             type: item.type,
             content: item.type.toString() === '1' ? item.content : {
               image: item.imageUrl,
               description: item.des
             },
+            idx: idx,
             width: item.width,
             height: item.height
           }
         }),
         circle: res.data.circle,
-        status: res.data.status
+        status: res.data.status,
       }
+      let images = _obj.content.filter(item => item.type.toString() === '2')
+      let contentImages = images.map(item => {
+        return {
+          idx: item.idx,
+          url: item.content.image
+        }
+      })
+      _obj.contentImages = contentImages
       this.setState({
         activity: _obj
       })
@@ -291,10 +307,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   share = () => {
     let activity = this.props.navigation.state.params.activity
     let { status } = this.state.activity
-    if (!status) { // 未拉取到数据时操作无效
+    if (status === '') { // 未拉取到数据时操作无效
       return false
     }
-    if (status.toString() !== '1') { // 活动未上线
+    if (status.toString() === '0' || status.toString() === '2') { // 活动未上线,0审核中，2不通过
       Toast.show('活动未上线，还不能操作哦~')
       return false
     }
@@ -303,9 +319,19 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       activity.share_content,
       activity.shareUrl)
   }
+  viewImages = (index) => {
+    let _idx = ''
+    let {contentImages} = this.state.activity
+    contentImages.map((item, idx) => {
+      if (item.idx === index) {
+        _idx = idx
+      }
+    })
+    this.ImageBrowser.show(_idx)
+  }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle } = this.state.activity
-    let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages } = this.state.activity
+    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
     return <View style={styles.page}>
       {
         this.state.activity.id == '' ?
@@ -323,6 +349,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 </TouchableWithoutFeedback>
               }}
             />
+            <ImageBrowser ref={el => this.ImageBrowser = el} index={browserIndex} images={contentImages} page={this} />
             <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
               <View style={styles.pageWrapper}>
                 <Image source={{ uri: bannerUrl }} style={styles.header} resizeMode="cover" />
@@ -368,7 +395,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       if (item.type.toString() === '1') { // 文本
                         return <Text key={idx} style={styles.introText}>{item.content}</Text>
                       } else if (item.type.toString() === '2') { // 图片
-                        return <Image key={idx} source={{ uri: item.content.image }} style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]} resizeMode={'cover'} />
+                        return <TouchableWithoutFeedback onPress={() => this.viewImages(item.idx)}><Image key={idx} source={{ uri: item.content.image }} style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]} resizeMode={'cover'} /></TouchableWithoutFeedback>
                       }
                     })}
                     {(initialHeight && animationHeight && maxHeight && initialHeight > px2dp(700)) ? <TouchableWithoutFeedback onPress={this.animate}>
@@ -456,9 +483,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
       <ActionSheet
         ref={el => this.ActionSheet = el}
-        options={[<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
-        <Text style={{ color: '#333333', fontSize: px2dp(34) }}>长文</Text>,
-        <Text style={{ color: '#333333', fontSize: px2dp(34) }}>取消</Text>]}
+        options={this.state.actionSheetOptions}
         cancelButtonIndex={2}
         styles={{
           color: '#333333',
