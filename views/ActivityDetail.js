@@ -403,7 +403,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                               style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]}
                               resizeMode={'cover'} />
                           </TouchableWithoutFeedback>
-                          {true ? <Text style={styles.imgDesc}>{item.des}</Text> : null}
+                          {item.des ? <Text style={styles.imgDesc}>{item.des}</Text> : null}
                         </View>
                       }
                     })}
