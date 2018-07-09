@@ -29,7 +29,6 @@ export default class AndroidRefreshFlatList extends Component {
     onRefresh: PropTypes.func,
     onLoadMore: PropTypes.func,
     refreshing: PropTypes.bool,
-    showEmptyLoading: PropTypes.bool,
     isend: PropTypes.bool
   }
 
@@ -61,7 +60,6 @@ export default class AndroidRefreshFlatList extends Component {
             onRefresh={this._onRefresh}
             refreshing={false}
             isend={false}
-            showEmptyLoading={true}
           >
             <FlatList
               data={this.props.data}
@@ -89,16 +87,11 @@ export default class AndroidRefreshFlatList extends Component {
     this.setNativeProps({ isend: b })
   }
 
-  //设置是否显示空页面时的loading
-  setShowEmptyLoading = (b) => {
-    this.setNativeProps({ showEmptyLoading: b })
-  }
 
   //统一处理加载完成后动作
   setLoaded = (isEnd) => {
     this.setIsend(isEnd)
     this.setRefreshing(false)
-    this.setShowEmptyLoading(false)
   }
 
   _onRefresh = (event) => {
