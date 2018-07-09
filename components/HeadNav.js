@@ -43,14 +43,14 @@ class HeadNav extends Component {
 const styles = StyleSheet.create({
     container: {
         width: px2dp(750),
-        height: px2dp(90) + getStatusBarHeight(true),
+        height: Platform.OS === 'android' ? 50 + getStatusBarHeight(true) : px2dp(90) + getStatusBarHeight(true),
         flexDirection: 'row',
         justifyContent: 'space-between',
         position: 'absolute',
         top: 0,
         zIndex: 9999,
         paddingTop: getStatusBarHeight(true),
-        alignItems: 'flex-end',
+        alignItems: 'center',
     },
 })
 

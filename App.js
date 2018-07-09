@@ -26,12 +26,12 @@ const instructions = Platform.select({
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+  }
+  componentWillMount() {
     StatusBar.setBarStyle('dark-content')
     if (Platform.OS === 'android') {
        StatusBar.setTranslucent(true)
     }
-  }
-  componentWillMount() {
     // console.log('appWillMount', this.props, AppNavigators)
     //   let CalendarManager = NativeModules.CalendarManager;
     //   CalendarManager.addEvent('Birthday Party', '4 Privet Drive, Surrey');

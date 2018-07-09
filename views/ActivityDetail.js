@@ -268,6 +268,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               description: item.des
             },
             idx: idx,
+            des: item.des,
             width: item.width,
             height: item.height
           }
@@ -321,7 +322,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   viewImages = (index) => {
     let _idx = ''
-    let {contentImages} = this.state.activity
+    let { contentImages } = this.state.activity
     contentImages.map((item, idx) => {
       if (item.idx === index) {
         _idx = idx
@@ -395,7 +396,15 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       if (item.type.toString() === '1') { // 文本
                         return <Text key={idx} style={styles.introText}>{item.content}</Text>
                       } else if (item.type.toString() === '2') { // 图片
-                        return <TouchableWithoutFeedback onPress={() => this.viewImages(item.idx)}><Image key={idx} source={{ uri: item.content.image }} style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]} resizeMode={'cover'} /></TouchableWithoutFeedback>
+                        return <View  key={idx}>
+                          <TouchableWithoutFeedback
+                            onPress={() => this.viewImages(item.idx)}>
+                            <Image source={{ uri: item.content.image }}
+                              style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]}
+                              resizeMode={'cover'} />
+                          </TouchableWithoutFeedback>
+                          {item.des ? <Text style={styles.imgDesc}>{item.des}</Text> : null}
+                        </View>
                       }
                     })}
                     {(initialHeight && animationHeight && maxHeight && initialHeight > px2dp(700)) ? <TouchableWithoutFeedback onPress={this.animate}>
@@ -605,6 +614,15 @@ const styles = StyleSheet.create({
   introImage: {
     alignSelf: 'stretch',
     marginTop: px2dp(20),
+    marginBottom: px2dp(20),
+  },
+  imgDesc: {
+    flex: 1,
+    fontSize: px2dp(24),
+    color: '#999999',
+    lineHeight: px2dp(34),
+    marginTop: px2dp(-7),
+    textAlign:'center',
     marginBottom: px2dp(20),
   },
   showHideBtn: {

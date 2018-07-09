@@ -79,7 +79,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
       <View style={style.contentWrapper}>
         <View style={style.phoneWrapper}>
           <Text style={style.phonePrefix}>+86</Text>
-          <MyTextInput style={style.phone} placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
+          <MyTextInput style={style.phone} underlineColorAndroid="transparent" placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
         </View>
         <CodeInput phone={phone} value={code} onChangeText={value => this.setState({code: value})} onClear={() => this.setState({code: ''})} style={style.CodeInput}/>
         <Button style={[style.button, {backgroundColor: (!phone || !code || submitting) ? commonStyle.color.btn_primary.bgDisabled : commonStyle.color.btn_primary.bg}]} textStyle={style.buttonText} onPress={this.bindPhone} activeOpacity={1} isDisabled={!phone || !code || submitting}>立即绑定</Button>
@@ -130,7 +130,8 @@ const style = StyleSheet.create({
     flex: 1,
     paddingLeft: px2dp(60),
     fontSize: px2dp(30),
-    color: commonStyle.color.text.para_primary
+    color: commonStyle.color.text.para_primary,
+    padding: 0
   },
   CodeInput: {
     marginTop: px2dp(38),

@@ -76,16 +76,7 @@ const SimpleApp = createStackNavigator({
                     navigation.pop()
                 }} />,
                 headerRight: <HeaderRight />,
-                headerStyle: {
-                    width: px2dp(750),
-                    height: Platform.OS === 'android' ? px2dp(90) + statusBarHeight : px2dp(90),
-                    paddingTop: 0,
-                    backgroundColor: '#fafafa',
-                    borderTopColor: Platform.OS === 'android' && Platform.Version < 23 ? '#8c8c8c' : '#fafafa',//8c=fa*(256-112)/256
-                    borderTopWidth: Platform.OS === 'android' ? statusBarHeight : 0,
-                    borderBottomWidth: 0,
-                    elevation: 0,
-                },
+                headerStyle: commonStyle.headerStyleNormal,
                 headerTitleStyle: commonStyle.headerTitleStyle,
                 headerBackTitleStyle: {
                     color: '#333',
