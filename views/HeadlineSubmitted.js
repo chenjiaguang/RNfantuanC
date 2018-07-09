@@ -2,7 +2,6 @@ import React from "react";
 import {
   ScrollView,
   View,
-  Text,
   StyleSheet
 } from 'react-native';
 import Iconfont from "../components/cxicon/CXIcon";
@@ -11,6 +10,7 @@ import { ifIphoneX } from 'react-native-iphone-x-helper'
 import Button from 'apsl-react-native-button'
 import commonStyle from "../static/commonStyle"; // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 import SwipBackModule from '../modules/SwipBackModule'
+import Text from '../components/MyText'
 // 提交头条申请成功页面
 
 export default class HeadlineSubmitted extends React.Component {

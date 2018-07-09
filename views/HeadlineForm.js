@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Text,
   StyleSheet,
   Platform,
   Modal,
@@ -28,6 +27,7 @@ import Toast from '../components/Toast'
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Text from '../components/MyText'
 // 申请头条表单填写
 
 export default class HeadlineForm extends React.Component {

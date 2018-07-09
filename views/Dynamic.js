@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Text,
   StyleSheet,
   FlatList,
   findNodeHandle,
@@ -16,6 +15,7 @@ import commonStyle from "../static/commonStyle";
 import px2dp from '../lib/px2dp'
 import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
+import Text from '../components/MyText'
 // 动态
 
 export default class Dynamic extends React.Component {

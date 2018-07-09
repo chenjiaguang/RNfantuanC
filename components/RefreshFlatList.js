@@ -8,12 +8,12 @@ import {
   requireNativeComponent,
   Platform,
   FlatList,
-  Text,
   ViewPropTypes,
 } from 'react-native'
 import FantToastModule from '../modules/FantToastModule'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
+import Text from '../components/MyText'
 
 export default class AndroidRefreshFlatList extends Component {
   constructor(props) {

@@ -2,7 +2,6 @@ import React from "react";
 import {
   ScrollView,
   View,
-  Text,
   StyleSheet
 } from 'react-native';
 import px2dp from '../lib/px2dp'
@@ -13,6 +12,7 @@ import Button from 'apsl-react-native-button' // 第三方button库，RN官方�
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle";
 import SwipBackModule from '../modules/SwipBackModule'
+import Text from '../components/MyText'
 
 export default class BindPhone extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
   constructor (props) {
@@ -82,7 +82,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
           <MyTextInput style={style.phone} placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
         </View>
         <CodeInput phone={phone} value={code} onChangeText={value => this.setState({code: value})} onClear={() => this.setState({code: ''})} style={style.CodeInput}/>
-        <Button style={[style.button, {backgroundColor: (!phone || !code || submitting) ? commonStyle.color.btn_primary.bgDisabled : commonStyle.color.btn_primary.bg}]} textStyle={style.buttonText} onPress={this.bindPhone} activeOpacity={1} isDisabled={!phone || !code || submitting}>绑定</Button>
+        <Button style={[style.button, {backgroundColor: (!phone || !code || submitting) ? commonStyle.color.btn_primary.bgDisabled : commonStyle.color.btn_primary.bg}]} textStyle={style.buttonText} onPress={this.bindPhone} activeOpacity={1} isDisabled={!phone || !code || submitting}>立即绑定</Button>
         {this.props.navigation.state.params && this.props.navigation.state.params.isRebind ? <Text style={style.tip}>一旦绑定新手机号，原手机号不可再用于登录</Text> : null}
       </View>
     </ScrollView>

@@ -3,13 +3,13 @@ import {
     View,
     StyleSheet,
     Platform,
-    TouchableWithoutFeedback,
-    Text
+    TouchableWithoutFeedback
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import Iconfont from '../components/cxicon/CXIcon';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import commonStyle from '../static/commonStyle'
+import Text from '../components/MyText'
 
 
 class HeadNav extends Component {

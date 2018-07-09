@@ -1,9 +1,10 @@
 
 
-import { requireNativeComponent, View, Text, Platform } from 'react-native';
+import { requireNativeComponent, View, Platform } from 'react-native';
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import px2dp from '../lib/px2dp';
+import Text from '../components/MyText'
 
 var iface = {
   name: 'RCTLoadingView',

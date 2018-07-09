@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   View,
   Image,
   StyleSheet,
@@ -12,6 +11,7 @@ import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
+import Text from '../components/MyText'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -205,13 +205,15 @@ const styles = StyleSheet.create({
     borderRadius: px2dp(6),
     borderWidth: px2dp(1),
     borderColor: '#999999',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 0
   },
   buttonEnable: {
     borderColor: '#1EB0FD'
   },
   buttonText: {
     textAlign: 'center',
-    lineHeight: px2dp(36),
     fontSize: px2dp(20),
     color: '#999999',
   },
