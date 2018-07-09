@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   View,
   Image,
   StyleSheet,
@@ -11,6 +10,7 @@ import ActivityEmpty from '../components/ActivityEmpty'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
+import Text from '../components/MyText'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -194,14 +194,14 @@ const styles = StyleSheet.create({
     borderRadius: px2dp(6),
     borderWidth: px2dp(1),
     borderColor: '#999999',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonEnable: {
     borderColor: '#1EB0FD'
   },
   buttonText: {
-    lineHeight: px2dp(36),
     fontSize: px2dp(20),
-    textAlign: 'center',
     color: '#999999',
   },
   buttonTextEnable: {

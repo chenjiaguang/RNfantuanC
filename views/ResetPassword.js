@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Text,
   TextInput,
   StyleSheet,
   Platform
@@ -19,6 +18,7 @@ import Button from 'apsl-react-native-button' // 第三方button库，RN官方�
 import MyTextInput from '../components/MyTextInput' // 封装RN官方的TextInput以处理中文输入问题（RN官方bug）
 import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule'
+import Text from '../components/MyText'
 // 申请头条首页
 
 export default class ResetPassword extends React.Component {

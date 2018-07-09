@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, CameraRoll, Platform, Animated } from 'react-native';
+import { View, Dimensions, CameraRoll, Platform, Animated } from 'react-native';
 import React, { Component } from "react";
 import px2dp from '../lib/px2dp';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -6,6 +6,7 @@ import Iconfont from '../components/cxicon/CXIcon';
 import ActionSheet from 'react-native-actionsheet' // RN官方提供ios的ActionSheet，此处引入双平台的ActionSheet(ios/android)
 import Toast from '../components/Toast'
 import SwipBackModule from '../modules/SwipBackModule';
+import Text from '../components/MyText'
 
 export default class ImageBrowser extends React.Component {
   constructor(props) {

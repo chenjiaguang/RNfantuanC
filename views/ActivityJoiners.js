@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   View,
   Image,
   StyleSheet,
@@ -9,6 +8,7 @@ import {
 import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
+import Text from '../components/MyText'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {

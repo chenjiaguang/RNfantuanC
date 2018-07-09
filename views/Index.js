@@ -1,11 +1,6 @@
 import React from "react";
 import {
-    ScrollView,
-    TouchableOpacity,
     View,
-    Image,
-    Text,
-    StyleSheet
 } from 'react-native';
 import Iconfont from "../components/cxicon/CXIcon";
 import px2dp from '../lib/px2dp'

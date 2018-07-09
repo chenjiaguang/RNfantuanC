@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   View,
   Image,
   StyleSheet,
@@ -11,6 +10,7 @@ import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
+import Text from '../components/MyText'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -159,7 +159,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         />
       </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
-        <View><Text style={styles.bottomButton}>查看活动详情</Text></View>
+        <View style={{height: px2dp(100), backgroundColor: '#F9F9F9', justifyContent: 'center', alignItems: 'center'}}><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>
     </View>
   }
@@ -276,10 +276,6 @@ const styles = StyleSheet.create({
     color: '#1EB0FD',
   },
   bottomButton: {
-    height: px2dp(100),
-    lineHeight: px2dp(100),
-    textAlign: 'center',
-    backgroundColor: '#F9F9F9',
     fontSize: px2dp(30),
     color: '#1EB0FD'
   },

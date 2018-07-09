@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Text,
   StyleSheet,
   StatusBar
 } from 'react-native';
@@ -12,6 +11,7 @@ import Iconfont from "../components/cxicon/CXIcon";
 import commonStyle from '../static/commonStyle'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import px2dp from '../lib/px2dp'
+import Text from '../components/MyText'
 // 申请头条选择类型
 const personIcon = require('../static/image/rn_person_icon.png')
 const organizationIcon = require('../static/image/rn_organization_icon.png')

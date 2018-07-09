@@ -2,7 +2,6 @@ import React from "react";
 import {
   ScrollView,
   View,
-  Text,
   Image,
   StyleSheet,
   Linking,
@@ -25,6 +24,7 @@ import HeadNav from '../components/HeadNav'
 import RoundBorderView from '../components/RoundBorderView'
 import UtilsModule from '../modules/UtilsModule'
 import ImageBrowser from '../components/ImageBrowser'
+import Text from '../components/MyText'
 
 
 
@@ -477,7 +477,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                         <Text style={{ fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76) }} numberOfLines={2}>{circle.intro}</Text>
                       </View>
                     </View>
-                    <Button style={styles.circleButton} textStyle={styles.circleButtonText} onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)} activeOpacity={1}>进入圈子参与该活动讨论</Button>
+                    <TouchableWithoutFeedback onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)}>
+                      <View style={styles.circleButton}>
+                        <Text style={styles.circleButtonText}>进入圈子参与该活动讨论</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
                   </View> : null}
                 </View>
               </View>
@@ -597,6 +601,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   introHeader: {
+    color: '#333',
     fontSize: px2dp(32),
     lineHeight: px2dp(92),
     fontWeight: '600'
@@ -693,10 +698,13 @@ const styles = StyleSheet.create({
   circleButton: {
     width: px2dp(360),
     height: px2dp(68),
+    borderWidth: px2dp(1),
     borderColor: '#1EB0FD',
     borderRadius: px2dp(6),
     marginTop: px2dp(53),
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   circleButtonText: {
     fontSize: px2dp(28),

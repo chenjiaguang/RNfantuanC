@@ -2,7 +2,6 @@ import React from "react";
 import {
   ScrollView,
   View,
-  Text,
   StyleSheet,
   Alert
 } from 'react-native';
@@ -12,6 +11,7 @@ import CodeInput from '../components/CodeInput' // 自己封装的获取验证�
 import Button from 'apsl-react-native-button'
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle"; // 第三方button库，RN官方的库会根据平台不同区别，这里统一
+import Text from '../components/MyText'
 // 提交头条申请成功页面  需要参数:phone: xxx, type:  xxx   type 决定验证成功后的动作
 
 export default class VerifyPhone extends React.Component {

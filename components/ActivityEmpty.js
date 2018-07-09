@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  Text,
   StyleSheet
 } from 'react-native';
 import px2dp from '../lib/px2dp';
+import Text from '../components/MyText'
 
 class ActivityEmpty extends Component {
   render() {

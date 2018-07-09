@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {TextInput, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {TextInput, View, TouchableOpacity, StyleSheet} from 'react-native';
 import px2dp from "../lib/px2dp";
 import commonStyle from "../static/commonStyle";
 import Toast from './Toast'; // 封装的第三方toast,兼容ios/android
 import MyTextInput from './MyTextInput'
 import Iconfont from "../components/cxicon/CXIcon"; // 自定义iconfont字体文字，基于"react-native-vector-icons"
+import Text from '../components/MyText'
 
 export default class CodeInput extends Component {
   constructor (props) {

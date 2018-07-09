@@ -1,18 +1,10 @@
 import React from "react";
 import {
-  ScrollView,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
   StyleSheet,
   WebView
 } from 'react-native';
-import Iconfont from "../components/cxicon/CXIcon";
 import px2dp from '../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
-import AutoHeightWebView from 'react-native-autoheight-webview'
-const bg = require('../static/image/rn_apply_banner.png')
 // 申请头条首页
 
 export default class WebPage extends React.Component {
