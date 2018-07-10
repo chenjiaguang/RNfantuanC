@@ -33,7 +33,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     super(props)
     this.lastY = 0
     this.state = {
-      initial: true,
       isOpen: false,
       browserIndex: 0,
       actionSheetOptions: Platform.OS === 'android' ? [<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
@@ -286,7 +285,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       })
       _obj.contentImages = contentImages
       this.setState({
-        initial: false,
         activity: _obj
       })
       this.props.navigation.setParams({ 'activity': _obj })
@@ -296,9 +294,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
     }).catch(err => {
       console.log('获取活动数据失败', err)
-      this.setState({
-        initial: false
-      })
+      // this.setState({
+      //   initial: false
+      // })
     })
   }
   componentDidMount() {
@@ -337,11 +335,11 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   render() {
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages } = this.state.activity
-    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex, initial } = this.state
+    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
     return <View style={styles.page}>
       <HeadNav
         ref={(component) => this._headNav = component}
-        fetching={initial}
+        fetching={!id}
         navigation={this.props.navigation}
         title={'活动详情'}
         headerRight={(rgb) => {
