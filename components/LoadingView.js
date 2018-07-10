@@ -18,8 +18,8 @@ class LoadingView extends Component {
   }
   render() {
       return <View style={{height: px2dp(500), justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: px2dp(30)}}>加载中...</Text>
-      </View >;
+        <Text style={{fontSize: px2dp(30)}}>正在加载...</Text>
+      </View>;
   }
 };
 
