@@ -150,9 +150,9 @@ export default class HeadlineForm extends React.Component {
       this.setState({
         submitting: false
       })
-      if (res.error) {
-        res.msg && Toast.show(res.msg)
-        return false
+      if (res.error && Number(res.error) && res.msg) {
+        Toast.show(res.msg)
+        return  false
       }
       this.props.navigation.navigate('HeadlineSubmitted')
     }, err => {
