@@ -132,7 +132,7 @@ export default class HeadlineForm extends React.Component {
     let rData = {
       account_type: (this.props.navigation.state.params && this.props.navigation.state.params.type) || 1, // 默认个人
       name: form.name,
-      avatar: form.avatar,
+      avatar: form.avatar.value,
       intro: form.intro,
       cid: form.area.value,
       phone: form.phone,
@@ -146,7 +146,9 @@ export default class HeadlineForm extends React.Component {
     this.setState({
       submitting: true
     })
+    console.log('rData', rData)
     _FetchData(_Api + '/news/apply', rData).then(res => { // 提交信息给后端
+      console.log('申请成功', res)
       this.setState({
         submitting: false
       })
@@ -156,6 +158,7 @@ export default class HeadlineForm extends React.Component {
       }
       this.props.navigation.navigate('HeadlineSubmitted')
     }, err => {
+      console.log('申请失败', err)
       // 发生错误
       this.setState({
         submitting: false
