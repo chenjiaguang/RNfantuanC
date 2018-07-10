@@ -43,9 +43,6 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
       Toast.show('请输入短信验证码')
       return false
     }
-    if (params && params.token) {
-      _Token = params.token
-    }
     let rData = (params && params.rebind) ? {
       jwtToken: params.jwtToken,
       phone: phone,
