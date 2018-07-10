@@ -10,7 +10,6 @@ import {
   FlatList,
   ViewPropTypes,
 } from 'react-native'
-import FantToastModule from '../modules/FantToastModule'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
 import Text from '../components/MyText'
@@ -51,7 +50,7 @@ export default class AndroidRefreshFlatList extends Component {
           </View>}
         /> :
         <View style={{ flex: 1 }}>
-          <LoadingView style={{ display: this.props.data ? 'none' : 'flex', height: px2dp(100) }} />
+          {this.props.data ? null : <LoadingView style={{ height: px2dp(100) }} />}
           <RefreshFlatList
             {...this.props}
             style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}

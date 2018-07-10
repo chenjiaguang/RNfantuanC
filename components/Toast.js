@@ -7,22 +7,27 @@ import {
   Platform
 } from 'react-native'
 import Text from '../components/MyText'
+import UtilsModule from '../modules/UtilsModule'
 
 export default class MyToast {
-  static show (msg, duration) {
-    let toastElement = <View style={styles.content}><Text style={styles.contentText}>{msg}</Text></View>
-    this.hide()
-    this.toast = Toast.show(toastElement, {
-      duration: duration || 2000,
-      position: Platform.OS === 'ios' ? Toast.positions.CENTER : Toast.positions.BOTTOM,
-      backgroundColor: 'transparent',
-      shadow: false,
-      animation: true,
-      hideOnPress: false,
-      delay: 0
-    })
+  static show(msg, duration) {
+    if (UtilsModule) {
+      UtilsModule.showToast(msg)
+    } else {
+      let toastElement = <View style={styles.content}><Text style={styles.contentText}>{msg}</Text></View>
+      this.hide()
+      this.toast = Toast.show(toastElement, {
+        duration: duration || 2000,
+        position: Platform.OS === 'ios' ? Toast.positions.CENTER : Toast.positions.BOTTOM,
+        backgroundColor: 'transparent',
+        shadow: false,
+        animation: true,
+        hideOnPress: false,
+        delay: 0
+      })
+    }
   }
-  static hide () {
+  static hide() {
     this.toast && Toast.hide(this.toast)
   }
 };
