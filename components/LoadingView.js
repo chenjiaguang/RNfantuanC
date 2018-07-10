@@ -45,7 +45,8 @@ class LoadingView extends Component {
 const styles = StyleSheet.create({
   image: Platform.OS == 'ios' ? {
     width: px2dp(32),
-    height: px2dp(32)
+    height: px2dp(32),
+    marginRight: px2dp(10)
   } :
     {
       width: 16,
