@@ -450,8 +450,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     </View>
                     {activityImageLength ? <View style={styles.dynamicBoxImages}>
                       {activityImages.slice(0, 3).map((item, idx) =>
-                        <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
+                        <TouchableOpacity key={idx} onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
+                          <Image source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
                         </TouchableOpacity>
                       )}
                       <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>
