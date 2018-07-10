@@ -153,7 +153,7 @@ export default class ActivitysSignUpManagement extends React.Component {
           onLoadMore={this.onLoadMore}
           onRefresh={this.onRefresh}
           data={this.state.data}
-          keyExtractor={(i) => i.uid}
+          keyExtractor={(i) => i.id}
           renderItem={this.renderRow}
         />
       </View>
