@@ -69,7 +69,8 @@ const commonStyle = {
       backgroundColor: '#fafafa',
       borderTopColor: Platform.OS === 'android' && Platform.Version < 23 ? '#8c8c8c' : '#fafafa',//8c=fa*(256-112)/256
       borderTopWidth: Platform.OS === 'android' ? statusBarHeight : 0,
-      borderBottomWidth: 0,
+      borderBottomWidth: px2dp(1),
+      borderBottomColor: '#E5E5E5',
       elevation: 0,
   }
 }

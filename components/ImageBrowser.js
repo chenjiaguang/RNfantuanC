@@ -25,7 +25,8 @@ export default class ImageBrowser extends React.Component {
         index: idx || 0,
         show: true
     }, () => {
-        let {scaleX, scaleY, page} = this.state
+        let {scaleX, scaleY} = this.state
+        let {page} = this.props
         Animated.parallel([
             Animated.timing(scaleX, {
                 toValue: 1,
@@ -45,10 +46,11 @@ export default class ImageBrowser extends React.Component {
     this.setState({
         show: false
     }, () => {
+        let {scaleX, scaleY} = this.state
+        let {page} = this.props
         if (page) {
-            page.props.navigation.setParams({gesturesEnabled: false, stopBack: true})
+            page.props.navigation.setParams({gesturesEnabled: false, stopBack: false})
         }
-        let {scaleX, scaleY, page} = this.state
         Animated.parallel([
             Animated.timing(scaleX, {
                 toValue: 0.8,
@@ -68,11 +70,8 @@ export default class ImageBrowser extends React.Component {
     }
   }
   showActionSheet = (image) => {
-    this.setState({
-        saveUrl: image.url
-    }, () => {
-        this.ActionSheetInstance.show()
-    })
+    this.saveUrl = image.url
+    this.ActionSheetInstance.show()
   }
   renderIndicator = (current, total) => {
     return <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', left: 0, top: px2dp(54), width: px2dp(750), height: px2dp(60)}}>
@@ -99,7 +98,7 @@ export default class ImageBrowser extends React.Component {
         onPress={(index) => {
           switch (index) {
             case 0: // 保存图片
-              let Promise = CameraRoll.saveToCameraRoll(this.state.saveUrl)
+              let Promise = CameraRoll.saveToCameraRoll(this.saveUrl)
               Promise.then(res => {
                 Toast.show('已保存到手机相册')
               }).catch(err => {

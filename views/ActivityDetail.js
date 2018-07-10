@@ -33,6 +33,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     super(props)
     this.lastY = 0
     this.state = {
+      initial: true,
       isOpen: false,
       browserIndex: 0,
       actionSheetOptions: Platform.OS === 'android' ? [<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
@@ -209,7 +210,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   publish = async () => {
     let { status } = this.state.activity
-    if (status.toString() !== '1') { // 活动未上线
+    if (status.toString() === '0' || status.toString() === '2') { // 活动未上线
       Toast.show('活动未上线，还不能操作哦~')
       return false
     }
@@ -285,6 +286,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       })
       _obj.contentImages = contentImages
       this.setState({
+        initial: false,
         activity: _obj
       })
       this.props.navigation.setParams({ 'activity': _obj })
@@ -294,6 +296,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       }
     }).catch(err => {
       console.log('获取活动数据失败', err)
+      this.setState({
+        initial: false
+      })
     })
   }
   componentDidMount() {
@@ -332,168 +337,163 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   render() {
     let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages } = this.state.activity
-    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
+    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex, initial } = this.state
     return <View style={styles.page}>
-      {
-        this.state.activity.id == '' ?
-          <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90) }} /> :
-          <View style={styles.page}>
-            <HeadNav
-              ref={(component) => this._headNav = component}
-              navigation={this.props.navigation}
-              title={'活动详情'}
-              headerRight={(rgb) => {
-                return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
-                  <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>
-                    <Iconfont name="share" size={px2dp(36)} color={rgb} />
-                  </View>
-                </TouchableWithoutFeedback>
-              }}
-            />
-            <ImageBrowser ref={el => this.ImageBrowser = el} index={browserIndex} images={contentImages} page={this} />
-            <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
-              <View style={styles.pageWrapper}>
-                <Image source={{ uri: bannerUrl }} style={styles.header} resizeMode="cover" />
-                <View style={styles.contentWrapper}>
-                  <Text style={styles.title}>{title}</Text>
-                  <Text style={styles.from}>来自"{from}"的活动</Text>
-                  <View style={styles.infoBox}>
-                    <View style={styles.infoItem}>
-                      <Text style={styles.infoLeft}>主办方</Text>
-                      <Text style={[styles.infoRight, { fontWeight: '600' }]} numberOfLines={1}>{sponsorName}</Text>
-                      {sponsorPhone ? <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{ width: px2dp(60), paddingTop: px2dp(15), paddingBottom: px2dp(15), textAlign: 'right' }} /> : null}
-                    </View>
-                    <View style={styles.infoItem}>
-                      <Text style={styles.infoLeft}>地点</Text>
-                      <Text style={styles.infoRight} numberOfLines={1}>{address}</Text>
-                      {(address && location && location.lng && location.lat) ? <Iconfont name='location' onPress={() => this.onJumpActivityMap(location.name, location.lng, location.lat)} size={px2dp(24)} color='#1EB0FD' style={{ width: px2dp(60), textAlign: 'right', paddingTop: px2dp(20), paddingBottom: px2dp(20) }} /> : null}
-                    </View>
-                    <View style={styles.infoItem}>
-                      <Text style={styles.infoLeft}>时间</Text>
-                      <Text style={styles.infoRight} numberOfLines={1}>{date}</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                      <Text style={styles.infoLeft}>费用</Text>
-                      <Text style={[styles.infoRight, { color: '#FF3F53' }]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                      <Text style={styles.infoLeft}>报名截止时间</Text>
-                      <Text style={styles.infoRight} numberOfLines={1}>{deadline_text}</Text>
-                    </View>
-                    <View style={styles.tags}>
-                      {tags.map((item, idx) =>
-                        <RoundBorderView
-                          key={idx}
-                          style={styles.tagItem}>
-                          <Text style={{ fontSize: px2dp(24), color: '#666' }}>{item}</Text>
-                        </RoundBorderView>
-                      )}
-                    </View>
-                  </View>
-                  {(content && content.length > 0) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>
-                    <Text style={styles.introHeader}>活动介绍</Text>
-                    {content.map((item, idx) => {
-                      if (item.type.toString() === '1') { // 文本
-                        return <Text key={idx} style={styles.introText}>{item.content}</Text>
-                      } else if (item.type.toString() === '2') { // 图片
-                        return <View key={idx}>
-                          <TouchableWithoutFeedback
-                            onPress={() => this.viewImages(item.idx)}>
-                            <Image source={{ uri: item.content.image }}
-                              style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]}
-                              resizeMode={'cover'} />
-                          </TouchableWithoutFeedback>
-                          {item.des ? <Text style={styles.imgDesc}>{item.des}</Text> : null}
-                        </View>
-                      }
-                    })}
-                    {(initialHeight && animationHeight && maxHeight && initialHeight > px2dp(700)) ? <TouchableWithoutFeedback onPress={this.animate}>
-                      <View style={styles.showHideBtn}>
-                        <Text style={{ fontSize: px2dp(24), color: '#333' }}>{this.state.isOpen ?
-                          '收起' :
-                          '查看更多图文详情'}</Text>
-                        <Animated.View style={{
-                          marginLeft: px2dp(17), transform: [
-                            {
-                              rotateZ: iconRotate.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: ['0deg', '180deg'],
-                              })
-                            }
-                          ]
-                        }}><Iconfont name='pull_down' size={px2dp(18)} color='#666666' /></Animated.View>
-                      </View>
-                    </TouchableWithoutFeedback> : null}
-                  </Animated.View> : null}
-                </View>
-                <View style={styles.otherBox}>
-                  <View style={{ height: px2dp(16), backgroundColor: '#F3F3F3' }}></View>
-                  {(join && join.length > 0) ? <View style={styles.joinBox}>
-                    <View style={styles.joinBoxHeader}><Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>已报名的小伙伴({joinedTotal})</Text></View>
-                    <TouchableOpacity onPress={() => this.onJumpActivityJoiners(id)} activeOpacity={0.8}>
-                      <View style={styles.joinBoxContent}>
-                        {join.map((item, idx) => <Image key={idx} source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }} />)}
-                      </View>
-                    </TouchableOpacity>
-                  </View> : null}
-                  <View style={styles.dynamicBox}>
-                    <View style={styles.dynamicBoxHeader}>
-                      <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
-                      {activityImageLength ?
-                        <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text>
-                            <Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} />
-                          </View>
-                        </TouchableOpacity> : null
-                      }
-                    </View>
-                    {activityImageLength ? <View style={styles.dynamicBoxImages}>
-                      {activityImages.slice(0, 3).map((item, idx) =>
-                        <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
-                          <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
-                        </TouchableOpacity>
-                      )}
-                      <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>
-                        <View style={{ width: px2dp(155), height: px2dp(155), justifyContent: 'center', alignItems: 'center', backgroundColor: '#F4F4F4' }}>
-                          <Iconfont name="camera" size={px2dp(48)} color="#BBBBBB" />
-                          <Text style={{ fontSize: px2dp(20), color: '#999' }}>晒美照</Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View> : <View style={[styles.dynamicBoxImages, { height: px2dp(195), paddingRight: px2dp(5), flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }]}>
-                        <TouchableOpacity onPress={this.publish} style={{ justifyContent: 'center', alignItems: 'center' }} activeOpacity={0.8}>
-                          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Image source={require('../static/image/rn_camera.png')} style={{ width: px2dp(88), height: px2dp(67) }} />
-                            <Text style={{ fontSize: px2dp(24), color: '#999', marginTop: px2dp(24) }}>成为第一个晒照的小可爱</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>}
-                  </View>
-                  {circle ? <View style={styles.circleBox}>
-                    <View style={styles.circleInfo}>
-                      <Button onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{ uri: circle.cover.url }} style={{ flex: 1 }} /></Button>
-                      <View style={styles.circleText}>
-                        <Text style={{ fontSize: px2dp(30), color: '#333', lineHeight: px2dp(64) }}>{circle.name}</Text>
-                        <Text style={{ fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76) }} numberOfLines={2}>{circle.intro}</Text>
-                      </View>
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)}>
-                      <View style={styles.circleButton}>
-                        <Text style={styles.circleButtonText}>进入圈子参与该活动讨论</Text>
-                      </View>
+      <HeadNav
+        ref={(component) => this._headNav = component}
+        fetching={initial}
+        navigation={this.props.navigation}
+        title={'活动详情'}
+        headerRight={(rgb) => {
+          return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
+            <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>
+              <Iconfont name="share" size={px2dp(36)} color={rgb} />
+            </View>
+          </TouchableWithoutFeedback>
+        }}
+      />
+      {this.state.activity.id == '' ? <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(180) + 25 : px2dp(180) }} /> : null}
+      <ImageBrowser ref={el => this.ImageBrowser = el} index={browserIndex} images={contentImages} page={this} />
+      {this.state.activity.id == '' ? null : <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
+        <View style={styles.pageWrapper}>
+          <Image source={{ uri: bannerUrl }} style={styles.header} resizeMode="cover" />
+          <View style={styles.contentWrapper}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.from}>来自"{from}"的活动</Text>
+            <View style={styles.infoBox}>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLeft}>主办方</Text>
+                <Text style={[styles.infoRight, { fontWeight: '600' }]} numberOfLines={1}>{sponsorName}</Text>
+                {sponsorPhone ? <Iconfont onPress={this.callPhone} name='phone' size={px2dp(33)} color='#1EB0FD' style={{ width: px2dp(60), paddingTop: px2dp(15), paddingBottom: px2dp(15), textAlign: 'right' }} /> : null}
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLeft}>地点</Text>
+                <Text style={styles.infoRight} numberOfLines={1}>{address}</Text>
+                {(address && location && location.lng && location.lat) ? <Iconfont name='location' onPress={() => this.onJumpActivityMap(location.name, location.lng, location.lat)} size={px2dp(24)} color='#1EB0FD' style={{ width: px2dp(60), textAlign: 'right', paddingTop: px2dp(20), paddingBottom: px2dp(20) }} /> : null}
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLeft}>时间</Text>
+                <Text style={styles.infoRight} numberOfLines={1}>{date}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLeft}>费用</Text>
+                <Text style={[styles.infoRight, { color: '#FF3F53' }]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLeft}>报名截止时间</Text>
+                <Text style={styles.infoRight} numberOfLines={1}>{deadline_text}</Text>
+              </View>
+              <View style={styles.tags}>
+                {tags.map((item, idx) =>
+                  <RoundBorderView
+                    key={idx}
+                    style={styles.tagItem}>
+                    <Text style={{ fontSize: px2dp(24), color: '#666' }}>{item}</Text>
+                  </RoundBorderView>
+                )}
+              </View>
+            </View>
+            {(content && content.length > 0) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>
+              <Text style={styles.introHeader}>活动介绍</Text>
+              {content.map((item, idx) => {
+                if (item.type.toString() === '1') { // 文本
+                  return <Text key={idx} style={styles.introText}>{item.content}</Text>
+                } else if (item.type.toString() === '2') { // 图片
+                  return <View key={idx}>
+                    <TouchableWithoutFeedback
+                      onPress={() => this.viewImages(item.idx)}>
+                      <Image source={{ uri: item.content.image }}
+                        style={[styles.introImage, { height: px2dp((item.height / item.width) * 690 || 388) }]}
+                        resizeMode={'cover'} />
                     </TouchableWithoutFeedback>
-                  </View> : null}
+                    {item.des ? <Text style={styles.imgDesc}>{item.des}</Text> : null}
+                  </View>
+                }
+              })}
+              {(initialHeight && animationHeight && maxHeight && initialHeight > px2dp(700)) ? <TouchableWithoutFeedback onPress={this.animate}>
+                <View style={styles.showHideBtn}>
+                  <Text style={{ fontSize: px2dp(24), color: '#333' }}>{this.state.isOpen ?
+                    '收起' :
+                    '查看更多图文详情'}</Text>
+                  <Animated.View style={{
+                    marginLeft: px2dp(17), transform: [
+                      {
+                        rotateZ: iconRotate.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['0deg', '180deg'],
+                        })
+                      }
+                    ]
+                  }}><Iconfont name='pull_down' size={px2dp(18)} color='#666666' /></Animated.View>
+                </View>
+              </TouchableWithoutFeedback> : null}
+            </Animated.View> : null}
+          </View>
+          <View style={styles.otherBox}>
+            <View style={{ height: px2dp(16), backgroundColor: '#F3F3F3' }}></View>
+            {(join && join.length > 0) ? <View style={styles.joinBox}>
+              <View style={styles.joinBoxHeader}><Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>已报名的小伙伴({joinedTotal})</Text></View>
+              <TouchableOpacity onPress={() => this.onJumpActivityJoiners(id)} activeOpacity={0.8}>
+                <View style={styles.joinBoxContent}>
+                  {join.map((item, idx) => <Image key={idx} source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }} />)}
+                </View>
+              </TouchableOpacity>
+            </View> : null}
+            <View style={styles.dynamicBox}>
+              <View style={styles.dynamicBoxHeader}>
+                <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
+                {activityImageLength ?
+                  <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
+                    <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text>
+                      <Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} />
+                    </View>
+                  </TouchableOpacity> : null
+                }
+              </View>
+              {activityImageLength ? <View style={styles.dynamicBoxImages}>
+                {activityImages.slice(0, 3).map((item, idx) =>
+                  <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
+                    <Image key={idx} source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity onPress={this.publish} activeOpacity={0.8}>
+                  <View style={{ width: px2dp(155), height: px2dp(155), justifyContent: 'center', alignItems: 'center', backgroundColor: '#F4F4F4' }}>
+                    <Iconfont name="camera" size={px2dp(48)} color="#BBBBBB" />
+                    <Text style={{ fontSize: px2dp(20), color: '#999' }}>晒美照</Text>
+                  </View>
+                </TouchableOpacity>
+              </View> : <View style={[styles.dynamicBoxImages, { height: px2dp(195), paddingRight: px2dp(5), flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }]}>
+                  <TouchableOpacity onPress={this.publish} style={{ justifyContent: 'center', alignItems: 'center' }} activeOpacity={0.8}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                      <Image source={require('../static/image/rn_camera.png')} style={{ width: px2dp(88), height: px2dp(67) }} />
+                      <Text style={{ fontSize: px2dp(24), color: '#999', marginTop: px2dp(24) }}>成为第一个晒照的小可爱</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>}
+            </View>
+            {circle ? <View style={styles.circleBox}>
+              <View style={styles.circleInfo}>
+                <Button onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)} style={styles.circleAvatar} activeOpacity={0.8}><Image source={{ uri: circle.cover.url }} style={{ flex: 1 }} /></Button>
+                <View style={styles.circleText}>
+                  <Text style={{ fontSize: px2dp(30), color: '#333', lineHeight: px2dp(64) }}>{circle.name}</Text>
+                  <Text style={{ fontSize: px2dp(24), color: '#999', lineHeight: px2dp(38), minHeight: px2dp(76) }} numberOfLines={2}>{circle.intro}</Text>
                 </View>
               </View>
-            </ScrollView>
-            <View style={styles.fixedButtons}>
-              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
-              <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
-                onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
-            </View>
+              <TouchableWithoutFeedback onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)}>
+                <View style={styles.circleButton}>
+                  <Text style={styles.circleButtonText}>进入圈子参与该活动讨论</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View> : null}
           </View>
-
-      }
+        </View>
+      </ScrollView>}
+      {this.state.activity.id == '' ? null : <View style={styles.fixedButtons}>
+        <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
+        <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
+          onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
+      </View>}
       <ActionSheet
         ref={el => this.ActionSheet = el}
         options={this.state.actionSheetOptions}

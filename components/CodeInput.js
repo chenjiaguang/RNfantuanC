@@ -11,10 +11,27 @@ export default class CodeInput extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      focus: false,
       btnText: '获取验证码',
       disabledBtn: false
     }
     this.countNum = -1
+  }
+  onBlur = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur()
+    }
+    this.setState({
+      focus: false
+    })
+  }
+  onFocus = () => {
+    if (this.props.onFocus) {
+      this.props.onFocus()
+    }
+    this.setState({
+      focus: true
+    })
   }
   blur = () => {
     this.refs.input.blur()
@@ -80,15 +97,15 @@ export default class CodeInput extends Component {
     })
   }
   render() {
-    let {btnText, disabledBtn} = this.state
-    let {style, onClear, value, ...other} = this.props
+    let {btnText, disabledBtn, focus} = this.state
+    let {style, onClear, value, onBlur, onFocus, ...other} = this.props
     return <View style={[styles.wrapper, style]}>
-      <TextInput ref="input" autoCorrect={false} autoCapitalize="none" placeholder="请输入验证码" value={value} placeholderTextColor={commonStyle.color.text.para_thirdly} keyboardType="numeric" style={styles.input} underlineColorAndroid="transparent" {...other}/>
-      <TouchableOpacity activeOpacity={1} onPress={onClear}>
+      <TextInput ref="input" onBlur={this.onBlur} onFocus={this.onFocus} autoCorrect={false} autoCapitalize="none" placeholder="请输入验证码" value={value} placeholderTextColor={commonStyle.color.text.para_thirdly} keyboardType="numeric" style={styles.input} underlineColorAndroid="transparent" {...other}/>
+      {(focus && value) ? <TouchableOpacity activeOpacity={1} onPress={onClear}>
         <View style={styles.clear}>
           <Iconfont name="close" size={px2dp(27)} color={commonStyle.color.text.para_thirdly}></Iconfont>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> : null}
       <TouchableOpacity disabled={disabledBtn} activeOpacity={0.8} onPress={this.sendCode}>
         <View style={styles.btnView}>
           <Text style={[styles.btnText, {color: disabledBtn ? commonStyle.color.text.para_thirdly : commonStyle.color.text.positive}]}>{btnText}</Text>

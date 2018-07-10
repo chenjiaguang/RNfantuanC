@@ -2,13 +2,15 @@ import React from "react";
 import {
   ScrollView,
   View,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import MyTextInput from '../components/MyTextInput' // 自己封装的输入框，解决ios中文输入问题
 import CodeInput from '../components/CodeInput' // 自己封装的获取验证码输入框，自带获取验证码处理逻辑
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
+import Iconfont from "../components/cxicon/CXIcon"; // 自定义iconfont字体文字，基于"react-native-vector-icons"
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle";
 import SwipBackModule from '../modules/SwipBackModule'
@@ -18,6 +20,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
   constructor (props) {
     super(props)
     this.state = {
+      focusPhone: false,
       phone: '',
       code: '',
       submitting: false
@@ -79,13 +82,33 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
     _state[key] = value
     this.setState(_state)
   }
+  focus = () => {
+    this.setState({
+      focusPhone: true
+    })
+  }
+  blur = () => {
+    this.setState({
+      focusPhone: false
+    })
+  }
+  clear = () => {
+    this.setState({
+      phone: ''
+    })
+  }
   render() {
-    let {phone, code, submitting} = this.state
+    let {focusPhone, phone, code, submitting} = this.state
     return <ScrollView style={style.scrollView} keyboardShouldPersistTaps="handled">
       <View style={style.contentWrapper}>
         <View style={style.phoneWrapper}>
           <Text style={style.phonePrefix}>+86</Text>
-          <MyTextInput style={style.phone} underlineColorAndroid="transparent" placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
+          <MyTextInput onFocus={this.focus} onBlur={this.blur} style={style.phone} underlineColorAndroid="transparent" placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
+          {(focusPhone && phone) ? <TouchableOpacity activeOpacity={1} onPress={this.clear}>
+            <View style={style.clear}>
+              <Iconfont name="close" size={px2dp(27)} color={commonStyle.color.text.para_thirdly}></Iconfont>
+            </View>
+          </TouchableOpacity> : null}
         </View>
         <CodeInput phone={phone} value={code} onChangeText={value => this.setState({code: value})} onClear={() => this.setState({code: ''})} style={style.CodeInput}/>
         <Button style={[style.button, {backgroundColor: (!phone || !code || submitting) ? commonStyle.color.btn_primary.bgDisabled : commonStyle.color.btn_primary.bg}]} textStyle={style.buttonText} onPress={this.bindPhone} activeOpacity={1} isDisabled={!phone || !code || submitting}>立即绑定</Button>
@@ -158,5 +181,11 @@ const style = StyleSheet.create({
   buttonText: {
     fontSize: px2dp(34),
     color: '#fff'
+  },
+  clear: {
+    paddingRight: px2dp(20),
+    paddingLeft: px2dp(20),
+    paddingTop: px2dp(20),
+    paddingBottom: px2dp(20)
   }
 })
