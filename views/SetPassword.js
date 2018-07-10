@@ -85,7 +85,7 @@ export default class SetPassword extends React.Component {
     return <ScrollView style={styles.scrollView}>
       <View style={styles.contentWrapper}>
         <View style={styles.passwordBox}>
-          <TextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="请输入密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({ password: value })} keyboardType={'phone-pad'} style={{ flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0 }} underlineColorAndroid="transparent" />
+          <MyTextInput secureTextEntry={hide} autoCorrect={false} value={password} autoCapitalize="none" placeholder="请输入密码" placeholderTextColor={commonStyle.color.text.para_thirdly} onChangeText={(value) => this.setState({ password: value })} keyboardType={'default'} style={{ flex: 1, height: px2dp(90), color: commonStyle.color.text.para_primary, fontSize: px2dp(30), padding: 0 }} underlineColorAndroid="transparent" />
           <Iconfont name={hide ? 'password-hidden' : 'password-visible'} size={px2dp(42)} color="#C4C5CA" onPress={this.showHidePassword} />
         </View>
         <Text style={styles.passwordTip}>密码长度至少6个字符，最多24个字符</Text>
