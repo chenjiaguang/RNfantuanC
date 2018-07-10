@@ -60,8 +60,8 @@ export default class VerifyPhone extends React.Component {
         if (params && params.type) {
           if (params.type === 'bindPhone') {
             this.props.navigation.navigate('BindPhone')
-          } else if (params.type === 'rebindPhone') {
-            this.props.navigation.navigate('BindPhone', {rebind: true})
+          } else if (params.type === 'rebindPhone' && res.data && res.data.jwtToken) {
+            this.props.navigation.navigate('BindPhone', {rebind: true, jwtToken: res.data.jwtToken})
           }
         }
       }

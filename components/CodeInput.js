@@ -29,7 +29,7 @@ export default class CodeInput extends Component {
     this.countNum = 59
     this.timer && clearInterval(this.timer)
     this.timer = setInterval(() => {
-      let text = '重新获取' + (this.countNum > 9 ? this.countNum : '0' + this.countNum) + ''
+      let text = '重新获取(' + (this.countNum > 9 ? this.countNum : '0' + this.countNum) + ')'
       this.setState({
         btnText: text
       })
@@ -81,9 +81,9 @@ export default class CodeInput extends Component {
   }
   render() {
     let {btnText, disabledBtn} = this.state
-    let {style, onClear, ...other} = this.props
+    let {style, onClear, value, ...other} = this.props
     return <View style={[styles.wrapper, style]}>
-      <TextInput ref="input" autoCorrect={false} autoCapitalize="none" placeholder="请输入验证码" placeholderTextColor={commonStyle.color.text.para_thirdly} keyboardType="numeric" style={styles.input} underlineColorAndroid="transparent" {...other}/>
+      <TextInput ref="input" autoCorrect={false} autoCapitalize="none" placeholder="请输入验证码" value={value} placeholderTextColor={commonStyle.color.text.para_thirdly} keyboardType="numeric" style={styles.input} underlineColorAndroid="transparent" {...other}/>
       <TouchableOpacity activeOpacity={1} onPress={onClear}>
         <View style={styles.clear}>
           <Iconfont name="close" size={px2dp(27)} color={commonStyle.color.text.para_thirdly}></Iconfont>
