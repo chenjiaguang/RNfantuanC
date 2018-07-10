@@ -336,7 +336,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     return <View style={styles.page}>
       {
         this.state.activity.id == '' ?
-          <LoadingView style={{ height: px2dp(500), marginTop: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90) }} /> :
+          <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(90) + 25 : px2dp(90) }} /> :
           <View style={styles.page}>
             <HeadNav
               ref={(component) => this._headNav = component}
@@ -396,7 +396,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                       if (item.type.toString() === '1') { // 文本
                         return <Text key={idx} style={styles.introText}>{item.content}</Text>
                       } else if (item.type.toString() === '2') { // 图片
-                        return <View  key={idx}>
+                        return <View key={idx}>
                           <TouchableWithoutFeedback
                             onPress={() => this.viewImages(item.idx)}>
                             <Image source={{ uri: item.content.image }}
@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
     color: '#999999',
     lineHeight: px2dp(34),
     marginTop: px2dp(-7),
-    textAlign:'center',
+    textAlign: 'center',
     marginBottom: px2dp(20),
   },
   showHideBtn: {

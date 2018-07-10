@@ -10,7 +10,6 @@ import {
   FlatList,
   ViewPropTypes,
 } from 'react-native'
-import FantToastModule from '../modules/FantToastModule'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
 import Text from '../components/MyText'
@@ -29,7 +28,6 @@ export default class AndroidRefreshFlatList extends Component {
     onRefresh: PropTypes.func,
     onLoadMore: PropTypes.func,
     refreshing: PropTypes.bool,
-    showEmptyLoading: PropTypes.bool,
     isend: PropTypes.bool
   }
 
@@ -52,7 +50,7 @@ export default class AndroidRefreshFlatList extends Component {
           </View>}
         /> :
         <View style={{ flex: 1 }}>
-          <LoadingView style={{ display: this.props.data ? 'none' : 'flex', height: px2dp(100) }} />
+          {this.props.data ? null : <LoadingView style={{ height: px2dp(100) }} />}
           <RefreshFlatList
             {...this.props}
             style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}
@@ -61,9 +59,9 @@ export default class AndroidRefreshFlatList extends Component {
             onRefresh={this._onRefresh}
             refreshing={false}
             isend={false}
-            showEmptyLoading={true}
           >
             <FlatList
+              ListHeaderComponent={this.props.ListHeaderComponent}
               data={this.props.data}
               keyExtractor={this.props.keyExtractor}
               renderItem={this.props.renderItem}
@@ -89,16 +87,11 @@ export default class AndroidRefreshFlatList extends Component {
     this.setNativeProps({ isend: b })
   }
 
-  //设置是否显示空页面时的loading
-  setShowEmptyLoading = (b) => {
-    this.setNativeProps({ showEmptyLoading: b })
-  }
 
   //统一处理加载完成后动作
   setLoaded = (isEnd) => {
     this.setIsend(isEnd)
     this.setRefreshing(false)
-    this.setShowEmptyLoading(false)
   }
 
   _onRefresh = (event) => {
