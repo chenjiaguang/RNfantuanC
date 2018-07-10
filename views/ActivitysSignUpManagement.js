@@ -70,50 +70,41 @@ export default class ActivitysSignUpManagement extends React.Component {
     let rowID = info.index
     let active = this.state.activeStatus.indexOf(item.state_text) > -1
     return (
-      rowID == 0 ?
-        <View>
-          <Text style={styles.countLine}>
-            <Text>报名人数：</Text>
-            <Text style={{ fontWeight: 'bold', marginRight: px2dp(20) }}>{this.state.dataCount1}</Text>
-            <Text>    预计收入：</Text>
-            <Text style={{ fontWeight: 'bold' }}>{this.state.dataCount2}</Text>
-          </Text>
-        </View> :
-        <View style={styles.item}>
+      <View style={styles.item}>
 
-          <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid, item.is_news) }}>
-            <Image
-              style={styles.img}
-              source={{ uri: item.avatar }}
-            />
-          </TouchableWithoutFeedback>
-          <View style={styles.middle}>
-            <Text style={styles.name}>{item.display_name}</Text>
-            <Text style={styles.title}>{item.feename}</Text>
-            <Text style={styles.price}>{item.money_text}</Text>
-            <View style={styles.option}>
-              {
-                item.sex ? <Text style={styles.gender}>{item.sex}</Text> : null
-              }
-              {
-                item.idcard ? <Text style={styles.idNo}>{item.idcard}</Text> : null
-              }
-            </View>
-          </View>
-
-          <View style={styles.right}>
-            <TouchableWithoutFeedback onPress={() => { this.onCall(item.phone) }}>
-              <View style={styles.callContainer}>
-                <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
-              </View>
-            </TouchableWithoutFeedback>
-            <RoundBorderView
-              fantBorderColor={active ? '#1EB0FD' : '#999999'}
-              style={[styles.button, active ? styles.buttonEnable : null]}>
-              <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
-            </RoundBorderView>
+        <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid, item.is_news) }}>
+          <Image
+            style={styles.img}
+            source={{ uri: item.avatar }}
+          />
+        </TouchableWithoutFeedback>
+        <View style={styles.middle}>
+          <Text style={styles.name}>{item.display_name}</Text>
+          <Text style={styles.title}>{item.feename}</Text>
+          <Text style={styles.price}>{item.money_text}</Text>
+          <View style={styles.option}>
+            {
+              item.sex ? <Text style={styles.gender}>{item.sex}</Text> : null
+            }
+            {
+              item.idcard ? <Text style={styles.idNo}>{item.idcard}</Text> : null
+            }
           </View>
         </View>
+
+        <View style={styles.right}>
+          <TouchableWithoutFeedback onPress={() => { this.onCall(item.phone) }}>
+            <View style={styles.callContainer}>
+              <Image style={styles.call} source={require('../static/image/rn_ic_phone.png')} />
+            </View>
+          </TouchableWithoutFeedback>
+          <RoundBorderView
+            fantBorderColor={active ? '#1EB0FD' : '#999999'}
+            style={[styles.button, active ? styles.buttonEnable : null]}>
+            <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.state_text}</Text>
+          </RoundBorderView>
+        </View>
+      </View>
     )
   }
   onRefresh = () => {
@@ -131,7 +122,7 @@ export default class ActivitysSignUpManagement extends React.Component {
       this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
       let data
       if (pn == 1) {
-        data = [{ uid: '-1' }].concat(res.data.list)
+        data = res.data.list
       } else {
         data = this.state.data.concat(res.data.list)
       }
@@ -149,6 +140,14 @@ export default class ActivitysSignUpManagement extends React.Component {
     return <View style={styles.container}>
       <View style={{ flex: 1 }}>
         <RefreshFlatList
+          ListHeaderComponent={<View>
+            <Text style={styles.countLine}>
+              <Text>报名人数：</Text>
+              <Text style={{ fontWeight: 'bold', marginRight: px2dp(20) }}>{this.state.dataCount1}</Text>
+              <Text>    预计收入：</Text>
+              <Text style={{ fontWeight: 'bold' }}>{this.state.dataCount2}</Text>
+            </Text>
+          </View>}
           ref={(component) => this.pullToRefreshListView = component}
           style={styles.list}
           onLoadMore={this.onLoadMore}
@@ -159,7 +158,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         />
       </View>
       <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
-        <View style={{height: px2dp(100), backgroundColor: '#F9F9F9', justifyContent: 'center', alignItems: 'center'}}><Text style={styles.bottomButton}>查看活动详情</Text></View>
+        <View style={{ height: px2dp(100), backgroundColor: '#F9F9F9', justifyContent: 'center', alignItems: 'center' }}><Text style={styles.bottomButton}>查看活动详情</Text></View>
       </TouchableWithoutFeedback>
     </View>
   }

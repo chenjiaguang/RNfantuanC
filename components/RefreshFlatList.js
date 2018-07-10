@@ -61,6 +61,7 @@ export default class AndroidRefreshFlatList extends Component {
             isend={false}
           >
             <FlatList
+              ListHeaderComponent={this.props.ListHeaderComponent}
               data={this.props.data}
               keyExtractor={this.props.keyExtractor}
               renderItem={this.props.renderItem}
