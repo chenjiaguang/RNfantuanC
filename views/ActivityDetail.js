@@ -107,6 +107,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   onJumpActivityJoiners = (id) => {
     StatusBar.setBarStyle('dark-content')
+    if (Platform.OS === 'android') {
+      UtilsModule.autoSetNavBar()
+    }
     this.props.navigation.navigate('ActivityJoiners', { id: id })
   }
   scanCode = (id) => {
@@ -122,6 +125,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         StatusBar.setBarStyle('dark-content')
       } else {
         StatusBar.setBarStyle('light-content')
+      }
+      if (Platform.OS === 'android') {
+        UtilsModule.autoSetNavBar()
       }
       this._headNav.setState({ value: value })
     }
@@ -291,6 +297,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       StatusBar.setBarStyle('light-content')
       if (Platform.OS === 'android') {
         StatusBar.setTranslucent(true)
+        UtilsModule.autoSetNavBar()
       }
     }).catch(err => {
       console.log('获取活动数据失败', err)
@@ -305,7 +312,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   componentWillUnmount() {
     StatusBar.setBarStyle('dark-content')
     if (Platform.OS === 'android') {
-      StatusBar.setTranslucent(true)
+      UtilsModule.autoSetNavBar()
     }
   }
   share = () => {

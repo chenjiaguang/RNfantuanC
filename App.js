@@ -28,10 +28,10 @@ export default class App extends React.Component {
     super(props)
   }
   componentWillMount() {
-    StatusBar.setBarStyle('dark-content')
-    if (Platform.OS === 'android') {
-       StatusBar.setTranslucent(true)
-    }
+    // StatusBar.setBarStyle('dark-content')
+    // if (Platform.OS === 'android') {
+    //    StatusBar.setTranslucent(true)
+    // }
     // console.log('appWillMount', this.props, AppNavigators)
     //   let CalendarManager = NativeModules.CalendarManager;
     //   CalendarManager.addEvent('Birthday Party', '4 Privet Drive, Surrey');

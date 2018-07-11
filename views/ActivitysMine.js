@@ -25,7 +25,7 @@ class HeaderRight extends React.Component {
       '客服电话：400-680-6307',
       [
         {
-          text: '取消', onPress: () => console.log('Cancel Pressed'), style: { color: '#0076FF' }
+          text: '取消', onPress: () => { }, style: { color: '#0076FF' }
         },
         {
           text: '拨打电话', onPress: () =>
