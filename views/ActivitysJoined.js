@@ -11,6 +11,7 @@ import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
 import Text from '../components/MyText'
+import FantTouchableHighlight from '../components/FantTouchableHighlight'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -64,7 +65,7 @@ export default class ActivitysJoined extends React.Component {
   }
   renderItem = ({ item }) => {
     let active = this.state.activeStatus.indexOf(item.status_text) > -1
-    return (<TouchableWithoutFeedback onPress={() => this.onJumpActivityCodeDetail(item.check_code)}>
+    return (<FantTouchableHighlight onPress={() => this.onJumpActivityCodeDetail(item.check_code)}>
       <View style={styles.item}>
         <Image
           style={styles.img}
@@ -91,7 +92,7 @@ export default class ActivitysJoined extends React.Component {
           </View>
         </View>
       </View>
-    </TouchableWithoutFeedback>)
+    </FantTouchableHighlight>)
 
   }
   render() {
