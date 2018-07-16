@@ -13,5 +13,6 @@
   "camera": 58984,
   "share": 58983,
   "password-visible": 59006,
-  "password-hidden": 59005
+  "password-hidden": 59005,
+  "help": 58987
 }
