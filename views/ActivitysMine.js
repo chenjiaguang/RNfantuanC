@@ -4,6 +4,8 @@ import {
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
+  TouchableHighlight,
+  TouchableOpacity,
   Alert,
   Linking
 } from 'react-native';
@@ -12,6 +14,7 @@ import ActivityEmpty from '../components/ActivityEmpty'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
 import Text from '../components/MyText'
+import FantTouchableHighlight from '../components/FantTouchableHighlight'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -95,7 +98,8 @@ export default class ActivitysMine extends React.Component {
   }
   renderItem = ({ item }) => {
     let active = this.state.activeStatus.indexOf(item.status_text) > -1
-    return (<TouchableWithoutFeedback onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
+    return (<FantTouchableHighlight
+      onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
       <View style={styles.item}>
         <Image
           style={styles.img}
@@ -120,7 +124,7 @@ export default class ActivitysMine extends React.Component {
           </View>
         </View>
       </View>
-    </TouchableWithoutFeedback>)
+    </FantTouchableHighlight>)
   }
   render() {
     return <View style={styles.container}>
