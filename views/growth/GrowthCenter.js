@@ -17,6 +17,7 @@ import Toast from  '../../components/Toast'
 import commonStyle from "../../static/commonStyle";
 import SwipBackModule from '../../modules/SwipBackModule'
 import Text from '../../components/MyText'
+import Progress from '../../components/Progress'
 
 export default class GrowthCenter extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
   constructor (props) {
@@ -38,8 +39,13 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
     <View style={styles.header}>
       <Image style={styles.avatar} source={{uri: userAvatar}} />
       <Image style={styles.level} source={levelImage['lv' + userLevel]} />
-      <Text style={styles.name} numberOfLines={1}>{userName}</Text>
-      <Text style={styles.joinDays} numberOfLines={1}>今天是你加入范团的第{joneDays}天哦</Text>
+      <View style={styles.name} numberOfLines={1}>{userName}
+        <Text numberOfLines={1} style={{fontSize: px2dp(34), color: '#333'}}>{userName}</Text>
+      </View>
+      <View style={styles.joinDays}>
+        <Text numberOfLines={1} style={{fontSize: px2dp(20), color: '#666'}}>今天是你加入范团的第{joneDays}天哦</Text>
+      </View>
+      <Progress width={px2dp(600)} height={px2dp(10)} colors={['#40D8FF', '#1EB0FD']} style={{marginTop: px2dp(30)}} />
       <TouchableWithoutFeedback>
         <View style={styles.knowMore}>
           <Text style={styles.knowMoreText}>了解更多</Text>
@@ -79,8 +85,7 @@ const styles = StyleSheet.create({
     width: px2dp(120),
     height: px2dp(120),
     marginTop: px2dp(40),
-    borderRadius: px2dp(60),
-    backgroundColor:'red'
+    borderRadius: px2dp(60)
   },
   level: {
     width:px2dp(53),
@@ -88,15 +93,13 @@ const styles = StyleSheet.create({
     marginTop: px2dp(20)
   },
   name: {
-    fontSize: px2dp(34),
-    lineHeight: px2dp(54),
-    fontWeight: '700',
-    paddingTop: px2dp(10)
+    height: px2dp(54),
+    justifyContent: 'center',
+    marginTop: px2dp(10)
   },
   joinDays: {
-    fontSize: px2dp(20),
-    lineHeight: px2dp(40),
-    color: '#666'
+    height: px2dp(40),
+    justifyContent: 'center'
   },
   knowMore: {
     position: 'absolute',
