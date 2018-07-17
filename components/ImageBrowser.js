@@ -7,11 +7,10 @@ import ActionSheet from 'react-native-actionsheet' // RN官方提供ios的Action
 import Toast from '../components/Toast'
 import SwipBackModule from '../modules/SwipBackModule';
 import Text from '../components/MyText'
-// import DownloadUtil from '../lib/DownloadUtil';
 let DownloadUtil
 if (Platform.OS == 'android') {
   //ios如果加载这个就会报错
-  DownloadUtil = require('../lib/DownloadUtil')
+  DownloadUtil = require('../lib/DownloadUtil').default
 }
 export default class ImageBrowser extends React.Component {
   constructor(props) {

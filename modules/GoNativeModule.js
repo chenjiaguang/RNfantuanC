@@ -60,5 +60,7 @@ import { NativeModules } from 'react-native';
  * 参数：图片url 标题 内容 跳转url
  * 活动分享
  * 
+ * 
+ * goAfterWXBindPhone
  */
 export default NativeModules.GoNativeModule;
