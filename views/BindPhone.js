@@ -69,6 +69,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
         if (Platform.OS == 'android') {
           GoNativeModule && GoNativeModule.goAfterWXBindPhone()
         }else{
+          GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
           SwipBackModule && SwipBackModule.exit()
         }
       }
