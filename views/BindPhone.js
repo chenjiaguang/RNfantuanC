@@ -14,6 +14,7 @@ import Iconfont from "../components/cxicon/CXIcon"; // 自定义iconfont字体�
 import Toast from  '../components/Toast'
 import commonStyle from "../static/commonStyle";
 import SwipBackModule from '../modules/SwipBackModule'
+import GoNativeModule from '../modules/GoNativeModule'
 import Text from '../components/MyText'
 
 export default class BindPhone extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
@@ -64,6 +65,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
         return false
       } else if (res && !Boolean(res.error)) {
         // 绑定成功，退出页面
+        GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
         SwipBackModule && SwipBackModule.exit()
       }
     }, err => {

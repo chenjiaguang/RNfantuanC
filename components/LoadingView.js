@@ -1,6 +1,6 @@
 
 
-import { requireNativeComponent, View, Platform, Image, Text, StyleSheet } from 'react-native';
+import { requireNativeComponent, View, Platform, Image, Text, StyleSheet, Animated } from 'react-native';
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import px2dp from '../lib/px2dp';
@@ -19,23 +19,26 @@ class LoadingView extends Component {
       rotate: 0
     }
   }
-  componentDidMount = () => {
+  componentDidMount() {
+    let duration = 1000 / 12
     this.timer = setInterval(() => {
       let rotate = (this.state.rotate + 30) % 360
       this.setState({
         rotate: rotate
       });
-    }, 1000 / 12)
+    }, duration)
   }
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     clearInterval(this.timer)
   }
   render() {
+    let {rotate} = this.state
+    console.log('render', this.state.rotate)
     return <View {...this.props}
       style={[this.props.style, { paddingTop: px2dp(32), justifyContent: 'center', flexDirection: 'row' }]}>
-      <Image style={styles.image}
-        source={require('../static/image/rn_loading_01.png')}
-        transform={[{ rotateZ: this.state.rotate + 'deg' }]} />
+      <Image
+        style={[styles.image, {transform: [{ rotateZ: rotate + 'deg' }]}]}
+        source={require('../static/image/rn_loading_01.png')} />
       <Text style={styles.text}>正在加载...</Text>
     </View>;
   }

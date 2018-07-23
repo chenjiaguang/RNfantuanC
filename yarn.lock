@@ -2699,6 +2699,10 @@ is-promise@^2.1.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/is-promise/download/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
 
+is-promise@~2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/is-promise/download/is-promise-2.0.0.tgz#058b6404ba57c4df03c92ed987c000bda58753a6"
+
 is-regex@^1.0.4:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/is-regex/download/is-regex-1.0.4.tgz#5517489b547091b0930e095654ced25ee97e9491"
@@ -4139,6 +4143,13 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+prop-types@^15.6.2:
+  version "15.6.2"
+  resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
+  dependencies:
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/pseudomap/download/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
@@ -4249,6 +4260,16 @@ react-native-fetch-blob@^0.10.8:
     base-64 "0.1.0"
     glob "7.0.6"
 
+react-native-gifted-listview@0.0.15:
+  version "0.0.15"
+  resolved "http://registry.npm.taobao.org/react-native-gifted-listview/download/react-native-gifted-listview-0.0.15.tgz#c92b5b7b32cea7705b727ab4bc199751379dce07"
+  dependencies:
+    react-native-gifted-spinner "^0.0.4"
+
+react-native-gifted-spinner@^0.0.4:
+  version "0.0.4"
+  resolved "http://registry.npm.taobao.org/react-native-gifted-spinner/download/react-native-gifted-spinner-0.0.4.tgz#32652b5a60423f14719a1c3125613299af0995f2"
+
 react-native-image-crop-picker@^0.20.3:
   version "0.20.3"
   resolved "http://registry.npm.taobao.org/react-native-image-crop-picker/download/react-native-image-crop-picker-0.20.3.tgz#565d69c1764e96abef23871fe4d6d58b1ee35e18"
@@ -4278,6 +4299,12 @@ react-native-keyboard-spacer@^0.4.1:
   version "0.4.1"
   resolved "http://registry.npm.taobao.org/react-native-keyboard-spacer/download/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
 
+react-native-linear-gradient@^2.4.0:
+  version "2.4.0"
+  resolved "http://registry.npm.taobao.org/react-native-linear-gradient/download/react-native-linear-gradient-2.4.0.tgz#51d8ea12bb72a59bede9edc87b694b16b64cf435"
+  dependencies:
+    prop-types "^15.5.10"
+
 "react-native-material-design-styles@git+https://github.com/react-native-material-design/react-native-material-design-styles.git":
   version "0.2.6"
   resolved "git+https://github.com/react-native-material-design/react-native-material-design-styles.git#bdc029c1a1c83ff563d10868be38b8aed1e9989b"
@@ -4292,6 +4319,16 @@ react-native-material-design@^0.3.7:
 react-native-picker@^4.3.7:
   version "4.3.7"
   resolved "http://registry.npm.taobao.org/react-native-picker/download/react-native-picker-4.3.7.tgz#9842e8c62ff0d8b676e9514d9f9172413c0518a8"
+
+react-native-refresh-list-view@^1.0.10:
+  version "1.0.10"
+  resolved "http://registry.npm.taobao.org/react-native-refresh-list-view/download/react-native-refresh-list-view-1.0.10.tgz#4f801e8526f9028d4273f04283506f7a1eda8a0b"
+
+react-native-refresher@^0.1.1:
+  version "0.1.1"
+  resolved "http://registry.npm.taobao.org/react-native-refresher/download/react-native-refresher-0.1.1.tgz#865be133328bc7eaa5983898cafd0ed750b14b73"
+  dependencies:
+    is-promise "~2.0.0"
 
 react-native-root-siblings@^2.2.0:
   version "2.2.0"
@@ -4315,6 +4352,12 @@ react-native-safe-area-view@^0.7.0:
 react-native-storage@^0.2.2:
   version "0.2.2"
   resolved "http://registry.npm.taobao.org/react-native-storage/download/react-native-storage-0.2.2.tgz#4449197f122b2da0650e3704e1f050260ed58d9f"
+
+react-native-swiper@^1.5.13:
+  version "1.5.13"
+  resolved "http://registry.npm.taobao.org/react-native-swiper/download/react-native-swiper-1.5.13.tgz#fa695cd4ab77b9a9df2d2bfee38ea7274dd07a2e"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-tab-view@^0.0.74:
   version "0.0.74"
