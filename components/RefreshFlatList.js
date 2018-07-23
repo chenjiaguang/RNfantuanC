@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
+import RNRefreshFlatList from '../components/RNRefreshFlatList'
 import Text from '../components/MyText'
 
 export default class AndroidRefreshFlatList extends Component {

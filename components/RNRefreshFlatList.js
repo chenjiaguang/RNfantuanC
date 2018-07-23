@@ -20,67 +20,43 @@ class CustomFlatList extends Component {
     }
   }
 
-  componentDidMount() {
-    this.pull && this.pull.startRefresh()
-  }
+  // componentDidMount() {
+  //   this.pull && this.pull.startRefresh()
+  // }
 
-  onPullRelease = () => {
-    let {refreshing} = this.state
-    if (refreshing) {
-      return false
-    }
-    let rData = {
-      token: 'lcaKiq5GIC_FHqubOBcI6FUKaL8N171U',
-      pn: 1
-    }
-    this.setState({
-      refreshing: true
-    })
-    this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 0})
-    this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 1})
-    let time = new Date().getTime()
-    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
-      let leftTime = 1000 - (new Date().getTime() - time)
-      if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
-        this.timer = setTimeout(() => {
-          this.setState({
-            refreshing: false
-          })
-          this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
-          this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
-          this.pull.finishRefresh()
-        }, leftTime)
-      } else {
-        this.setState({
-          refreshing: false
-        })
-        this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
-        this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
-        this.pull.finishRefresh()
-      }
-      if (res && res.msg) {
-        Toast.show(res.msg)
-      }
-      if (res && res.data) {
-        this.setState({
-          dataList: res.data.list
-        })
-      }
-    }).catch(err => {
-      this.setState({
-        refreshing: false
-      })
-      this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
-      this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
-      this.pull.finishRefresh()
-    })
-  }
+  // onPullRelease = () => {
+  //   let {refreshing} = this.state
+  //   if (refreshing) {
+  //     return false
+  //   }
+  //   let rData = {
+  //     token: 'lcaKiq5GIC_FHqubOBcI6FUKaL8N171U',
+  //     pn: 1
+  //   }
+  //   this.setRefreshing()
+  //   _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
+  //     this.setRefreshed()
+  //     if (res && res.msg) {
+  //       Toast.show(res.msg)
+  //     }
+  //     if (res && res.data) {
+  //       this.setState({
+  //         dataList: res.data.list
+  //       })
+  //     }
+  //   }).catch(err => {
+  //     this.setState({
+  //       refreshing: false
+  //     })
+  //     this.setLoaded()
+  //   })
+  // }
 
-  renderItem = ({item}) => {
-    return <View>
-      <Text>{item.title}</Text>
-    </View>
-  }
+  // renderItem = ({item}) => {
+  //   return <View>
+  //     <Text>{item.title}</Text>
+  //   </View>
+  // }
 
   topIndicatorRender = () => {
     return <View style={{height: px2dp(100)}}>
@@ -99,12 +75,38 @@ class CustomFlatList extends Component {
     }).start(() => this.startAnimation());
   }
 
-  onPushing = () => {
-    console.log('onPushing')
+  setRefreshing = () => {
+    this.setState({
+      refreshing: true
+    })
+    this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 0})
+    this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 1})
+    this.time = new Date().getTime()
   }
 
-  setLoaded = () => {
-    
+  setRefreshed = (isend) => {
+    let _isend = idend ? true : false
+    let leftTime = 1000 - (new Date().getTime() - this.time)
+    if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.setState({
+          refreshing: false,
+          isend: _isend
+        })
+        this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
+        this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
+        this.pull.finishRefresh()
+      }, leftTime)
+    } else {
+      this.setState({
+        refreshing: false,
+        isend: _isend
+      })
+      this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
+      this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
+      this.pull.finishRefresh()
+    }
   }
 
   render() {
@@ -112,14 +114,16 @@ class CustomFlatList extends Component {
     return (
       <View style={styles.container}>
        <PullFlatList
+        {...this.props}
         data={dataList}
         ref={(c) => this.pull = c}
         isContentScroll={true}
         style={{flex: 1, width: px2dp(750)}}
-        onPullRelease={this.onPullRelease}
+        onPullRelease={this.props.onRefresh}
+        onEndReached={this.props.onLoadMore}
         topIndicatorRender={this.topIndicatorRender}
         topIndicatorHeight={px2dp(100)}
-        renderItem={this.renderItem}
+        renderItem={this.props.renderItem}
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.1}
         ListFooterComponent={<View style={{ flexDirection: 'column', alignItems: 'center' }}>
