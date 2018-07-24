@@ -19,7 +19,6 @@ import ActivitysSignUpManagement from './views/ActivitysSignUpManagement';
 import ActivityJoiners from './views/ActivityJoiners';
 import GrowthCenter from './views/growth/GrowthCenter';
 import GrowthIntro from './views/growth/GrowthIntro';
-import TestFlatList from './views/TestFlatList';
 import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import SwipBackModule from './modules/SwipBackModule';
@@ -72,7 +71,6 @@ const SimpleApp = createStackNavigator({
     ActivityJoiners: { screen: ActivityJoiners, path: '/ActivityJoiners' },
     GrowthCenter: { screen: GrowthCenter, path: '/growth/center' },
     GrowthIntro: { screen: GrowthIntro, path: '/growth/intro' },
-    TestFlatList: { screen: TestFlatList, path: '/test' },
 }, {
         navigationOptions: ({ navigation, screenProps }) => {
             let statusBarHeight = getStatusBarHeight(true)
