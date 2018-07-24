@@ -122,7 +122,7 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
     console.log('完善个人资料')
   }
   fetchInfo = () => {
-    _FetchData(_Api + '/jv/user/point/getUserPoint', rData).then(res => {
+    _FetchData(_Api + '/jv/user/point/getUserPoint').then(res => {
       if (res && Boolean(res.error) && res.msg) {
         Toast.show(res.msg)
       } else if (res && !Boolean(res.error) && res.data) {
