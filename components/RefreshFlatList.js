@@ -15,12 +15,83 @@ import {
 } from 'react-native'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
-const refreshIcon = require('../static/image/rn_refresh_icon.png')
-const refreshingIcon = require('../static/image/rn_refreshing_icon.png')
 import {PullFlatList} from 'react-native-rk-pull-to-refresh'
 import Text from '../components/MyText'
+const refreshIcon = require('../static/image/rn_refresh_icon.png')
+const refreshingIcon = require('../static/image/rn_refreshing_icon.png')
+const RefreshFlatList = Platform.OS == 'ios' ? View : requireNativeComponent('RCTRefreshLayoutView', AndroidRefreshFlatList, {
+  nativeOnly: { onRefresh: true, onLoadMore: true }
+})
 
-export default class AndroidRefreshFlatList extends Component {
+class AndroidRefreshFlatList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  static propTypes = {
+    ...View.propTypes,
+    onRefresh: PropTypes.func,
+    onLoadMore: PropTypes.func,
+    refreshing: PropTypes.bool,
+    isend: PropTypes.bool
+  }
+
+  setNativeProps = (props) => {
+    if (this._nativeSwipeRefreshLayout.setNativeProps) {
+      this._nativeSwipeRefreshLayout.setNativeProps(props)
+    }
+  }
+
+  render() {
+    return <View style={{ flex: 1 }}>
+      {this.props.data ? null : <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />}
+      <RefreshFlatList
+        {...this.props}
+        style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}
+        ref={(component) => this._nativeSwipeRefreshLayout = component}
+        onLoadMore={this._onLoadMore}
+        onRefresh={this._onRefresh}
+        refreshing={false}
+        isend={false}
+      >
+        <FlatList
+          ListHeaderComponent={this.props.ListHeaderComponent}
+          data={this.props.data}
+          keyExtractor={this.props.keyExtractor}
+          renderItem={this.props.renderItem}
+        />
+      </RefreshFlatList>
+    </View>
+  }
+
+  //将状态置为正在请求，请求期间不能出发刷新或加载更多，避免异步返回结果导致数据出错
+  startFetching = () => {
+    this.setNativeProps({refreshing: true})
+  }
+
+  //将状态置为结束请求，可执行刷新或加载更多
+  endFetching = (isend) => {
+    if (isend === false || isend === true) {
+      this.setNativeProps({isend: isend})
+    }
+    this.setNativeProps({refreshing: false})
+  }
+
+  _onRefresh = (event) => {
+    if (!this.state.fetching) {
+      this.props.onRefresh()
+    }
+  }
+
+  _onLoadMore = (event) => {
+    if (!this.state.isend) {
+      this.props.onLoadMore()
+    }
+  }
+}
+
+class IosRefreshFlatList extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,14 +99,6 @@ export default class AndroidRefreshFlatList extends Component {
       fetching: false,
       rotate: new Animated.Value(0)
     }
-  }
-
-  static propTypes = {
-    ...View.propTypes,
-    onRefresh: PropTypes.func,
-    onLoadMore: PropTypes.func,
-    fetching: PropTypes.bool,
-    isend: PropTypes.bool
   }
 
   topIndicatorRender = () => {
@@ -65,50 +128,23 @@ export default class AndroidRefreshFlatList extends Component {
     this.startAnimation()
   }
 
-  setNativeProps = (props) => {
-    if (this._nativeSwipeRefreshLayout.setNativeProps) {
-      this._nativeSwipeRefreshLayout.setNativeProps(props)
-    }
-  }
-
   render() {
     let {fetching, onRefresh, ...others} = this.props
-    return (
-      Platform.OS == 'ios' ?
-        <PullFlatList
-          {...others}
-          data={this.props.data}
-          ref={(c) => this._nativeSwipeRefreshLayout = c}
-          isContentScroll={true}
-          style={{flex: 1, backgroundColor: 'transparent'}}
-          onPullRelease={this._onRefresh}
-          onEndReached={this._onLoadMore}
-          topIndicatorRender={this.topIndicatorRender}
-          topIndicatorHeight={px2dp(100)}
-          renderItem={this.props.renderItem}
-          keyExtractor={this.props.keyExtractor}
-          onEndReachedThreshold={0.1}
-          ListFooterComponent={this.bottomIndicatorRender()}/> :
-        <View style={{ flex: 1 }}>
-          {this.props.data ? null : <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />}
-          <RefreshFlatList
-            {...this.props}
-            style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}
-            ref={(component) => this._nativeSwipeRefreshLayout = component}
-            onLoadMore={this._onLoadMore}
-            onRefresh={this._onRefresh}
-            refreshing={false}
-            isend={false}
-          >
-            <FlatList
-              ListHeaderComponent={this.props.ListHeaderComponent}
-              data={this.props.data}
-              keyExtractor={this.props.keyExtractor}
-              renderItem={this.props.renderItem}
-            />
-          </RefreshFlatList>
-        </View>
-    );
+    return <PullFlatList
+      {...others}
+      data={this.props.data}
+      ref={(c) => this._nativeSwipeRefreshLayout = c}
+      isContentScroll={true}
+      style={{flex: 1, backgroundColor: 'transparent'}}
+      onPullRelease={this._onRefresh}
+      onEndReached={this._onLoadMore}
+      topIndicatorRender={this.topIndicatorRender}
+      topIndicatorHeight={px2dp(100)}
+      renderItem={this.props.renderItem}
+      keyExtractor={this.props.keyExtractor}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={this.bottomIndicatorRender()}
+    />
   }
 
   //将状态置为正在请求，请求期间不能出发刷新或加载更多，避免异步返回结果导致数据出错
@@ -157,6 +193,6 @@ export default class AndroidRefreshFlatList extends Component {
   }
 }
 
-const RefreshFlatList = Platform.OS == 'ios' ? View : requireNativeComponent('RCTRefreshLayoutView', AndroidRefreshFlatList, {
-  nativeOnly: { onRefresh: true, onLoadMore: true }
-})
+const ExportList = Platform.OS === 'android' ? AndroidRefreshFlatList : IosRefreshFlatList
+
+export default ExportList

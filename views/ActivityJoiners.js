@@ -36,8 +36,9 @@ export default class ActivitysJoined extends React.Component {
       pn: pn,
       id: this.props.navigation.state.params.id
     }
+    this.pullToRefreshListView.startFetching()
     _FetchData(_Api + '/jv/qz/v21/activityjoined', rData).then(res => {
-      this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
+      this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
         data = res.data.list
@@ -50,7 +51,7 @@ export default class ActivitysJoined extends React.Component {
         loaded: true
       })
     }).catch(err => {
-      this.pullToRefreshListView.setLoaded(true)
+      this.pullToRefreshListView.endFetching()
     })
   }
   static navigationOptions = ({ navigation }) => {
