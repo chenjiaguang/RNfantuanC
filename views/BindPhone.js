@@ -3,7 +3,8 @@ import {
   ScrollView,
   View,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
@@ -65,8 +66,12 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
         return false
       } else if (res && !Boolean(res.error)) {
         // 绑定成功，退出页面
-        GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
-        SwipBackModule && SwipBackModule.exit()
+        if (Platform.OS == 'android') {
+          GoNativeModule && GoNativeModule.goAfterWXBindPhone()
+        }else{
+          GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
+          SwipBackModule && SwipBackModule.exit()
+        }
       }
     }, err => {
       // 绑定出错

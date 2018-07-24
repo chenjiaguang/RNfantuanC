@@ -87,6 +87,18 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       gesturesEnabled: (navigation.state.params && navigation.state.params.gesturesEnabled) ? navigation.state.params.gesturesEnabled : true
     }
   }
+  setBarStyle(barStyle) {
+    if (barStyle == 'dark-content' || barStyle == 'light-content') {
+      if (this.lastBarStyle != barStyle) {
+        if (Platform.OS === 'android') {
+          UtilsModule.setBarStyle(barStyle)
+        }else{
+          StatusBar.setBarStyle(barStyle)
+        }
+        this.lastBarStyle = barStyle
+      }
+    }
+  }
   onJumpPublishArticleDynamic = (id, name, actid) => {
     GoNativeModule && GoNativeModule.goPublishArticleDynamic(id, name, actid)
   }
@@ -106,10 +118,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl, hasActivity ? "1" : "0")
   }
   onJumpActivityJoiners = (id) => {
-    StatusBar.setBarStyle('dark-content')
-    if (Platform.OS === 'android') {
-      UtilsModule.autoSetNavBar()
-    }
+    this.setBarStyle('dark-content')
     this.props.navigation.navigate('ActivityJoiners', { id: id })
   }
   scanCode = (id) => {
@@ -122,12 +131,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     value = value > 1 ? 1 : value
     if (newY < range + 100) {
       if (value >= 1) {
-        StatusBar.setBarStyle('dark-content')
+        this.setBarStyle('dark-content')
       } else {
-        StatusBar.setBarStyle('light-content')
-      }
-      if (Platform.OS === 'android') {
-        UtilsModule.autoSetNavBar()
+        this.setBarStyle('light-content')
       }
       this._headNav.setState({ value: value })
     }
@@ -294,11 +300,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         activity: _obj
       })
       this.props.navigation.setParams({ 'activity': _obj })
-      StatusBar.setBarStyle('light-content')
-      if (Platform.OS === 'android') {
-        StatusBar.setTranslucent(true)
-        UtilsModule.autoSetNavBar()
-      }
+      this.setBarStyle('light-content')
     }).catch(err => {
       console.log('获取活动数据失败', err)
       // this.setState({
@@ -310,10 +312,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     this.fetchActivity()
   }
   componentWillUnmount() {
-    StatusBar.setBarStyle('dark-content')
-    if (Platform.OS === 'android') {
-      UtilsModule.autoSetNavBar()
-    }
+    this.setBarStyle('dark-content')
   }
   share = () => {
     let activity = this.props.navigation.state.params.activity
