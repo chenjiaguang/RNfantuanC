@@ -61,6 +61,12 @@ import { NativeModules } from 'react-native';
  * 活动分享
  * 
  * 
- * goAfterWXBindPhone
+ * goAfterWXBindPhone(android)
+ * 
+ * 
+ * goRootTabBar(ios)
+ * 
+ * 
+ * 
  */
 export default NativeModules.GoNativeModule;

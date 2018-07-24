@@ -79,15 +79,11 @@ class AndroidRefreshFlatList extends Component {
   }
 
   _onRefresh = (event) => {
-    if (!this.state.fetching) {
       this.props.onRefresh()
-    }
   }
 
   _onLoadMore = (event) => {
-    if (!this.state.isend) {
       this.props.onLoadMore()
-    }
   }
 }
 
