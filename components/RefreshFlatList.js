@@ -34,7 +34,7 @@ export default class AndroidRefreshFlatList extends Component {
     ...View.propTypes,
     onRefresh: PropTypes.func,
     onLoadMore: PropTypes.func,
-    fetching: PropTypes.bool,
+    refreshing: PropTypes.bool,
     isend: PropTypes.bool
   }
 
@@ -134,7 +134,7 @@ export default class AndroidRefreshFlatList extends Component {
       this.setState(_obj)
       this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
       this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
-      this._nativeSwipeRefreshLayout.finishRefresh()
+      this._nativeSwipeRefreshLayout.finishRefresh && this._nativeSwipeRefreshLayout.finishRefresh()
     }
     if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
       clearTimeout(this.timer)
