@@ -16,6 +16,7 @@ import Progress from '../../components/Progress'
 import Image from '../../components/SmoothImage'
 import TaskItems from './TaskItem'
 import Swiper from 'react-native-swiper'
+import GoNativeModule from "../../modules/GoNativeModule";
 
 // 该页面可接受参数: userLevel 用户等级，userName 用户名称，joinDays 加入范团等天数，needScore 离下一级等成长值
 
@@ -118,10 +119,10 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
     navigate('GrowthIntro')
   }
   goBindWeChat = () => { // _todo
-    console.log('跳转绑定微信')
+    GoNativeModule.goSetting&&GoNativeModule.goSetting()
   }
   goCompleteInfo = () => { // _todo
-    console.log('完善个人资料')
+    GoNativeModule.goUserInfo&&GoNativeModule.goUserInfo()
   }
   fetchInfo = () => {
     _FetchData(_Api + '/jv/user/point/getUserPoint').then(res => {

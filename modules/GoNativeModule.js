@@ -60,13 +60,17 @@ import { NativeModules } from 'react-native';
  * 参数：图片url 标题 内容 跳转url
  * 活动分享
  * 
+ * goAfterWXBindPhone/android
+ * goRootTabBar/ios
+ * 无参数
+ * 微信登陆绑定手机成功后跳转
  * 
- * goAfterWXBindPhone(android)
+ * goSetting
+ * 无参数
+ * 跳转设置页
  * 
- * 
- * goRootTabBar(ios)
- * 
- * 
- * 
+ * goUserInfo
+ * 无参数
+ * 跳转用户信息页
  */
 export default NativeModules.GoNativeModule;
