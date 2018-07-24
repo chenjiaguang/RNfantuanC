@@ -15,7 +15,6 @@ import {
 } from 'react-native'
 import px2dp from '../lib/px2dp';
 import LoadingView from '../components/LoadingView'
-import RNRefreshFlatList from '../components/RNRefreshFlatList'
 const refreshIcon = require('../static/image/rn_refresh_icon.png')
 const refreshingIcon = require('../static/image/rn_refreshing_icon.png')
 import {PullFlatList} from 'react-native-rk-pull-to-refresh'
