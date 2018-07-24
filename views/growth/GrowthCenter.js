@@ -167,7 +167,7 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
         <View style={styles.header}>
           <Image style={styles.avatar} source={userAvatar || defaultAvatar} />
           <Image style={[styles.level, {width: userLevel >= 10 ? px2dp(63) : px2dp(53)}]} source={levelImage['lv' + userLevel]} resizeMode={'contain'} />
-          <View style={styles.name} numberOfLines={1}>{userName}
+          <View style={styles.name} numberOfLines={1}>
             <Text numberOfLines={1} style={{fontSize: px2dp(34), color: '#333'}}>{userName}</Text>
           </View>
           <View style={styles.joinDays}>
