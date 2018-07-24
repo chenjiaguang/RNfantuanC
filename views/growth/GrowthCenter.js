@@ -122,9 +122,6 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
     console.log('完善个人资料')
   }
   fetchInfo = () => {
-    let rData = {
-      token: '4eac1a2923f245c4a8cc77ac5fd47489'
-    }
     _FetchData(_Api + '/jv/user/point/getUserPoint', rData).then(res => {
       if (res && Boolean(res.error) && res.msg) {
         Toast.show(res.msg)

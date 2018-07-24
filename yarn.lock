@@ -2699,10 +2699,6 @@ is-promise@^2.1.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/is-promise/download/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
 
-is-promise@~2.0.0:
-  version "2.0.0"
-  resolved "http://registry.npm.taobao.org/is-promise/download/is-promise-2.0.0.tgz#058b6404ba57c4df03c92ed987c000bda58753a6"
-
 is-regex@^1.0.4:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/is-regex/download/is-regex-1.0.4.tgz#5517489b547091b0930e095654ced25ee97e9491"
@@ -4260,16 +4256,6 @@ react-native-fetch-blob@^0.10.8:
     base-64 "0.1.0"
     glob "7.0.6"
 
-react-native-gifted-listview@0.0.15:
-  version "0.0.15"
-  resolved "http://registry.npm.taobao.org/react-native-gifted-listview/download/react-native-gifted-listview-0.0.15.tgz#c92b5b7b32cea7705b727ab4bc199751379dce07"
-  dependencies:
-    react-native-gifted-spinner "^0.0.4"
-
-react-native-gifted-spinner@^0.0.4:
-  version "0.0.4"
-  resolved "http://registry.npm.taobao.org/react-native-gifted-spinner/download/react-native-gifted-spinner-0.0.4.tgz#32652b5a60423f14719a1c3125613299af0995f2"
-
 react-native-image-crop-picker@^0.20.3:
   version "0.20.3"
   resolved "http://registry.npm.taobao.org/react-native-image-crop-picker/download/react-native-image-crop-picker-0.20.3.tgz#565d69c1764e96abef23871fe4d6d58b1ee35e18"
@@ -4320,15 +4306,9 @@ react-native-picker@^4.3.7:
   version "4.3.7"
   resolved "http://registry.npm.taobao.org/react-native-picker/download/react-native-picker-4.3.7.tgz#9842e8c62ff0d8b676e9514d9f9172413c0518a8"
 
-react-native-refresh-list-view@^1.0.10:
-  version "1.0.10"
-  resolved "http://registry.npm.taobao.org/react-native-refresh-list-view/download/react-native-refresh-list-view-1.0.10.tgz#4f801e8526f9028d4273f04283506f7a1eda8a0b"
-
-react-native-refresher@^0.1.1:
-  version "0.1.1"
-  resolved "http://registry.npm.taobao.org/react-native-refresher/download/react-native-refresher-0.1.1.tgz#865be133328bc7eaa5983898cafd0ed750b14b73"
-  dependencies:
-    is-promise "~2.0.0"
+react-native-rk-pull-to-refresh@^1.2.1:
+  version "1.2.1"
+  resolved "http://registry.npm.taobao.org/react-native-rk-pull-to-refresh/download/react-native-rk-pull-to-refresh-1.2.1.tgz#8f88c98aca72dca1a58cbfe21b0cb6aceffe31de"
 
 react-native-root-siblings@^2.2.0:
   version "2.2.0"
