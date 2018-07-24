@@ -68,24 +68,14 @@ class AndroidRefreshFlatList extends Component {
   //将状态置为正在请求，请求期间不能出发刷新或加载更多，避免异步返回结果导致数据出错
   startFetching = () => {
     this.setNativeProps({refreshing: true})
-    this.time = new Date().getTime()
   }
 
   //将状态置为结束请求，可执行刷新或加载更多
   endFetching = (isend) => {
-    let leftTime = 1000 - (new Date().getTime() - this.time)
-    const endFunction = () => {
-      if (isend === false || isend === true) {
-        this.setNativeProps({isend: isend})
-      }
-      this.setNativeProps({refreshing: false})
+    if (isend === false || isend === true) {
+      this.setNativeProps({isend: isend})
     }
-    if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
-      clearTimeout(this.timer)
-      this.timer = setTimeout(endFunction, leftTime)
-    } else {
-      endFunction()
-    }
+    this.setNativeProps({refreshing: false})
   }
 
   _onRefresh = (event) => {
