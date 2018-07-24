@@ -91,7 +91,7 @@ class IosRefreshFlatList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isend: true,
+      isend: false,
       fetching: false,
       rotate: new Animated.Value(0)
     }
@@ -104,10 +104,21 @@ class IosRefreshFlatList extends Component {
     </View>
   }
   bottomIndicatorRender = () => {
-    let {isend} = this.state
-    return isend ? null : <View style={{ height: px2dp(100), justifyContent: 'center', alignItems: 'center' }}>
+    let {isend, fetching} = this.state
+    let {data} = this.props
+    return (data && data.length > 0 && !isend && fetching) ? <View style={{ height: px2dp(100), justifyContent: 'center', alignItems: 'center' }}>
       <LoadingView text="正在加载更多的数据..." />
-    </View>
+    </View> : null
+  }
+
+  emptyComponent = () => {
+    let {isend, fetching} = this.state
+    let {data} = this.props
+    let element = null
+    if (!data && !isend && fetching) { // 无数据且正在加载，且不是最后一页
+      element = <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />
+    }
+    return element
   }
 
   startAnimation = () => {
@@ -140,6 +151,7 @@ class IosRefreshFlatList extends Component {
       keyExtractor={this.props.keyExtractor}
       onEndReachedThreshold={0.1}
       ListFooterComponent={this.bottomIndicatorRender()}
+      ListEmptyComponent={this.emptyComponent()}
     />
   }
 
@@ -150,13 +162,10 @@ class IosRefreshFlatList extends Component {
     })
     this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 0})
     this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 1})
-    this.time = new Date().getTime()
   }
 
   //将状态置为结束请求，可执行刷新或加载更多
   endFetching = (isend) => {
-    let leftTime = 1000 - (new Date().getTime() - this.time)
-    const endFunction = () => {
       let _obj = (isend === false || isend === true) ? {
         isend: isend,
         fetching: false
@@ -167,13 +176,6 @@ class IosRefreshFlatList extends Component {
       this.ref_refresh_icon && this.ref_refresh_icon.setNativeProps({opacity: 1})
       this.ref_refreshing_icon && this.ref_refreshing_icon.setNativeProps({opacity: 0})
       this._nativeSwipeRefreshLayout.finishRefresh()
-    }
-    if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
-      clearTimeout(this.timer)
-      this.timer = setTimeout(endFunction, leftTime)
-    } else {
-      endFunction()
-    }
   }
 
   _onRefresh = (event) => {

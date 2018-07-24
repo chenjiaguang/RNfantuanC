@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingTop: px2dp(20),
-    paddingBottom: px2dp(20)
+    paddingBottom: px2dp(20),
     paddingRight: px2dp(2)
   },
   knowMoreText: {
