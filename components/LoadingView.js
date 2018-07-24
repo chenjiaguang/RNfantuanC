@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import px2dp from '../lib/px2dp';
 // import Text from '../components/MyText'
+// 可传入text，更改文字部分，可传入textStyle，更改文字样式，可传入iconstyle，更改icon样式
 
 var iface = {
   name: 'RCTLoadingView',
@@ -33,13 +34,12 @@ class LoadingView extends Component {
   }
   render() {
     let {rotate} = this.state
-    console.log('render', this.state.rotate)
     return <View {...this.props}
-      style={[this.props.style, { paddingTop: px2dp(32), justifyContent: 'center', flexDirection: 'row' }]}>
+      style={[this.props.style, { justifyContent: 'center', flexDirection: 'row' }]}>
       <Image
-        style={[styles.image, {transform: [{ rotateZ: rotate + 'deg' }]}]}
+        style={[styles.image, {transform: [{ rotateZ: rotate + 'deg' }]}, this.props.iconStyle]}
         source={require('../static/image/rn_loading_01.png')} />
-      <Text style={styles.text}>正在加载...</Text>
+      <Text style={[styles.text, this.props.textStyle]}>{this.props.text || '正在加载...'}</Text>
     </View>;
   }
 };
@@ -48,8 +48,7 @@ class LoadingView extends Component {
 const styles = StyleSheet.create({
   image: Platform.OS == 'ios' ? {
     width: px2dp(32),
-    height: px2dp(32),
-    marginRight: px2dp(10)
+    height: px2dp(32)
   } :
     {
       width: 16,
@@ -57,9 +56,13 @@ const styles = StyleSheet.create({
       marginRight: 5
     },
   text: Platform.OS == 'ios' ? {
-    fontSize: px2dp(24)
+    fontSize: px2dp(24),
+    color: '#333',
+    marginLeft: px2dp(12)
   } : {
-      fontSize: 12
+      fontSize: 12,
+      color: '#333',
+      marginLeft: px2dp(12)
     },
 })
 

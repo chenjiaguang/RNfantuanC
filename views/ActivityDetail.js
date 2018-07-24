@@ -357,7 +357,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
           </TouchableWithoutFeedback>
         }}
       />
-      {this.state.activity.id == '' ? <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(180) + 25 : px2dp(180) }} /> : null}
+      {this.state.activity.id == '' ? <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(212) + 25 : px2dp(212) }} /> : null}
       <ImageBrowser ref={el => this.ImageBrowser = el} index={browserIndex} images={contentImages} page={this} />
       {this.state.activity.id == '' ? null : <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
         <View style={styles.pageWrapper}>

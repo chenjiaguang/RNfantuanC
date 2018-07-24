@@ -76,8 +76,9 @@ export default class ActivitysMine extends React.Component {
     let rData = {
       pn: pn
     }
+    this.pullToRefreshListView.startFetching()
     _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData).then(res => {
-      this.pullToRefreshListView.setLoaded(res.data.paging.is_end)
+      this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
         data = res.data.list
@@ -90,7 +91,7 @@ export default class ActivitysMine extends React.Component {
         data: data,
       })
     }).catch(err => {
-      this.pullToRefreshListView.setLoaded(true)
+      this.pullToRefreshListView.endFetching()
     })
   }
   componentDidMount = () => {

@@ -7,7 +7,7 @@ import LoadingView from '../components/LoadingView';
 const refreshIcon = require('../static/image/rn_refresh_icon.png')
 const refreshingIcon = require('../static/image/rn_refreshing_icon.png')
 
-import {PullListView, PullFlatList} from 'react-native-rk-pull-to-refresh'
+import {PullFlatList} from 'react-native-rk-pull-to-refresh'
 
 class CustomFlatList extends Component {
   constructor(props) {
@@ -85,7 +85,7 @@ class CustomFlatList extends Component {
   }
 
   setRefreshed = (isend) => {
-    let _isend = idend ? true : false
+    let _isend = isend ? true : false
     let leftTime = 1000 - (new Date().getTime() - this.time)
     if (leftTime > 0) { // 如果1秒内返回结果，则继续显示加载图标，直到满1秒后才隐藏加载图标，否则立即隐藏加载图标
       clearTimeout(this.timer)
@@ -111,38 +111,23 @@ class CustomFlatList extends Component {
 
   render() {
     let {dataList, isend} = this.state
-    return (
-      <View style={styles.container}>
-       <PullFlatList
-        {...this.props}
-        data={dataList}
-        ref={(c) => this.pull = c}
-        isContentScroll={true}
-        style={{flex: 1, width: px2dp(750)}}
-        onPullRelease={this.props.onRefresh}
-        onEndReached={this.props.onLoadMore}
-        topIndicatorRender={this.topIndicatorRender}
-        topIndicatorHeight={px2dp(100)}
-        renderItem={this.props.renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={<View style={{ flexDirection: 'column', alignItems: 'center' }}>
-        {isend ? null : <Text style={{ height: px2dp(100), lineHeight: px2dp(100) }}>正在加载更多的数据...</Text>}
-      </View>}/>
-      </View>
-    )
+    return <PullFlatList
+      {...this.props}
+      data={this.props.data}
+      ref={(c) => this.pull = c}
+      isContentScroll={true}
+      style={{flex: 1}}
+      onPullRelease={this.props.onPullRelease}
+      onEndReached={this.props.onLoadMore}
+      topIndicatorRender={this.topIndicatorRender}
+      topIndicatorHeight={px2dp(100)}
+      renderItem={this.props.renderItem}
+      keyExtractor={this.props.keyExtractor}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={<View style={{ flexDirection: 'column', alignItems: 'center' }}>
+      {isend ? null : <Text style={{ height: px2dp(100), lineHeight: px2dp(100) }}>正在加载更多的数据...</Text>}
+    </View>}/>
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  title: {
-    fontSize: 18,
-    height: 84,
-    textAlign: 'center'
-  }
-})
 
 export default CustomFlatList
