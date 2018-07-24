@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableWithoutFeedback,
-  LayoutAnimation
+  LayoutAnimation,
+  UIManager
 } from 'react-native';
 import px2dp from '../../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
@@ -21,6 +22,7 @@ import Swiper from 'react-native-swiper'
 export default class GrowthCenter extends React.Component {  // 什么参数都不传，则默认是绑定手机都页面，传入isRebind为true时表示新绑手机，界面稍有差异
   constructor (props) {
     super(props)
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
     let {params} = props.navigation.state
     this.state = {
       userAvatar: (params && params.userAvatar) ? {uri: params.userAvatar} : null,
@@ -295,6 +297,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: px2dp(20),
     paddingBottom: px2dp(20)
+    paddingRight: px2dp(2)
   },
   knowMoreText: {
     color: '#333',
