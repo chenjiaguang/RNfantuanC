@@ -19,7 +19,7 @@ import Button from 'apsl-react-native-button' // 第三方button库，RN官方�
 import Toast from '../components/Toast'
 import GoNativeModule from '../modules/GoNativeModule'
 import SwipBackModule from '../modules/SwipBackModule';
-import LoadingView from '../components/LoadingView' // _todo ios未封装loadingView
+import LoadingView from '../components/LoadingView'
 import HeadNav from '../components/HeadNav'
 import RoundBorderView from '../components/RoundBorderView'
 import UtilsModule from '../modules/UtilsModule'

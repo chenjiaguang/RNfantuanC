@@ -118,10 +118,10 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
     let {navigate} = this.props.navigation
     navigate('GrowthIntro')
   }
-  goBindWeChat = () => { // _todo
+  goBindWeChat = () => {
     GoNativeModule.goSetting&&GoNativeModule.goSetting()
   }
-  goCompleteInfo = () => { // _todo
+  goCompleteInfo = () => {
     GoNativeModule.goUserInfo&&GoNativeModule.goUserInfo()
   }
   fetchInfo = () => {
