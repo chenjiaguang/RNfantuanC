@@ -80,7 +80,7 @@ export default class VerifyPhone extends React.Component {
   notGetCode = () => {
     Alert.alert(
       '请联系客服处理',
-      '客服电话：400-3663-2552',
+      '客服电话：400-680-6307',
       [
         {
           text: '确定'
@@ -98,7 +98,7 @@ export default class VerifyPhone extends React.Component {
         <Text style={style.tip}>为保证您的账号安全，需要进行短信验证，验证成功方 可进行下一步操作</Text>
         <Text style={style.phone}>{showPhone}</Text>
         <CodeInput phone={this.props.navigation.state.params && this.props.navigation.state.params.phone || ''} value={code} onChangeText={value => this.setState({code: value})} onClear={() => this.setState({code: ''})} style={style.CodeInput}/>
-        <Button style={style.button} textStyle={style.buttonText} onPress={this.verify} activeOpacity={0.8} isDisabled={submitting}>下一步</Button>
+        <Button style={[style.button,{opacity:code.length>=6?1:0.5}]} textStyle={style.buttonText} onPress={this.verify} activeOpacity={0.8} isDisabled={submitting}>下一步</Button>
         <Text style={style.notGetCode} onPress={this.notGetCode}>收不到验证码？</Text>
       </View>
     </ScrollView>
@@ -132,6 +132,8 @@ const style = StyleSheet.create({
     color: commonStyle.color.text.para_primary,
     fontWeight: '700',
     marginTop: px2dp(48),
+    alignSelf:'stretch',
+    textAlign:'center'
   },
   CodeInput: {
     marginTop: px2dp(90),
