@@ -272,6 +272,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         joinedTotal: res.data.joined_total,
         shareUrl: res.data.share_url,
         share_content: res.data.share_content,
+        hasDynamic:res.data.activity_has_dynamic,
         content: res.data.content.filter(item => item.type.toString() !== '0').map((item, idx) => {
           return {
             type: item.type,
@@ -340,7 +341,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     this.ImageBrowser.show(_idx)
   }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages } = this.state.activity
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages,hasDynamic } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
     return <View style={styles.page}>
       <HeadNav
@@ -446,7 +447,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             <View style={styles.dynamicBox}>
               <View style={styles.dynamicBoxHeader}>
                 <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
-                {activityImageLength ?
+                {hasDynamic ?
                   <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
                     <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text>
@@ -455,7 +456,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                   </TouchableOpacity> : null
                 }
               </View>
-              {activityImageLength ? <View style={styles.dynamicBoxImages}>
+              {hasDynamic ? <View style={styles.dynamicBoxImages}>
                 {activityImages.slice(0, 3).map((item, idx) =>
                   <TouchableOpacity key={idx} onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
                     <Image source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
