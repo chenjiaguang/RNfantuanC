@@ -494,7 +494,24 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         </View>
       </ScrollView>}
       {this.state.activity.id == '' ? null : <View style={styles.fixedButtons}>
-        <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }} textStyle={{ fontSize: px2dp(30), color: '#333' }} activeOpacity={0.8} onPress={this.publish}>晒图</Button>
+        <TouchableWithoutFeedback onPress={this.callPhone}>
+          <View 
+          style={{flexDirection:'column',justifyContent: 'center',alignItems:'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} 
+          >
+            <Iconfont name="phone-w" size={px2dp(33)}/>
+            <Text style={{fontSize: px2dp(24)}}>电话咨询</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={this.publish}>
+          <View 
+          style={{flexDirection:'column',justifyContent: 'center',alignItems:'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} 
+          >
+            <Iconfont name="camera-w" size={px2dp(33)}/>
+            <Text style={{fontSize: px2dp(24)}}>晒图</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        
         <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
           onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
       </View>}
