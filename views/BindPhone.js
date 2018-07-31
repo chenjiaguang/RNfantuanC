@@ -160,11 +160,14 @@ const style = StyleSheet.create({
   phonePrefix: {
     fontSize: px2dp(30),
     fontWeight: '700',
-    color: commonStyle.color.text.para_primary
+    color: commonStyle.color.text.para_primary,
+    width:px2dp(97),
+    marginRight:px2dp(20),
+    borderRightWidth: px2dp(1),
+    borderRightColor: commonStyle.color.border.default
   },
   phone: {
     flex: 1,
-    paddingLeft: px2dp(60),
     fontSize: px2dp(30),
     color: commonStyle.color.text.para_primary,
     padding: 0
