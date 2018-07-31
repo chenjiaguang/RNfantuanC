@@ -156,11 +156,11 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
   }
   renderTaskItemRight = (item) => {
     if (item.title === '绑定微信号') { // 绑定微信号
-      return item.missionPoint === '未完成' ? <Text onPress={this.goBindWeChat} style={{fontSize: px2dp(30), color: '#1EB0FD'}} suppressHighlighting={true}>去完成</Text> : <Text style={{fontSize: px2dp(30), color: '#999'}}>已完成</Text>
+      return item.missionPoint === '未完成' ? <Text onPress={this.goBindWeChat} style={{flex: 1, fontSize: px2dp(30), color: '#1EB0FD', textAlign: 'right'}} suppressHighlighting={true}>去完成</Text> : <Text style={{flex: 1, fontSize: px2dp(30), color: '#999', textAlign: 'right'}}>已完成</Text>
     } else if (item.title === '完善个人资料') {
-      return item.missionPoint === '未完成' ? <Text onPress={this.goCompleteInfo} style={{fontSize: px2dp(30), color: '#1EB0FD'}} suppressHighlighting={true}>去完成</Text> : <Text style={{fontSize: px2dp(30), color: '#999'}}>已完成</Text>
+      return item.missionPoint === '未完成' ? <Text onPress={this.goCompleteInfo} style={{flex: 1, fontSize: px2dp(30), color: '#1EB0FD', textAlign: 'right'}} suppressHighlighting={true}>去完成</Text> : <Text style={{flex: 1, fontSize: px2dp(30), color: '#999', textAlign: 'right'}}>已完成</Text>
     } else {
-      return <Text style={{fontSize: px2dp(30), color: '#999'}}><Text style={{fontWeight: '700'}}>{item.missionPoint}</Text>{item.limit ? ('/' + item.limit) : null}</Text>
+      return <Text style={{flex: 1, fontSize: px2dp(30), color: '#999', textAlign: 'right'}}><Text style={{fontWeight: '700'}}>{item.missionPoint}</Text>{item.limit ? ('/' + item.limit) : null}</Text>
     }
   }
   render() {
@@ -171,7 +171,7 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
           <Image style={styles.avatar} source={userAvatar || defaultAvatar} />
           <Image style={[styles.level, {width: userLevel >= 10 ? px2dp(63) : px2dp(53)}]} source={levelImage['lv' + userLevel]} resizeMode={'contain'} />
           <View style={styles.name} numberOfLines={1}>
-            <Text numberOfLines={1} style={{fontSize: px2dp(34), color: '#333'}}>{userName}</Text>
+            <Text numberOfLines={1} style={{fontSize: px2dp(34), color: '#333', fontWeight: '700'}}>{userName}</Text>
           </View>
           <View style={styles.joinDays}>
             <Text numberOfLines={1} style={{fontSize: px2dp(20), color: '#666'}}>今天是你加入范团的第{joinDays}天哦</Text>
