@@ -38,8 +38,11 @@ export default class Index extends React.Component {
             if (screenProps.params) {
                 _Token = screenProps.params.token
                 if (screenProps.params.env == "prod") {
-                    _Env = screenProps.params.env
+                    _Env = "prod"
                     _Api = "https://fant.fantuanlife.com"
+                } else if(screenProps.params.env == "pre"){
+                    _Env = "pre"
+                    _Api = "https://fanttest.fantuanlife.com/pre"
                 } else {
                     _Env = "dev"
                     _Api = "https://fanttest.fantuanlife.com"
