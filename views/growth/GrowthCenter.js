@@ -14,6 +14,7 @@ import Toast from  '../../components/Toast'
 import Text from '../../components/MyText'
 import Progress from '../../components/Progress'
 import Image from '../../components/SmoothImage'
+import NoticeSwiper from './NoticeSwiper'
 import TaskItems from './TaskItem'
 import Swiper from 'react-native-swiper'
 import GoNativeModule from "../../modules/GoNativeModule";
@@ -189,14 +190,7 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
         </View>
         <View style={styles.grayBlock}></View>
         <View style={styles.centerMain}>
-          {(notice && notice.length > 0) ? <View onStartShouldSetResponderCapture={() => true} style={[styles.noticeWrapper, {height: px2dp(100)}]}>
-            <Iconfont name="notice" color="#333" size={px2dp(30)} style={{marginRight: px2dp(15)}} />
-            <Swiper showsPagination={false} autoplay={true} autoplayTimeout={3} horizontal={false} index={0}>
-              {notice.map((item, idx) => <View onStartShouldSetResponderCapture={() => true} style={[styles.noticeItem, {height: px2dp(100)}]} key={idx}>
-                <Text onStartShouldSetResponderCapture={() => true} style={styles.noticeText}>{item}</Text>
-              </View>)}
-            </Swiper>
-          </View> : null}
+          <NoticeSwiper notice={notice} />
           <View style={styles.centerMainHeader}>
             <Text style={{fontSize: px2dp(32), color: '#333', fontWeight: '700', marginRight: px2dp(10)}}>今日任务</Text>
             <Text style={{fontSize: px2dp(24), color: '#999', marginRight: px2dp(10)}}>花点小时间做任务，轻松升级</Text>
