@@ -102,14 +102,14 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   onJumpPublishArticleDynamic = (id, name, actid) => {
     GoNativeModule && GoNativeModule.goPublishArticleDynamic(id, name, actid)
   }
-  onJumpPublishDynamic = (id, name, actid) => {
-    GoNativeModule && GoNativeModule.goPublishDynamic(id, name, actid)
+  onJumpPublishDynamic = (id, name, actid, actname) => {
+    GoNativeModule && GoNativeModule.goPublishDynamic(id, name, actid, actname)
   }
   onJumpActivityMap = (destName, longtitude, latitude) => {
     GoNativeModule && GoNativeModule.goActivityMap(destName, longtitude, latitude)
   }
-  onJumpActivityShow = (id, name, actid) => {
-    GoNativeModule && GoNativeModule.goActivityShow(id, name, actid)
+  onJumpActivityShow = (id, name, actid, actname) => {
+    GoNativeModule && GoNativeModule.goActivityShow(id, name, actid, actname)
   }
   onJumpActivityOrder = (id) => {
     GoNativeModule && GoNativeModule.goActivityOrder(id)
@@ -448,7 +448,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               <View style={styles.dynamicBoxHeader}>
                 <Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>大家都在晒</Text>
                 {hasDynamic ?
-                  <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
+                  <TouchableOpacity onPress={() => this.onJumpActivityShow(circle.id, circle.name, id, title)} activeOpacity={0.8}>
                     <View style={{ height: px2dp(112), flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={{ color: '#333', fontSize: px2dp(28) }}>更多</Text>
                       <Iconfont name="next" size={px2dp(18)} color="#666666" style={{ marginLeft: px2dp(4) }} />
@@ -458,7 +458,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               </View>
               {hasDynamic ? <View style={styles.dynamicBoxImages}>
                 {activityImages.slice(0, 3).map((item, idx) =>
-                  <TouchableOpacity key={idx} onPress={() => this.onJumpActivityShow(circle.id, circle.name, id)} activeOpacity={0.8}>
+                  <TouchableOpacity key={idx} onPress={() => this.onJumpActivityShow(circle.id, circle.name, id, title)} activeOpacity={0.8}>
                     <Image source={{ uri: item.compress }} style={{ width: px2dp(155), height: px2dp(155), marginRight: px2dp(20) }} />
                   </TouchableOpacity>
                 )}
@@ -529,7 +529,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         onPress={(index) => {
           switch (index) {
             case 0: // 选择照片
-              this.onJumpPublishDynamic(this.state.activity.circle.id, this.state.activity.circle.name, this.state.activity.id)
+              this.onJumpPublishDynamic(this.state.activity.circle.id, this.state.activity.circle.name, this.state.activity.id, this.state.activity.title)
               break;
             case 1:
               this.onJumpPublishArticleDynamic(this.state.activity.circle.id, this.state.activity.circle.name, this.state.activity.id)

@@ -28,13 +28,13 @@ import { NativeModules } from 'react-native';
  * 跳转晒长文
  * 
  * 
- * goPublishDynamic
- * 参数: 圈子id 圈子名称 活动id
+ * goPublishDynamic __todo  变更记录,增加活动名称字段，记得让ios业增加
+ * 参数: 圈子id 圈子名称 活动id 活动名称
  * 跳转晒动态
  * 
  * 
- * goActivityShow
- * 参数: 圈子id 圈子名称 活动id
+ * goActivityShow  __todo 增加活动名称，记得让ios也增加
+ * 参数: 圈子id 圈子名称 活动id 活动名称
  * 跳转大家都在晒
  * 
  * 
