@@ -48,7 +48,7 @@ class AndroidRefreshFlatList extends Component {
       {this.props.data ? null : <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />}
       <RefreshFlatList
         {...this.props}
-        style={[this.props.style, { display: this.props.data ? 'flex' : 'none' }]}
+        style={[this.props.style, { display: this.props.data ? 'flex' : 'none',backgroundColor:'#f5f5f5' }]}
         ref={(component) => this._nativeSwipeRefreshLayout = component}
         onLoadMore={this._onLoadMore}
         onRefresh={this._onRefresh}
@@ -60,6 +60,7 @@ class AndroidRefreshFlatList extends Component {
           data={this.props.data}
           keyExtractor={this.props.keyExtractor}
           renderItem={this.props.renderItem}
+          style={[{backgroundColor:'#ffffff' }]}
         />
       </RefreshFlatList>
     </View>
