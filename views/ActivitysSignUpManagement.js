@@ -80,6 +80,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         </TouchableWithoutFeedback>
         <View style={styles.middle}>
           <Text style={styles.name}>{item.display_name}</Text>
+            {item.wechat?<Text style={styles.wechat}>{item.wechat}</Text>:null}
           <Text style={styles.title}>{item.feename}</Text>
           <Text style={styles.price}>{item.money_text}</Text>
           <View style={styles.option}>
@@ -209,6 +210,13 @@ const styles = StyleSheet.create({
   name: {
     flex: 1,
     color: '#333333',
+    fontSize: px2dp(28),
+    marginBottom: px2dp(16),
+    includeFontPadding: false,
+  },
+  wechat: {
+    flex: 1,
+    color: '#666666',
     fontSize: px2dp(28),
     marginBottom: px2dp(16),
     includeFontPadding: false,
