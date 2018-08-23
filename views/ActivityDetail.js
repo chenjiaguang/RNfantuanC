@@ -247,6 +247,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       if (res.data.insurance) {
         _tags.push('费用中包含保险')
       }
+      if (res.data.max_ticket&&res.data.max_ticket>0) {
+        _tags.push('限购'+res.data.max_ticket+'张')
+      }
       let _obj = {
         id: res.data.id,
         bannerUrl: res.data.covers[0].compress,
