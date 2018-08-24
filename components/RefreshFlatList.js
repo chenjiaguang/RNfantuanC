@@ -107,8 +107,8 @@ class IosRefreshFlatList extends Component {
   bottomIndicatorRender = () => {
     let {isend, fetching} = this.state
     let {data} = this.props
-    return (data && data.length > 0 && !isend && fetching) ? <View style={{ height: px2dp(100), justifyContent: 'center', alignItems: 'center' }}>
-      <LoadingView text="正在加载更多的数据..." />
+    return (data && data.length > 0 && !isend && fetching) ? <View style={{ height: px2dp(100), justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+      <LoadingView text="加载中..." />
     </View> : null
   }
 
@@ -138,22 +138,24 @@ class IosRefreshFlatList extends Component {
 
   render() {
     let {fetching, onRefresh, ...others} = this.props
-    return <PullFlatList
-      {...others}
-      data={this.props.data}
-      ref={(c) => this._nativeSwipeRefreshLayout = c}
-      isContentScroll={true}
-      style={{flex: 1, backgroundColor: 'transparent'}}
-      onPullRelease={this._onRefresh}
-      onEndReached={this._onLoadMore}
-      topIndicatorRender={this.topIndicatorRender}
-      topIndicatorHeight={px2dp(100)}
-      renderItem={this.props.renderItem}
-      keyExtractor={this.props.keyExtractor}
-      onEndReachedThreshold={0.1}
-      ListFooterComponent={this.bottomIndicatorRender()}
-      ListEmptyComponent={this.emptyComponent()}
-    />
+    return <View style={{flex: 1, backgroundColor: '#f5f5f5'}}>
+        <PullFlatList
+          {...others}
+          data={this.props.data}
+          ref={(c) => this._nativeSwipeRefreshLayout = c}
+          isContentScroll={true}
+          style={{flex: 1, backgroundColor: '#fff'}}
+          onPullRelease={this._onRefresh}
+          onEndReached={this._onLoadMore}
+          topIndicatorRender={this.topIndicatorRender}
+          topIndicatorHeight={px2dp(100)}
+          renderItem={this.props.renderItem}
+          keyExtractor={this.props.keyExtractor}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={this.bottomIndicatorRender()}
+          ListEmptyComponent={this.emptyComponent()}
+        />
+      </View>
   }
 
   //将状态置为正在请求，请求期间不能出发刷新或加载更多，避免异步返回结果导致数据出错

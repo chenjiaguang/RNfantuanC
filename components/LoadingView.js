@@ -39,7 +39,7 @@ class LoadingView extends Component {
       <Image
         style={[styles.image, {transform: [{ rotateZ: rotate + 'deg' }]}, this.props.iconStyle]}
         source={require('../static/image/rn_loading_01.png')} />
-      <Text style={[styles.text, this.props.textStyle]}>{this.props.text || '正在加载...'}</Text>
+      <Text style={[styles.text, this.props.textStyle]}>{this.props.text || '加载中...'}</Text>
     </View>;
   }
 };
