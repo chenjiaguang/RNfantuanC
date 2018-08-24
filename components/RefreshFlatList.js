@@ -117,7 +117,9 @@ class IosRefreshFlatList extends Component {
     let {data} = this.props
     let element = null
     if (!data && !isend && fetching) { // 无数据且正在加载，且不是最后一页
-      element = <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />
+      element = <View style={{alignSelf: 'stretch', flex: 1, backgroundColor: '#f5f5f5'}}>
+        <LoadingView style={{ height: px2dp(100), paddingTop: px2dp(32) }} />
+      </View>
     }
     return element
   }
@@ -137,14 +139,16 @@ class IosRefreshFlatList extends Component {
   }
 
   render() {
-    let {fetching, onRefresh, ...others} = this.props
+    let {data, fetching, onRefresh, ...others} = this.props
+    let {isend} = this.state
+    let state_fetching = this.state.fetching
     return <View style={{flex: 1, backgroundColor: '#f5f5f5'}}>
         <PullFlatList
           {...others}
-          data={this.props.data}
+          data={data}
           ref={(c) => this._nativeSwipeRefreshLayout = c}
           isContentScroll={true}
-          style={{flex: 1, backgroundColor: '#fff'}}
+          style={{flex: 1, backgroundColor: (!data && !isend && state_fetching) ? '#f5f5f5' : '#fff'}}
           onPullRelease={this._onRefresh}
           onEndReached={this._onLoadMore}
           topIndicatorRender={this.topIndicatorRender}
