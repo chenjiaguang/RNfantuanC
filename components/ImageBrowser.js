@@ -78,17 +78,17 @@ export default class ImageBrowser extends React.Component {
     this.ActionSheetInstance.show()
   }
   renderIndicator = (current, total) => {
-    return <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', left: 0, top: px2dp(54), width: px2dp(750), height: px2dp(60) }}>
-      <Iconfont onPress={this.hide} name="close" size={px2dp(30)} style={{ marginLeft: px2dp(40), paddingLeft: px2dp(15), paddingTop: px2dp(15), paddingRight: px2dp(15), paddingBottom: px2dp(15) }} color="#fff" />
+    return <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', left: 0, top: px2dp(54), width: px2dp(750), height: px2dp(60) }}>
+      {/* <Iconfont onPress={this.hide} name="close" size={px2dp(30)} style={{ marginLeft: px2dp(40), paddingLeft: px2dp(15), paddingTop: px2dp(15), paddingRight: px2dp(15), paddingBottom: px2dp(15) }} color="#fff" /> */}
       <Text style={{ color: '#fff', fontSize: px2dp(34) }}>{current + '/' + total}</Text>
-      <View style={{ width: px2dp(60), height: px2dp(60), marginRight: px2dp(40) }}></View>
+      {/* <View style={{ width: px2dp(60), height: px2dp(60), marginRight: px2dp(40) }}></View> */}
     </View>
   }
   render() {
     let { images } = this.props
     let { index, show, scaleX, scaleY } = this.state
     return show ? <Animated.View style={{ transform: [{ scaleX: scaleX }, { scaleY: scaleY }], position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height, left: 0, top: 0, zIndex: 99999 }}>
-      <ImageViewer onLongPress={this.showActionSheet} saveToLocalByLongPress={false} renderIndicator={this.renderIndicator} index={index} imageUrls={images} enableSwipeDown={true} onSwipeDown={this.hide} />
+      <ImageViewer onLongPress={this.showActionSheet} saveToLocalByLongPress={false} renderIndicator={this.renderIndicator} index={index} imageUrls={images} enableSwipeDown={true} onSwipeDown={this.hide} onClick={this.hide} />
       <ActionSheet
         ref={el => this.ActionSheetInstance = el}
         options={this.state.ActionSheetOptions}
