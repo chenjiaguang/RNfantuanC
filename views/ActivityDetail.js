@@ -8,6 +8,7 @@ import {
   Animated,
   Platform,
   StatusBar,
+  Alert,
   TouchableWithoutFeedback,
   TouchableOpacity
 } from 'react-native';
@@ -33,6 +34,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     super(props)
     this.lastY = 0
     this.state = {
+      circleApplying: false,
       isOpen: false,
       browserIndex: 0,
       actionSheetOptions: Platform.OS === 'android' ? [<Text style={{ color: '#333333', fontSize: px2dp(34) }}>动态</Text>,
@@ -120,6 +122,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   onJumpActivityJoiners = (id) => {
     this.setBarStyle('dark-content')
     this.props.navigation.navigate('ActivityJoiners', { id: id })
+  }
+  onJumpApplyCircle = (circleid, circleName, circleCover) => {
+    GoNativeModule && GoNativeModule.goCircleApply(circleid, circleName, circleCover)
   }
   scanCode = (id) => {
     GoNativeModule && GoNativeModule.goActivityCodeScan(id)
@@ -221,6 +226,68 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   publish = async () => {
     let { status } = this.state.activity
+    let {id, name, cover, followed, need_audit} = this.state.activity.circle
+    if (!followed) { // 需加入圈子才能晒图
+      Alert.alert(
+        '',
+        '加入圈子才能进行更多操作哦~',
+        [
+          {
+            text: '我再想想',
+            onPress: () => { },
+            style: { color: '#0076FF' }
+          },
+          {
+            text: '申请加入',
+            onPress: () => {
+              if (need_audit) { // 跳转申请加入
+                this.onJumpApplyCircle(id, name, cover.compress)
+              } else { // 直接申请
+                if (this.state.circleApplying) { // 正在申请
+                  Toast.show('正在提交申请，请稍后~')
+                  return false
+                }
+                let rData = {
+                  id: id,
+                  follow: 1
+                }
+                this.setState({
+                  circleApplying: true
+                })
+                _FetchData(_Api + '/jv/qz/following', rData).then(res => {
+                  let _activity = Object.assign({}, this.state.activity)
+                  if (res && !res.error) { // 申请成功
+                    _activity.circle.followed = true
+                    this.setState({
+                      activity: _activity,
+                      circleApplying: false
+                    })
+                    Toast.show('加入成功')
+                  } else if (res.error && res.msg) {
+                    this.setState({
+                      circleApplying: false
+                    })
+                    Toast.show(res.msg)
+                  } else {
+                    this.setState({
+                      circleApplying: false
+                    })
+                  }
+                }).catch(err => {
+                  console.log('加入圈子出错', err)
+                  this.setState({
+                    circleApplying: false
+                  })
+                })
+              }
+            },
+            style: { color: '#0076FF', fontWeight: 'bold' }
+          }
+        ],
+        { cancelable: false }
+      )
+      return false
+    }
     if (status.toString() === '0' || status.toString() === '2') { // 活动未上线
       Toast.show('活动未上线，还不能操作哦~')
       return false
