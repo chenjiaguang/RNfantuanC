@@ -224,9 +224,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       iconRotate: new Animated.Value(0)
     })
   }
-  publish = async () => {
-    let { status } = this.state.activity
+  checkAccess = () => {
     let {id, name, cover, followed, need_audit} = this.state.activity.circle
+    let flat = false
     if (!followed) { // 需加入圈子才能晒图
       Alert.alert(
         '',
@@ -286,6 +286,22 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         ],
         { cancelable: false }
       )
+      flat = false
+    } else {
+      flat = true
+    }
+    return flat
+  }
+  goOrder = () => {
+    if (!this.checkAccess()) { // 需加入圈子才能购票
+      return false
+    }
+    this.onJumpActivityOrder(this.state.activity.id)
+  }
+  publish = async () => {
+    let { status } = this.state.activity
+    let {id, name, cover, followed, need_audit} = this.state.activity.circle
+    if (!this.checkAccess()) { // 需加入圈子才能晒图
       return false
     }
     if (status.toString() === '0' || status.toString() === '2') { // 活动未上线
@@ -584,7 +600,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         </TouchableWithoutFeedback>
         
         <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
-          onPress={() => this.onJumpActivityOrder(id)} >{statusText}</Button>
+          onPress={this.goOrder} >{statusText}</Button>
       </View>}
       <ActionSheet
         ref={el => this.ActionSheet = el}
