@@ -438,7 +438,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         headerRight={(rgb) => {
           return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
             <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>
-              <Iconfont name="share" size={px2dp(36)} color={rgb} />
+              <Iconfont name="menu" size={px2dp(36)} color={rgb} />
             </View>
           </TouchableWithoutFeedback>
         }}
