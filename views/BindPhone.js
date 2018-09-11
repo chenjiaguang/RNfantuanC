@@ -37,7 +37,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
   bindPhone = () => { // 绑定手机
     let {phone, code} = this.state
     let {params} = this.props.navigation.state
-    if (!/^1[34578][0-9]\d{4,8}$/.test(phone)) {
+    if (!/^1\d{10}$/.test(phone)) {
       Toast.show('请填写正确手机号')
       return false
     }

@@ -63,7 +63,7 @@ export default class CodeInput extends Component {
   }
   sendCode = () => {
     let {phone} = this.props
-    if (!/^1[34578][0-9]\d{8}$/.test(phone)) { // 输入的不是手机号
+    if (!/^1\d{10}$/.test(phone)) { // 输入的不是手机号
       Toast.show('请输入正确手机号')
       return false
     }

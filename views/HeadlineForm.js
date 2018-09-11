@@ -64,7 +64,7 @@ export default class HeadlineForm extends React.Component {
       validates: { // 实时检测输入是否合法
         avatar: v => v.value,
         name: v => v && v.length <= 10,
-        phone: v => /^1[34578][0-9]\d{8}$/.test(v),
+        phone: v => /^1\d{10}$/.test(v),
         area: v => v.value || (v.value && !v.value && v.value !== '' && v.value !== undefined && v.value.toString() === '0'),
         intro: v => v && v.length >= 10 && v.length <= 30,
         idCardImage: v => v.value,
