@@ -238,7 +238,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             style: { color: '#0076FF' }
           },
           {
-            text: '申请加入',
+            text: need_audit ? '申请加入' : '立即加入',
             onPress: () => {
               if (need_audit) { // 跳转申请加入
                 this.onJumpApplyCircle(id, name, cover.compress)
