@@ -110,7 +110,7 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
       <View style={style.contentWrapper}>
         <View style={style.phoneWrapper}>
           <Text style={style.phonePrefix}>+86</Text>
-          <MyTextInput onFocus={this.focus} onBlur={this.blur} style={style.phone} underlineColorAndroid="transparent" placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
+          <MyTextInput onFocus={this.focus} onBlur={this.blur} style={style.phone} underlineColorAndroid="transparent" placeholder="请输入手机号" value={phone} onChangeText={(value) => this.inputChange('phone', value)} maxLength={11} placeholderTextColor={commonStyle.color.text.para_thirdly}/>
           {(focusPhone && phone) ? <TouchableOpacity activeOpacity={1} onPress={this.clear}>
             <View style={style.clear}>
               <Iconfont name="close" size={px2dp(27)} color={commonStyle.color.text.para_thirdly}></Iconfont>
