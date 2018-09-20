@@ -316,7 +316,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }).catch(err => {
       console.log('获取未支付订单失败', err)
       this.submitting = false
-      if (err && err.status.toString() === '200') {
+      if (err && err.status && err.status.toString() === '200') {
         this.onJumpActivityOrder(this.state.activity.id)
       }
     })
