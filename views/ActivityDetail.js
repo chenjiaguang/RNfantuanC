@@ -69,7 +69,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         joinedTotal: '',
         shareUrl: '',
         share_content: '',
-        contentImages: []
+        contentImages: [],
+        submitting: false
       }
     }
   }
@@ -115,6 +116,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   onJumpActivityOrder = (id) => {
     GoNativeModule && GoNativeModule.goActivityOrder(id)
+  }
+  onJumpActivityConfirmOrder = (id) => {
+    GoNativeModule && GoNativeModule.goFirmOrder(id)
   }
   onJumpCircleDetail = (id, name, coverUrl, hasActivity) => {
     GoNativeModule && GoNativeModule.goCircleDetail(id, name, coverUrl, hasActivity ? "1" : "0")
@@ -292,11 +296,36 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     }
     return flat
   }
+  checkOrder = () => {
+    let rData = {
+      aid: this.state.activity.id
+    }
+    this.submitting = true
+    _FetchData(_Api + '/jv/qz/v25/order/unpaid', rData, true).then(res => {
+      console.log('获取未支付订单成功', res)
+      this.submitting = false
+      if (res && res.data && res.data.checkcode && !res.error) { // 有未支付订单
+        if (res.data.leftTime && parseInt(res.data.leftTime) > 0) { // 剩余时间大于0
+          this.onJumpActivityConfirmOrder(this.state.activity.id)
+        } else { // 剩余时间不足
+          this.onJumpActivityOrder(this.state.activity.id)
+        }
+      } else { // 无未支付订单
+        this.onJumpActivityOrder(this.state.activity.id)
+      }
+    }).catch(err => {
+      console.log('获取未支付订单失败', err)
+      this.submitting = false
+      if (err && err.status.toString() === '200') {
+        this.onJumpActivityOrder(this.state.activity.id)
+      }
+    })
+  }
   goOrder = () => {
     if (!this.checkAccess()) { // 需加入圈子才能购票
       return false
     }
-    this.onJumpActivityOrder(this.state.activity.id)
+    this.checkOrder()
   }
   publish = async () => {
     let { status } = this.state.activity
