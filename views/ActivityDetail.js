@@ -300,10 +300,13 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     let rData = {
       aid: this.state.activity.id
     }
-    this.submitting = true
+    this.setState({
+      submitting: true
+    })
     _FetchData(_Api + '/jv/qz/v25/order/unpaid', rData, true).then(res => {
-      console.log('获取未支付订单成功', res)
-      this.submitting = false
+      this.setState({
+        submitting: false
+      })
       if (res && res.data && res.data.checkcode && !res.error) { // 有未支付订单
         if (res.data.leftTime && parseInt(res.data.leftTime) > 0) { // 剩余时间大于0
           this.onJumpActivityConfirmOrder(this.state.activity.id)
@@ -314,8 +317,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         this.onJumpActivityOrder(this.state.activity.id)
       }
     }).catch(err => {
-      console.log('获取未支付订单失败', err)
-      this.submitting = false
+      this.setState({
+        submitting: false
+      })
       if (err && err.status && err.status.toString() === '200') {
         this.onJumpActivityOrder(this.state.activity.id)
       }
