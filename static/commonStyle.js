@@ -37,6 +37,10 @@ const commonStyle = {
       error: '#FF3F53' // 错误提示线条颜色
     }
   },
+  value:{
+    navHeightNoStatusBar: Platform.OS === 'android' ? 50 : px2dp(90),
+    navHeightWithStatusBar: (Platform.OS === 'android' ? 50 : px2dp(90)) + statusBarHeight,
+  },
   page: {
     left: px2dp(30), // 页面左侧距离
     right: px2dp(30), // 页面右侧距离
@@ -62,16 +66,16 @@ const commonStyle = {
       textAlign: 'center',
       flex: 1
     },
-    headerStyleNormal: {
-      width: px2dp(750),
-      height: Platform.OS === 'android' ? 50 + statusBarHeight : px2dp(90),
-      paddingTop: 0,
-      backgroundColor: '#fafafa',
-      borderTopColor: Platform.OS === 'android' && Platform.Version < 23 ? '#8c8c8c' : '#fafafa',//8c=fa*(256-112)/256
-      borderTopWidth: Platform.OS === 'android' ? statusBarHeight : 0,
-      borderBottomWidth: px2dp(1),
-      borderBottomColor: '#E5E5E5',
-      elevation: 0,
+  headerStyleNormal: {
+    width: px2dp(750),
+    height: Platform.OS === 'android' ? 50 + statusBarHeight : px2dp(90),
+    paddingTop: 0,
+    backgroundColor: '#fafafa',
+    borderTopColor: Platform.OS === 'android' && Platform.Version < 23 ? '#8c8c8c' : '#fafafa',//8c=fa*(256-112)/256
+    borderTopWidth: Platform.OS === 'android' ? statusBarHeight : 0,
+    borderBottomWidth: px2dp(1),
+    borderBottomColor: '#E5E5E5',
+    elevation: 0,
   }
 }
 

@@ -23,7 +23,6 @@ import Iconfont from './components/cxicon/CXIcon';
 import px2dp from './lib/px2dp'
 import SwipBackModule from './modules/SwipBackModule';
 import StackViewStyleInterpolator from './anim/StackViewStyleInterpolator'
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import commonStyle from './static/commonStyle'
 
 //导航注册,createStackNavigator代替StackNavigator，以消除警告
@@ -73,7 +72,6 @@ const SimpleApp = createStackNavigator({
     GrowthIntro: { screen: GrowthIntro, path: '/growth/intro' },
 }, {
         navigationOptions: ({ navigation, screenProps }) => {
-            let statusBarHeight = getStatusBarHeight(true)
             return {
                 headerTruncatedBackTitle: true,
                 headerLeft: <HeaderLeft goBack={() => {

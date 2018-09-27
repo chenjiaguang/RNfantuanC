@@ -26,6 +26,9 @@ import RoundBorderView from '../components/RoundBorderView'
 import UtilsModule from '../modules/UtilsModule'
 import ImageBrowser from '../components/ImageBrowser'
 import Text from '../components/MyText'
+import NoNetwork from '../components/NoNetwork'
+import Util from '../lib/Util'
+import commonStyle from '../static/commonStyle'
 
 
 
@@ -71,7 +74,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         share_content: '',
         contentImages: [],
         submitting: false
-      }
+      },
+      netError: false
     }
   }
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -90,12 +94,24 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       gesturesEnabled: (navigation.state.params && navigation.state.params.gesturesEnabled) ? navigation.state.params.gesturesEnabled : true
     }
   }
+  onNetReload = () => {
+    this.setState({
+      netError: false,
+    })
+    setTimeout(this.fetchActivity, 0)
+  }
+  onNetError = (err) => {
+    // this.state.activity.id = ''
+    this.setState({
+      netError: true,
+    })
+  }
   setBarStyle(barStyle) {
     if (barStyle == 'dark-content' || barStyle == 'light-content') {
       if (this.lastBarStyle != barStyle) {
         if (Platform.OS === 'android') {
           UtilsModule.setBarStyle(barStyle)
-        }else{
+        } else {
           StatusBar.setBarStyle(barStyle)
         }
         this.lastBarStyle = barStyle
@@ -229,7 +245,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     })
   }
   checkAccess = () => {
-    let {id, name, cover, followed, need_audit} = this.state.activity.circle
+    let { id, name, cover, followed, need_audit } = this.state.activity.circle
     let flat = false
     if (!followed) { // 需加入圈子才能晒图
       Alert.alert(
@@ -303,7 +319,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     this.setState({
       submitting: true
     })
-    _FetchData(_Api + '/jv/qz/v25/order/unpaid', rData, true).then(res => {
+    _FetchData(_Api + '/jv/qz/v25/order/unpaid', rData, { dontToast: true }).then(res => {
       this.setState({
         submitting: false
       })
@@ -333,7 +349,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   }
   publish = async () => {
     let { status } = this.state.activity
-    let {id, name, cover, followed, need_audit} = this.state.activity.circle
+    let { id, name, cover, followed, need_audit } = this.state.activity.circle
     if (!this.checkAccess()) { // 需加入圈子才能晒图
       return false
     }
@@ -355,7 +371,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     let rData = {
       id: this.props.navigation.state.params.id
     }
-    _FetchData(_Api + '/jv/qz/v21/activity', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity', rData, { onNetError: (err) => this.onNetError(err) }).then(res => {
       let _tags = []
       if (!res.data.refund) {
         _tags.push('不可退票')
@@ -363,8 +379,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       if (res.data.insurance) {
         _tags.push('费用中包含保险')
       }
-      if (res.data.max_ticket&&res.data.max_ticket>0) {
-        _tags.push('限购'+res.data.max_ticket+'张')
+      if (res.data.max_ticket && res.data.max_ticket > 0) {
+        _tags.push('限购' + res.data.max_ticket + '张')
       }
       let _obj = {
         id: res.data.id,
@@ -391,7 +407,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         joinedTotal: res.data.joined_total,
         shareUrl: res.data.share_url,
         share_content: res.data.share_content,
-        hasDynamic:res.data.activity_has_dynamic,
+        hasDynamic: res.data.activity_has_dynamic,
         content: res.data.content.filter(item => item.type.toString() !== '0').map((item, idx) => {
           return {
             type: item.type,
@@ -417,7 +433,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       })
       _obj.contentImages = contentImages
       this.setState({
-        activity: _obj
+        activity: _obj,
+        netError: false
       })
       this.props.navigation.setParams({ 'activity': _obj })
       this.setBarStyle('light-content')
@@ -460,7 +477,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     this.ImageBrowser.show(_idx)
   }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages,hasDynamic } = this.state.activity
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages, hasDynamic } = this.state.activity
     let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
     return <View style={styles.page}>
       <HeadNav
@@ -476,7 +493,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
           </TouchableWithoutFeedback>
         }}
       />
-      {this.state.activity.id == '' ? <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(212) + 25 : px2dp(212) }} /> : null}
+      {this.state.netError ? <NoNetwork reload={this.onNetReload} style={{ marginTop: commonStyle.value.navHeightWithStatusBar }} /> :
+        this.state.activity.id == '' ? <LoadingView style={{ marginTop: Platform.OS === 'android' ? px2dp(212) + 25 : px2dp(212) }} /> : null
+      }
+
       <ImageBrowser ref={el => this.ImageBrowser = el} index={browserIndex} images={contentImages} page={this} />
       {this.state.activity.id == '' ? null : <ScrollView style={styles.scrollView} onScroll={this.handleScroll} bounces={false} scrollEventThrottle={15}>
         <View style={styles.pageWrapper}>
@@ -615,23 +635,23 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       </ScrollView>}
       {this.state.activity.id == '' ? null : <View style={styles.fixedButtons}>
         <TouchableWithoutFeedback onPress={this.callPhone}>
-          <View 
-          style={{flexDirection:'column',justifyContent: 'center',alignItems:'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} 
+          <View
+            style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }}
           >
-            <Iconfont name="phone-w" size={px2dp(33)}/>
-            <Text style={{fontSize: px2dp(24)}}>电话咨询</Text>
+            <Iconfont name="phone-w" size={px2dp(33)} />
+            <Text style={{ fontSize: px2dp(24) }}>电话咨询</Text>
           </View>
         </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback onPress={this.publish}>
-          <View 
-          style={{flexDirection:'column',justifyContent: 'center',alignItems:'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff'}} 
+          <View
+            style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: px2dp(200), height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: '#E5E5E5', backgroundColor: '#fff' }}
           >
-            <Iconfont name="camera-w" size={px2dp(33)}/>
-            <Text style={{fontSize: px2dp(24)}}>晒图</Text>
+            <Iconfont name="camera-w" size={px2dp(33)} />
+            <Text style={{ fontSize: px2dp(24) }}>晒图</Text>
           </View>
         </TouchableWithoutFeedback>
-        
+
         <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
           onPress={this.goOrder} >{statusText}</Button>
       </View>}

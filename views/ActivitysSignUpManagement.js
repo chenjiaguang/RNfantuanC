@@ -11,6 +11,8 @@ import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
 import Text from '../components/MyText'
+import NoNetwork from '../components/NoNetwork'
+import Util from '../lib/Util'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -44,6 +46,23 @@ export default class ActivitysSignUpManagement extends React.Component {
       activeStatus: [
         '未验票'
       ],
+      netError: false
+    }
+  }
+  onNetReload = () => {
+    this.setState({
+      netError: false,
+    })
+    setTimeout(this.onFetch, 0)
+  }
+  onNetError = (err, pn) => {
+    if (pn == 1) {
+      this.setState({
+        netError: true,
+        data: null
+      })
+    } else {
+      Util.showNetworkErrorToast()
     }
   }
   onCall = (phone) => {
@@ -80,7 +99,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         </TouchableWithoutFeedback>
         <View style={styles.middle}>
           <Text style={styles.name}>{item.display_name}</Text>
-            {item.wechat?<Text style={styles.wechat}>{item.wechat}</Text>:null}
+          {item.wechat ? <Text style={styles.wechat}>{item.wechat}</Text> : null}
           <Text style={styles.title}>{item.feename}</Text>
           <Text style={styles.price}>{item.money_text}</Text>
           <View style={styles.option}>
@@ -114,13 +133,13 @@ export default class ActivitysSignUpManagement extends React.Component {
   onLoadMore = () => {
     this.onFetch(this.state.pn + 1)
   }
-  onFetch = (pn) => {
+  onFetch = (pn = 1) => {
     let rData = {
       id: this.state.aid,
       pn: pn
     }
     this.pullToRefreshListView.startFetching()
-    _FetchData(_Api + '/jv/qz/v21/activity/joined', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity/joined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -133,6 +152,7 @@ export default class ActivitysSignUpManagement extends React.Component {
         dataCount1: res.data.summary.ticket_count,
         dataCount2: res.data.summary.income,
         data: data,
+        netError: false
       })
     }).catch(err => {
       this.pullToRefreshListView.endFetching()
@@ -140,28 +160,33 @@ export default class ActivitysSignUpManagement extends React.Component {
   }
   render() {
     return <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <RefreshFlatList
-          ListHeaderComponent={<View>
-            <Text style={styles.countLine}>
-              <Text>报名人数：</Text>
-              <Text style={{ fontWeight: 'bold', marginRight: px2dp(20) }}>{this.state.dataCount1}</Text>
-              <Text>    预计收入：</Text>
-              <Text style={{ fontWeight: 'bold' }}>{this.state.dataCount2}</Text>
-            </Text>
-          </View>}
-          ref={(component) => this.pullToRefreshListView = component}
-          style={styles.list}
-          onLoadMore={this.onLoadMore}
-          onRefresh={this.onRefresh}
-          data={this.state.data}
-          keyExtractor={(i) => i.id}
-          renderItem={this.renderRow}
-        />
-      </View>
-      <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
-        <View style={{ height: px2dp(100), backgroundColor: '#F9F9F9', justifyContent: 'center', alignItems: 'center' }}><Text style={styles.bottomButton}>查看活动详情</Text></View>
-      </TouchableWithoutFeedback>
+      {
+        this.state.netError ? <NoNetwork reload={this.onNetReload} /> :
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <RefreshFlatList
+                ListHeaderComponent={<View>
+                  <Text style={styles.countLine}>
+                    <Text>报名人数：</Text>
+                    <Text style={{ fontWeight: 'bold', marginRight: px2dp(20) }}>{this.state.dataCount1}</Text>
+                    <Text>    预计收入：</Text>
+                    <Text style={{ fontWeight: 'bold' }}>{this.state.dataCount2}</Text>
+                  </Text>
+                </View>}
+                ref={(component) => this.pullToRefreshListView = component}
+                style={styles.list}
+                onLoadMore={this.onLoadMore}
+                onRefresh={this.onRefresh}
+                data={this.state.data}
+                keyExtractor={(i) => i.id}
+                renderItem={this.renderRow}
+              />
+            </View>
+            <TouchableWithoutFeedback onPress={() => { this.onJumpActivityDetail(this.state.aid) }}>
+              <View style={{ height: px2dp(100), backgroundColor: '#F9F9F9', justifyContent: 'center', alignItems: 'center' }}><Text style={styles.bottomButton}>查看活动详情</Text></View>
+            </TouchableWithoutFeedback>
+          </View>
+      }
     </View>
   }
 }

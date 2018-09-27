@@ -17,7 +17,6 @@ const defaultAvatar = require('../static/image/rn_apply_default_avatar.png')
 const defaultPic = require('../static/image/rn_apply_default_pic.png')
 import Picker from 'react-native-picker'; // RN官方提供的只有ios是滚轮的,引入滚轮选择（ios/android）
 import px2dp from '../lib/px2dp' // 将设计稿的尺寸转为可用的dp单位(以设计稿宽度750)
-import { getStatusBarHeight } from 'react-native-iphone-x-helper' // 获取状态栏高度(ios/android)，RN官方提供的只在android上有效
 import MyTextInput from '../components/MyTextInput' // 封装RN官方的TextInput以处理中文输入问题（RN官方bug）
 import ImagePicker from 'react-native-image-crop-picker'; // 选择图片插件(ios/android)，提供从相册和拍照中获取
 import UploadImage from '../lib/UploadImage' // 上传图片方法，目前封装了单张图片的情况

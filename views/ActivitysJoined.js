@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
+import NoNetwork from '../components/NoNetwork'
+import Util from '../lib/Util'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
@@ -22,7 +24,7 @@ export default class ActivitysJoined extends React.Component {
       activeStatus: [
         '待参与'
       ],
-      loaded: false
+      netError: false
     }
   }
   onJumpActivityCodeDetail = (code) => {
@@ -31,18 +33,34 @@ export default class ActivitysJoined extends React.Component {
   componentDidMount() {
     this.onRefresh()
   }
+  onNetReload = () => {
+    this.setState({
+      netError: false,
+    })
+    setTimeout(this.onFetch, 0)
+  }
+  onNetError = (err, pn) => {
+    if (pn == 1) {
+      this.setState({
+        netError: true,
+        data: null
+      })
+    } else {
+      Util.showNetworkErrorToast()
+    }
+  }
   onRefresh = () => {
-    this.onFetch(1)
+    this.onFetch()
   }
   onLoadMore = () => {
     this.onFetch(this.state.pn + 1)
   }
-  onFetch = (pn) => {
+  onFetch = (pn = 1) => {
     let rData = {
       pn: pn
     }
     this.pullToRefreshListView.startFetching()
-    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity/myjoined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -53,7 +71,7 @@ export default class ActivitysJoined extends React.Component {
       this.setState({
         pn: pn,
         data: data,
-        loaded: true
+        netError: false
       })
     }).catch(err => {
       this.pullToRefreshListView.endFetching()
@@ -99,8 +117,7 @@ export default class ActivitysJoined extends React.Component {
   render() {
     return <View style={styles.container}>
       {
-        this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
-          <ActivityEmpty mode={0} /> :
+        (!this.state.netError) || (this.state.data != null && this.state.data.length > 0) ?
           <RefreshFlatList style={styles.list}
             ref={(component) => this.pullToRefreshListView = component}
             onLoadMore={this.onLoadMore}
@@ -108,7 +125,13 @@ export default class ActivitysJoined extends React.Component {
             keyExtractor={(item) => item.check_code}
             data={this.state.data}
             renderItem={this.renderItem}
-          />
+          /> :
+          this.state.netError ?
+            <NoNetwork reload={this.onNetReload} /> :
+            this.state.data != null && this.state.data.length == 0 ?
+              <ActivityEmpty mode={0} /> : null
+
+
       }
     </View>
 

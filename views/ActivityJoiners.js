@@ -9,6 +9,8 @@ import px2dp from '../lib/px2dp'
 import GoNativeModule from '../modules/GoNativeModule'
 import RefreshFlatList from '../components/RefreshFlatList'
 import Text from '../components/MyText'
+import NoNetwork from '../components/NoNetwork'
+import Util from '../lib/Util'
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -16,7 +18,24 @@ export default class ActivitysJoined extends React.Component {
     this.state = {
       pn: 1,
       data: null,
-      loaded: false
+      loaded: false,
+      netError: false
+    }
+  }
+  onNetReload = () => {
+    this.setState({
+      netError: false,
+    })
+    setTimeout(this.onFetch, 0)
+  }
+  onNetError = (err, pn) => {
+    if (pn == 1) {
+      this.setState({
+        netError: true,
+        data: null
+      })
+    } else {
+      Util.showNetworkErrorToast()
     }
   }
   onJumpUserDetail = (id, is_news) => {
@@ -31,13 +50,13 @@ export default class ActivitysJoined extends React.Component {
   onLoadMore = () => {
     this.onFetch(this.state.pn + 1)
   }
-  onFetch = (pn) => {
+  onFetch = (pn = 1) => {
     let rData = {
       pn: pn,
       id: this.props.navigation.state.params.id
     }
     this.pullToRefreshListView.startFetching()
-    _FetchData(_Api + '/jv/qz/v21/activityjoined', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activityjoined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -61,23 +80,26 @@ export default class ActivitysJoined extends React.Component {
   }
   render() {
     return <View style={styles.container}>
-      <RefreshFlatList style={styles.list}
-        ref={(component) => this.pullToRefreshListView = component}
-        onLoadMore={this.onLoadMore}
-        onRefresh={this.onRefresh}
-        keyExtractor={(item) => item.uid}
-        data={this.state.data}
-        renderItem={({ item }) =>
-          <TouchableWithoutFeedback onPress={() => this.onJumpUserDetail(item.uid, item.is_news)}>
-            <View style={styles.item}>
-              <Image
-                style={styles.img}
-                source={{ uri: item.avatar }}
-              />
-              <Text style={styles.name}>{item.username}</Text>
-            </View>
-          </TouchableWithoutFeedback>}
-      />
+      {
+        this.state.netError ? <NoNetwork reload={this.onNetReload} /> :
+          <RefreshFlatList style={styles.list}
+            ref={(component) => this.pullToRefreshListView = component}
+            onLoadMore={this.onLoadMore}
+            onRefresh={this.onRefresh}
+            keyExtractor={(item) => item.uid}
+            data={this.state.data}
+            renderItem={({ item }) =>
+              <TouchableWithoutFeedback onPress={() => this.onJumpUserDetail(item.uid, item.is_news)}>
+                <View style={styles.item}>
+                  <Image
+                    style={styles.img}
+                    source={{ uri: item.avatar }}
+                  />
+                  <Text style={styles.name}>{item.username}</Text>
+                </View>
+              </TouchableWithoutFeedback>}
+          />
+      }
     </View>
 
   }

@@ -15,6 +15,8 @@ import RefreshFlatList from '../components/RefreshFlatList'
 import RoundBorderView from '../components/RoundBorderView'
 import Text from '../components/MyText'
 import FantTouchableHighlight from '../components/FantTouchableHighlight'
+import NoNetwork from '../components/NoNetwork'
+import Util from '../lib/Util'
 
 class HeaderRight extends React.Component {
   constructor(props) {
@@ -54,7 +56,7 @@ export default class ActivitysMine extends React.Component {
         '报名中',
         '审核中'
       ],
-      loaded: false
+      netError: false
     }
   }
   onJumpActivitysSignUpManagement = (id) => {
@@ -66,18 +68,34 @@ export default class ActivitysMine extends React.Component {
       headerRight: <HeaderRight />,
     }
   }
+  onNetReload = () => {
+    this.setState({
+      netError: false,
+    })
+    setTimeout(this.onFetch, 0)
+  }
+  onNetError = (err, pn) => {
+    if (pn == 1) {
+      this.setState({
+        netError: true,
+        data: null
+      })
+    } else {
+      Util.showNetworkErrorToast()
+    }
+  }
   onRefresh = () => {
     this.onFetch(1)
   }
   onLoadMore = () => {
     this.onFetch(this.state.pn + 1)
   }
-  onFetch = (pn) => {
+  onFetch = (pn = 1) => {
     let rData = {
       pn: pn
     }
     this.pullToRefreshListView.startFetching()
-    _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData).then(res => {
+    _FetchData(_Api + '/jv/qz/v21/activity/mypublished', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -87,8 +105,8 @@ export default class ActivitysMine extends React.Component {
       }
       this.setState({
         pn: pn,
-        loaded: true,
         data: data,
+        netError: false
       })
     }).catch(err => {
       this.pullToRefreshListView.endFetching()
@@ -130,8 +148,7 @@ export default class ActivitysMine extends React.Component {
   render() {
     return <View style={styles.container}>
       {
-        this.state.loaded == true && (this.state.data == null || this.state.data.length == 0) ?
-          <ActivityEmpty mode={1} /> :
+        (!this.state.netError) || (this.state.data != null && this.state.data.length > 0) ?
           <RefreshFlatList style={styles.list}
             ref={(component) => this.pullToRefreshListView = component}
             onLoadMore={this.onLoadMore}
@@ -139,7 +156,11 @@ export default class ActivitysMine extends React.Component {
             keyExtractor={(item) => item.id}
             data={this.state.data}
             renderItem={this.renderItem}
-          />
+          /> :
+          this.state.netError ?
+            <NoNetwork reload={this.onNetReload} /> :
+            this.state.data != null && this.state.data.length == 0 ?
+              <ActivityEmpty mode={1} /> : null
       }
 
     </View>
