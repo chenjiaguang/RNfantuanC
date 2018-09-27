@@ -9,22 +9,46 @@ import {
 import px2dp from '../lib/px2dp';
 import Util from '../lib/Util';
 import UtilsNetwork from '../lib/UtilsNetwork';
-import Toast from '../components/Toast'
+import Toast from './Toast'
 import Text from './MyText'
 import Button from 'apsl-react-native-button' // 第三方button库，RN官方的库会根据平台不同区别，这里统一
 
 class NoNetwork extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      isConnected: false
+    }
   }
   reload=()=>{
-    NetInfo.isConnected.fetch().then(isConnected => {
-      if (isConnected) {
-        this.props.reload()
-      }else{
-        Util.showNetworkErrorToast()
-      }
-    });
+    if (this.state.isConnected) {
+      this.props.reload()
+    } else {
+      Util.showNetworkErrorToast()
+    }
+  }
+  handleConnectivityChange=(connectionInfo)=>{
+    if (connectionInfo.type !== 'none' && connectionInfo.type !== 'unknown') {
+      this.setState({
+        isConnected: true
+      })
+    } else {
+      this.setState({
+        isConnected: false
+      })
+    }
+  }
+  componentDidMount () {
+    NetInfo.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange
+    );
+  }
+  componentWillUnmount () {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange
+    );
   }
   render() {
     return <View style={[this.props.style,styles.container]}>
