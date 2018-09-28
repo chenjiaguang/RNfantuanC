@@ -424,6 +424,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         circle: res.data.circle,
         status: res.data.status,
       }
+      console.log('_obj.join', _obj.join)
       let images = _obj.content.filter(item => item.type.toString() === '2')
       let contentImages = images.map(item => {
         return {
@@ -579,7 +580,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               <View style={styles.joinBoxHeader}><Text style={{ fontSize: px2dp(32), color: '#333', fontWeight: '600' }}>已报名的小伙伴({joinedTotal})</Text></View>
               <TouchableOpacity onPress={() => this.onJumpActivityJoiners(id)} activeOpacity={0.8}>
                 <View style={styles.joinBoxContent}>
-                  {join.map((item, idx) => <Image key={idx} source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }} />)}
+                  {join.map((item, idx) => <View key={idx} style={{ width: px2dp(42), height: (item.num && parseInt(item.num) > 1) ? px2dp(52) : px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }}>
+                      <Image source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42) }} />
+                      {(item.num && parseInt(item.num) > 1) ? <Text style={{position: 'absolute', backgroundColor: '#fff', overflow: 'hidden', paddingLeft: px2dp(1), paddingRight: px2dp(1), right: 0, bottom: 0, borderRadius: px2dp(10), borderWidth: px2dp(1), borderColor: '#FE5F5F', fontSize: px2dp(14), color: '#FE5F5F', lineHeight: px2dp(18) }}>x{parseInt(item.num) > 99 ? '99+' : item.num}</Text> : null}
+                    </View>)}
                 </View>
               </TouchableOpacity>
             </View> : null}

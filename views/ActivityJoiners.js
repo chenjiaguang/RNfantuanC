@@ -57,6 +57,7 @@ export default class ActivitysJoined extends React.Component {
     }
     this.pullToRefreshListView.startFetching()
     _FetchData(_Api + '/jv/qz/v21/activityjoined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
+      console.log('res', res)
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -95,7 +96,8 @@ export default class ActivitysJoined extends React.Component {
                     style={styles.img}
                     source={{ uri: item.avatar }}
                   />
-                  <Text style={styles.name}>{item.username}</Text>
+                  <Text style={styles.name} numberOfLines={1}>{item.username}</Text>
+                  <Text style={styles.num}>已购{item.num}张</Text>
                 </View>
               </TouchableWithoutFeedback>}
           />
@@ -129,6 +131,12 @@ const styles = StyleSheet.create({
   },
   name: {
     marginLeft: px2dp(20),
-    color: '#333333'
+    color: '#333333',
+    flex: 1
   },
+  num: {
+    marginLeft: px2dp(20),
+    fontSize: px2dp(24),
+    color: '#979797'
+  }
 })
