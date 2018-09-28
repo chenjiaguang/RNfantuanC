@@ -581,7 +581,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 <View style={styles.joinBoxContent}>
                   {join.map((item, idx) => <View key={idx} style={{ width: px2dp(42), height: (item.num && parseInt(item.num) > 1) ? px2dp(52) : px2dp(42), marginLeft: idx === 0 ? 0 : px2dp(30) }}>
                       <Image source={{ uri: item.avatar }} style={{ width: px2dp(42), height: px2dp(42) }} />
-                      {(item.num && parseInt(item.num) > 1) ? <Text style={{position: 'absolute', backgroundColor: '#fff', overflow: 'hidden', paddingLeft: px2dp(1), paddingRight: px2dp(1), right: 0, bottom: 0, borderRadius: px2dp(10), borderWidth: px2dp(1), borderColor: '#FE5F5F', fontSize: px2dp(14), color: '#FE5F5F', lineHeight: px2dp(18) }}>x{parseInt(item.num) > 99 ? '99+' : item.num}</Text> : null}
+                      {(item.num && parseInt(item.num) > 1) ? <Text style={{position: 'absolute', backgroundColor: '#fff', overflow: 'hidden', paddingLeft: px2dp(2), paddingRight: px2dp(2), right: 0, bottom: 0, borderRadius: px2dp(10), borderWidth: px2dp(1), borderColor: '#FE5F5F', fontSize: px2dp(14), color: '#FE5F5F', lineHeight: px2dp(18) }}>x{parseInt(item.num) > 99 ? '99+' : item.num}</Text> : null}
                     </View>)}
                 </View>
               </TouchableOpacity>
@@ -815,8 +815,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   joinBoxContent: {
-    flexDirection: 'row',
-    height: px2dp(44)
+    flexDirection: 'row'
   },
   dynamicBox: {
     paddingTop: px2dp(20),
