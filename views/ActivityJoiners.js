@@ -57,7 +57,6 @@ export default class ActivitysJoined extends React.Component {
     }
     this.pullToRefreshListView.startFetching()
     _FetchData(_Api + '/jv/qz/v21/activityjoined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
-      console.log('res', res)
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {

@@ -424,7 +424,6 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         circle: res.data.circle,
         status: res.data.status,
       }
-      console.log('_obj.join', _obj.join)
       let images = _obj.content.filter(item => item.type.toString() === '2')
       let contentImages = images.map(item => {
         return {
