@@ -52,7 +52,7 @@ const commonStyle = {
   },
   headerTitleStyle: Platform.OS == 'android' ?
     {
-      fontSize: 19,//不用px2dp
+      fontSize: 16,//不用px2dp
       color: '#333',
       alignSelf: 'center',
       textAlign: 'center',
@@ -60,7 +60,7 @@ const commonStyle = {
       fontWeight: 'normal'
     } :
     {
-      fontSize: px2dp(34),
+      fontSize: px2dp(32),
       color: '#333',
       alignSelf: 'center',
       textAlign: 'center',
