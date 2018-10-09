@@ -85,29 +85,31 @@ export default class ActivitysJoined extends React.Component {
   renderItem = ({ item }) => {
     let active = this.state.activeStatus.indexOf(item.status_text) > -1
     return (<FantTouchableHighlight onPress={() => this.onJumpActivityCodeDetail(item.check_code)}>
-      <View style={styles.item}>
-        <Image
-          style={styles.img}
-          source={{ uri: item.covers[0].compress }}
-        />
-        <View style={styles.right}>
+      <View style={styles.itemContainer}>
+        <View style={styles.item}>
+          <Image
+            style={styles.img}
+            source={{ uri: item.covers[0].compress }}
+          />
+          <View style={styles.right}>
 
-          <View style={styles.rightTop}>
-            <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-            <Text style={[styles.status, active ? styles.statusEnable : null]}>{item.status_text}</Text>
-          </View>
-
-          <View style={styles.rightBottom}>
-
-            <View style={styles.rightBottomLeft}>
-              <Text style={styles.time}>{item.time_text}</Text>
-              <Text style={styles.price}>{item.money_text}</Text>
+            <View style={styles.rightTop}>
+              <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+              <Text style={[styles.status, active ? styles.statusEnable : null]}>{item.status_text}</Text>
             </View>
-            <RoundBorderView
-              fantBorderColor={active ? '#1EB0FD' : '#999999'}
-              style={[styles.button, active ? styles.buttonEnable : null]}>
-              <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>查看券码</Text>
-            </RoundBorderView>
+
+            <View style={styles.rightBottom}>
+
+              <View style={styles.rightBottomLeft}>
+                <Text style={styles.time}>{item.time_text}</Text>
+                <Text style={styles.price}>{item.money_text}</Text>
+              </View>
+              <RoundBorderView
+                fantBorderColor={active ? '#1EB0FD' : '#999999'}
+                style={[styles.button, active ? styles.buttonEnable : null]}>
+                <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>查看券码</Text>
+              </RoundBorderView>
+            </View>
           </View>
         </View>
       </View>
@@ -145,6 +147,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   list: {
+    flex: 1,
+  },
+  itemContainer:{
     flex: 1,
   },
   item: {

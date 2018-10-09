@@ -119,27 +119,29 @@ export default class ActivitysMine extends React.Component {
     let active = this.state.activeStatus.indexOf(item.status_text) > -1
     return (<FantTouchableHighlight
       onPress={() => this.onJumpActivitysSignUpManagement(item.id)}>
-      <View style={styles.item}>
-        <Image
-          style={styles.img}
-          source={{ uri: item.covers[0].compress }}
-        />
-        <View style={styles.right}>
+      <View style={styles.itemContainer}>
+        <View style={styles.item}>
+          <Image
+            style={styles.img}
+            source={{ uri: item.covers[0].compress }}
+          />
+          <View style={styles.right}>
 
 
-          <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+            <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
 
-          <View style={styles.rightBottom}>
+            <View style={styles.rightBottom}>
 
-            <View style={styles.rightBottomLeft}>
-              <Text style={styles.time}>{item.time_text}</Text>
-              <Text style={styles.price}>{item.money}</Text>
+              <View style={styles.rightBottomLeft}>
+                <Text style={styles.time}>{item.time_text}</Text>
+                <Text style={styles.price}>{item.money}</Text>
+              </View>
+              <RoundBorderView
+                fantBorderColor={active ? '#1EB0FD' : '#999999'}
+                style={[styles.button, active ? styles.buttonEnable : null]}>
+                <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.status_text}</Text>
+              </RoundBorderView>
             </View>
-            <RoundBorderView
-              fantBorderColor={active ? '#1EB0FD' : '#999999'}
-              style={[styles.button, active ? styles.buttonEnable : null]}>
-              <Text style={[styles.buttonText, active ? styles.buttonTextEnable : null]}>{item.status_text}</Text>
-            </RoundBorderView>
           </View>
         </View>
       </View>
@@ -174,6 +176,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   list: {
+    flex: 1,
+  },
+  itemContainer:{
     flex: 1,
   },
   item: {
