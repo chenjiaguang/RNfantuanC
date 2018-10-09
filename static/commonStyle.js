@@ -64,7 +64,8 @@ const commonStyle = {
       color: '#333',
       alignSelf: 'center',
       textAlign: 'center',
-      flex: 1
+      flex: 1,
+      fontWeight: 'normal'
     },
   headerStyleNormal: {
     width: px2dp(750),
