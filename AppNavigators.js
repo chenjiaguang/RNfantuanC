@@ -141,7 +141,8 @@ SimpleApp.router.getStateForAction = (action, state) => {
         // console.log('action', action)
         if (state.routes.length === 1 && (!action.params || !action.params.stopBack)) {
             if (action.type === 'Navigation/POP') {
-                SwipBackModule && SwipBackModule.exit();
+                BackHandler.exitApp()
+                // SwipBackModule && SwipBackModule.exit();
             } else if (action.type === 'Navigation/REPLACE' ||
                 action.type === 'Navigation/COMPLETE_TRANSITION' ||
                 action.type === 'Navigation/SET_PARAMS'
