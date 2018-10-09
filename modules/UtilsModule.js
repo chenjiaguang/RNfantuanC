@@ -11,5 +11,9 @@ import { NativeModules } from 'react-native';
  * show 
  * 参数msg:内容
  * Toast显示
+ * 
+ * getGeoLocation
+ * 获取坐标
+ * return [116.310003,39.991957]
  */
 export default NativeModules.UtilsModule;

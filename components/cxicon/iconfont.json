@@ -18,5 +18,7 @@
   "notice": 58988,
   "phone-w":58882,
   "camera-w":58881,
-  "menu":58999
+  "menu":58999,
+  "go_forward": 59007,
+  "select": 58886
 }

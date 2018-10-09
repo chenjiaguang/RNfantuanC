@@ -20,6 +20,9 @@ export default class Index extends React.Component {
     componentWillMount() {
         let screenProps = this.props.screenProps;
         //testing
+    //    _Token = screenProps.params.token
+    //     this.props.navigation.replace('SetGeoLocation')
+    //     return false
 
         // console.log('################', screenProps)
         // if (screenProps) {
@@ -40,7 +43,7 @@ export default class Index extends React.Component {
                 if (screenProps.params.env == "prod") {
                     _Env = "prod"
                     _Api = "https://fant.fantuanlife.com"
-                } else if(screenProps.params.env == "pre"){
+                } else if (screenProps.params.env == "pre") {
                     _Env = "pre"
                     _Api = "https://fant.fantuanlife.com/pre"
                 } else {
