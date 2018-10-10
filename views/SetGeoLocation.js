@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   Linking,
-  FlatList
+  FlatList,
+  BackHandler
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import ActivityEmpty from '../components/ActivityEmpty'
@@ -30,7 +31,7 @@ class HeaderRight extends React.Component {
   }
   onSubmit = async () => {
     await UtilsModule.setResult(this.props.locationName)
-    SwipBackModule.exit()
+    BackHandler.exitApp()
   }
   render() {
     return <TouchableWithoutFeedback disabled={this.props.submitTxtDisabled} onPress={this.onSubmit}>
