@@ -101,7 +101,7 @@ export default class GrowthCenter extends React.Component {  // 什么参数都�
           content: '成长值+10',
           limit: '',
           missionPoint: '',
-          title: '成为圈主'
+          title: '成为群主'
         },
         {
           content: '成长值+8',

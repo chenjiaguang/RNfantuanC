@@ -64,7 +64,7 @@ const SimpleApp = createStackNavigator({
     BindPhone: { screen: BindPhone, path: '/phone/bind' }, // 绑定手机号，当传入isRebind时，认为时新绑手机号
     SetPassword: { screen: SetPassword, path: '/password/set' }, // 首次设置密码
     ResetPassword: { screen: ResetPassword, path: '/password/reset' }, // 修改密码（通过验证原密码修改）
-    Dynamic: { screen: Dynamic, path: '/circle' }, // 圈子首页
+    Dynamic: { screen: Dynamic, path: '/circle' }, // 群组首页
     WebPage: { screen: WebPage, path: '/web' },
     ActivitysJoined: { screen: ActivitysJoined, path: '/ActivitysJoined' },
     ActivitysMine: { screen: ActivitysMine, path: '/ActivitysMine' },

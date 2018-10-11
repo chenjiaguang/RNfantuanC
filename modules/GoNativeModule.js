@@ -24,17 +24,17 @@ import { NativeModules } from 'react-native';
  * 
  * 
  * goPublishArticleDynamic
- * 参数: 圈子id 圈子名称 活动id
+ * 参数: 群组id 群组名称 活动id
  * 跳转晒长文
  * 
  * 
  * goPublishDynamic __todo  变更记录,增加活动名称字段，记得让ios业增加
- * 参数: 圈子id 圈子名称 活动id 活动名称
+ * 参数: 群组id 群组名称 活动id 活动名称
  * 跳转晒动态
  * 
  * 
  * goActivityShow  __todo 增加活动名称，记得让ios也增加
- * 参数: 圈子id 圈子名称 活动id 活动名称
+ * 参数: 群组id 群组名称 活动id 活动名称
  * 跳转大家都在晒
  * 
  * 
@@ -43,8 +43,8 @@ import { NativeModules } from 'react-native';
  * 跳转地图页
  * 
  * goCircleDetail
- * 参数：圈子id 圈子名 封面图url 是否有活动(string)
- * 跳转圈子详情页
+ * 参数：群组id 群组名 封面图url 是否有活动(string)
+ * 跳转群组详情页
  * 
  * goActivityOrder
  * 参数：活动id

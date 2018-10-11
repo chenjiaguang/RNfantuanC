@@ -247,10 +247,10 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   checkAccess = () => {
     let { id, name, cover, followed, need_audit } = this.state.activity.circle
     let flat = false
-    if (!followed) { // 需加入圈子才能晒图
+    if (!followed) { // 需加入群组才能晒图
       Alert.alert(
         '',
-        '加入圈子才能进行更多操作哦~',
+        '加入群组才能进行更多操作哦~',
         [
           {
             text: '我再想想',
@@ -294,7 +294,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                     })
                   }
                 }).catch(err => {
-                  console.log('加入圈子出错', err)
+                  console.log('加入群组出错', err)
                   this.setState({
                     circleApplying: false
                   })
@@ -342,7 +342,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     })
   }
   goOrder = () => {
-    if (!this.checkAccess()) { // 需加入圈子才能购票
+    if (!this.checkAccess()) { // 需加入群组才能购票
       return false
     }
     this.checkOrder()
@@ -350,7 +350,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
   publish = async () => {
     let { status } = this.state.activity
     let { id, name, cover, followed, need_audit } = this.state.activity.circle
-    if (!this.checkAccess()) { // 需加入圈子才能晒图
+    if (!this.checkAccess()) { // 需加入群组才能晒图
       return false
     }
     if (status.toString() === '0' || status.toString() === '2') { // 活动未上线
@@ -629,7 +629,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               </View>
               <TouchableWithoutFeedback onPress={() => this.onJumpCircleDetail(circle.id, circle.name, circle.cover.compress, circle.circle_has_activity)}>
                 <View style={styles.circleButton}>
-                  <Text style={styles.circleButtonText}>进入圈子参与该活动讨论</Text>
+                  <Text style={styles.circleButtonText}>进入群组参与该活动讨论</Text>
                 </View>
               </TouchableWithoutFeedback>
             </View> : null}

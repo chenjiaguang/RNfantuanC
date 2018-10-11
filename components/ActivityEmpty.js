@@ -15,7 +15,7 @@ class ActivityEmpty extends Component {
         this.props.mode == 0 ? <Text style={styles.txt}>还没有参加任何活动，赶快报名吧~</Text> : null
       }
       {
-        this.props.mode == 1 ? <Text style={styles.txt}>还没有发布过活动，快去圈子里发布活动吧~</Text> : null
+        this.props.mode == 1 ? <Text style={styles.txt}>还没有发布过活动，快去群组里发布活动吧~</Text> : null
       }
     </View>;
   }
