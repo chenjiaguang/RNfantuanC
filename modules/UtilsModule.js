@@ -15,5 +15,8 @@ import { NativeModules } from 'react-native';
  * getGeoLocation
  * 获取坐标
  * return [116.310003,39.991957]
+ * 
+ * setResult
+ * 回传位置
  */
 export default NativeModules.UtilsModule;

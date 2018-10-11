@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 import React, { componet } from "react";
 import { View, TouchableWithoutFeedback, Platform, NativeModules, PixelRatio, Dimensions, Easing, Animated, StatusBar, BackHandler } from 'react-native'
+import Util from './lib/Util';
 import Index from './views/Index';
 import HeadlineIndex from './views/HeadlineIndex';
 import HeadlineSelect from './views/HeadlineSelect';
@@ -141,8 +142,9 @@ SimpleApp.router.getStateForAction = (action, state) => {
         // console.log('action', action)
         if (state.routes.length === 1 && (!action.params || !action.params.stopBack)) {
             if (action.type === 'Navigation/POP') {
-                BackHandler.exitApp()
-                // SwipBackModule && SwipBackModule.exit();
+                // BackHandler.exitApp()
+                // SwipBackModule && SwipBackModule.exitForModal();
+                Util.exitRn()
             } else if (action.type === 'Navigation/REPLACE' ||
                 action.type === 'Navigation/COMPLETE_TRANSITION' ||
                 action.type === 'Navigation/SET_PARAMS'

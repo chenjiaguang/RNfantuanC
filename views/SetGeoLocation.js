@@ -31,7 +31,8 @@ class HeaderRight extends React.Component {
   }
   onSubmit = async () => {
     await UtilsModule.setResult(this.props.locationName)
-    BackHandler.exitApp()
+    // BackHandler.exitApp()
+    Util.exitRn(2)
   }
   render() {
     return <TouchableWithoutFeedback disabled={this.props.submitTxtDisabled} onPress={this.onSubmit}>
