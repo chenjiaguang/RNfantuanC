@@ -20,7 +20,7 @@ import Util from '../lib/Util'
 import Iconfont from '../components/cxicon/CXIcon';
 import UtilsModule from '../modules/UtilsModule'
 import LoadingView from '../components/LoadingView'
-import region from '../static/region'
+import RegionLoader from '../lib/RegionLoader'
 import SwipBackModule from '../modules/SwipBackModule'
 
 class HeaderRight extends React.Component {
@@ -68,7 +68,7 @@ class RegionView extends React.Component {
                 this.props.state.nativeGeoLocationName ?
                   <FantTouchableHighlight onPress={() => this.props.click({
                     n: this.props.state.nativeGeoLocationName,
-                    c: []
+                    e: true
                   })}>
                     <View style={styles.itemContainer} >
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -100,7 +100,7 @@ class RegionView extends React.Component {
             <View style={styles.itemContainer} >
               <Text style={styles.regionNameTxt}>{item.n}</Text>
               {
-                item.c.length ?
+                (!item.e) ?
                   <Iconfont name='go_forward' size={px2dp(20)} color='#999999' style={styles.regionRightIcon} /> :
                   (item.n == this.props.state.selectName ?
                     <Iconfont name='select' size={px2dp(36)} color='#999999' style={styles.regionRightIcon} /> :
@@ -119,7 +119,7 @@ export default class SetGeoLocation extends React.Component {
     this.state = {
       clicked: false,//防止点击多次的标记
       level: this.props.navigation.state.params.level ? this.props.navigation.state.params.level : 0,
-      list: this.props.navigation.state.params.list ? this.props.navigation.state.params.list : region.data.regions,
+      list: RegionLoader.load(this.props.navigation.state.params.beforeSelectsName),
       nativeGeoLocationName: '',//定位直接获取的完整地理位置名
       selectName: '',//当前页面被选中的名称
       beforeSelectsName: this.props.navigation.state.params.beforeSelectsName ? this.props.navigation.state.params.beforeSelectsName : [],//前面页面已被选中的名称
@@ -145,7 +145,7 @@ export default class SetGeoLocation extends React.Component {
   onClick = (item) => {
     let beforeSelectsName = [...this.state.beforeSelectsName]
     beforeSelectsName.push(item.n)
-    if (item.c.length == 0) {
+    if (item.e) {
       this.setState({
         selectName: item.n
       })
@@ -158,7 +158,7 @@ export default class SetGeoLocation extends React.Component {
           clicked: true
         })
         this.props.navigation.setParams({ rightDisabled: true })
-        this.props.navigation.push('SetGeoLocation', { level: this.state.level + 1, list: item.c, beforeSelectsName: beforeSelectsName })
+        this.props.navigation.push('SetGeoLocation', { level: this.state.level + 1,  beforeSelectsName: beforeSelectsName })
 
         setTimeout(() => {
           this.setState({
