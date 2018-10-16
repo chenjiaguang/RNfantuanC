@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottomWidth: px2dp(1),
+    borderBottomWidth: px2dp(1,0.6),
     borderColor: '#DCDDE0',
     paddingLeft: px2dp(40),
     paddingRight: px2dp(30)
