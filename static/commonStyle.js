@@ -53,19 +53,19 @@ const commonStyle = {
   headerTitleStyle: Platform.OS == 'android' ?
     {
       fontSize: 16,//不用px2dp
-      color: '#333',
+      color: '#111111',
       alignSelf: 'center',
       textAlign: 'center',
       flex: 1,
-      fontWeight: 'normal'
+      fontWeight: 'bold'
     } :
     {
       fontSize: px2dp(32),
-      color: '#333',
+      color: '#111111',
       alignSelf: 'center',
       textAlign: 'center',
       flex: 1,
-      fontWeight: 'normal'
+      fontWeight: 'bold'
     },
   headerStyleNormal: {
     width: px2dp(750),
