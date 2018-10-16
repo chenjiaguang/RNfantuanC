@@ -150,21 +150,18 @@ export default class ActivitysMine extends React.Component {
   render() {
     return <View style={styles.container}>
       {
-        (!this.state.netError) || (this.state.data != null && this.state.data.length > 0) ?
-          <RefreshFlatList style={styles.list}
-            ref={(component) => this.pullToRefreshListView = component}
-            onLoadMore={this.onLoadMore}
-            onRefresh={this.onRefresh}
-            keyExtractor={(item) => item.id}
-            data={this.state.data}
-            renderItem={this.renderItem}
-          /> :
-          this.state.netError ?
-            <NoNetwork reload={this.onNetReload} /> :
-            this.state.data != null && this.state.data.length == 0 ?
-              <ActivityEmpty mode={1} /> : null
+        (!this.state.netError) ?
+          ((this.state.data != null && this.state.data.length == 0) ? <ActivityEmpty mode={1} /> :
+            <RefreshFlatList style={styles.list}
+              ref={(component) => this.pullToRefreshListView = component}
+              onLoadMore={this.onLoadMore}
+              onRefresh={this.onRefresh}
+              keyExtractor={(item) => item.id}
+              data={this.state.data}
+              renderItem={this.renderItem}
+            />) :
+          <NoNetwork reload={this.onNetReload} />
       }
-
     </View>
 
   }
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-  itemContainer:{
+  itemContainer: {
     flex: 1,
   },
   item: {
