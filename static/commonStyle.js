@@ -60,7 +60,7 @@ const commonStyle = {
       fontWeight: 'bold'
     } :
     {
-      fontSize: px2dp(32),
+      fontSize: 16,
       color: '#111111',
       alignSelf: 'center',
       textAlign: 'center',
