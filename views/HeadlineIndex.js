@@ -37,21 +37,21 @@ export default class HeadlineIndex extends React.Component {
       <View style={style.contentWrapper}>
         <View style={style.articleBody}>
           <View style={style.paragraph}>
-            <Iconfont name='question' size={px2dp(40)} color='#FF3F53' style={style.icon}></Iconfont>
+            <Iconfont name='question' size={px2dp(40)} color='#FF3A30' style={style.icon}></Iconfont>
             <View style={style.textWrapper}>
               <Text style={style.header}>什么是范团头条?</Text>
               <Text style={style.content}>范团头条是海南本土首个内容创作平台，我们鼓励所有人在这里创作内容、分享自己的生活。目前范团头条主要以文章的形式展现，任何兴趣领域的内容都可以在这里发布。</Text>
             </View>
           </View>
           <View style={style.paragraph}>
-            <Iconfont name='question' size={px2dp(40)} color='#FF3F53' style={style.icon}></Iconfont>
+            <Iconfont name='question' size={px2dp(40)} color='#FF3A30' style={style.icon}></Iconfont>
             <View style={style.textWrapper}>
               <Text style={style.header}>入驻范团头条有什么好处？</Text>
               <Text style={style.content}>你可以在这里获得对你的内容感兴趣的粉丝、志同道合的朋友、棋逢对手的知己，你可以在这里和他们互动、交流、分享。后期我们还会逐步增加作者收益，让你的所写有所得。</Text>
             </View>
           </View>
           <View style={style.paragraph}>
-            <Iconfont name='question' size={px2dp(40)} color='#FF3F53' style={style.icon}></Iconfont>
+            <Iconfont name='question' size={px2dp(40)} color='#FF3A30' style={style.icon}></Iconfont>
             <View style={style.textWrapper}>
               <Text style={style.header}>如何入驻范团头条？</Text>
               <Text style={style.content}>点击下方“成为头条号作者”的按钮，填写简单的资料后，即可以在电脑上进入 http://toutiao.fantuanlife.com，开始进行创作。</Text>

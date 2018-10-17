@@ -521,7 +521,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
               </View>
               <View style={styles.infoItem}>
                 <Text style={styles.infoLeft}>费用</Text>
-                <Text style={[styles.infoRight, { color: '#FF3F53' }]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
+                <Text style={[styles.infoRight, { color: '#FF3A30' }]} numberOfLines={1}>{cost.toString() === '0' ? '免费' : '¥' + cost}</Text>
               </View>
               <View style={styles.infoItem}>
                 <Text style={styles.infoLeft}>报名截止时间</Text>
@@ -655,7 +655,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
           </View>
         </TouchableWithoutFeedback>
 
-        <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3F53' : '#BBBBBB', backgroundColor: '#FF3F53' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
+        <Button style={{ flex: 1, height: px2dp(100), borderRadius: 0, borderWidth: px2dp(1), borderColor: statusText === '购票' ? '#FF3A30' : '#BBBBBB', backgroundColor: '#FF3A30' }} disabledStyle={{ backgroundColor: '#BBBBBB' }} textStyle={{ fontSize: px2dp(30), color: '#fff', fontWeight: '600' }} activeOpacity={0.8} isDisabled={statusText !== '购票'}
           onPress={this.goOrder} >{statusText}</Button>
       </View>}
       <ActionSheet

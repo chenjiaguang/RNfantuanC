@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: px2dp(24),
-    color: '#FF3F53',
+    color: '#FF3A30',
     includeFontPadding: false,
   },
   button: {
