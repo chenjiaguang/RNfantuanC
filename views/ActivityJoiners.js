@@ -11,6 +11,7 @@ import RefreshFlatList from '../components/RefreshFlatList'
 import Text from '../components/MyText'
 import NoNetwork from '../components/NoNetwork'
 import Util from '../lib/Util'
+import Iconfont from '../components/cxicon/CXIcon';
 
 export default class ActivitysJoined extends React.Component {
   constructor(props) {
@@ -57,6 +58,7 @@ export default class ActivitysJoined extends React.Component {
     }
     this.pullToRefreshListView.startFetching()
     _FetchData(_Api + '/jv/qz/v21/activityjoined', rData, { onNetError: (err) => this.onNetError(err, pn) }).then(res => {
+      console.log('res', res)
       this.pullToRefreshListView.endFetching(res.data.paging.is_end)
       let data
       if (pn == 1) {
@@ -91,10 +93,13 @@ export default class ActivitysJoined extends React.Component {
             renderItem={({ item }) =>
               <TouchableWithoutFeedback onPress={() => this.onJumpUserDetail(item.uid, item.is_news)}>
                 <View style={styles.item}>
-                  <Image
-                    style={styles.img}
-                    source={{ uri: item.avatar }}
-                  />
+                  <View style={styles.imgBox}>
+                    <Image
+                      style={styles.img}
+                      source={{ uri: item.avatar }}
+                    />
+                    {(item.userInfo && item.userInfo.vipUser) ? <Image style={styles.vipIcon} source={require('../static/image/vip.png')}/> : null}
+                  </View>
                   <Text style={styles.name} numberOfLines={1}>{item.username}</Text>
                   <Text style={styles.num}>已购{item.num}张</Text>
                 </View>
@@ -123,10 +128,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  imgBox: {
+    height: px2dp(60),
+    width: px2dp(60),
+    position: 'relative'
+  },
   img: {
     height: px2dp(60),
     width: px2dp(60),
     borderRadius: px2dp(30)
+  },
+  vipIcon: {
+    width: px2dp(22),
+    height: px2dp(22),
+    position: 'absolute',
+    right: 0,
+    bottom: 0
   },
   name: {
     marginLeft: px2dp(20),
