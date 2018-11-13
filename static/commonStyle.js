@@ -26,7 +26,7 @@ const commonStyle = {
       para_primary: '#333', // 段落主文字
       para_secondary: '#666', // 段落次文字
       para_thirdly: '#999', // 段落轻文字
-      error: '#FF3F53', // 段落轻文字
+      error: '#FF3A30', // 段落轻文字
     },
     mask: {
       black: 'rgba(0,0,0,0.5)', // 黑色遮罩
@@ -34,7 +34,7 @@ const commonStyle = {
     },
     border: {
       default: '#E5E5E5', // 主线条颜色
-      error: '#FF3F53' // 错误提示线条颜色
+      error: '#FF3A30' // 错误提示线条颜色
     }
   },
   value:{
