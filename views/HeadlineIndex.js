@@ -54,7 +54,7 @@ export default class HeadlineIndex extends React.Component {
             <Iconfont name='question' size={px2dp(40)} color='#FF3A30' style={style.icon}></Iconfont>
             <View style={style.textWrapper}>
               <Text style={style.header}>如何入驻范团头条？</Text>
-              <Text style={style.content}>点击下方“成为头条号作者”的按钮，填写简单的资料后，即可以在电脑上进入 http://toutiao.fantuanlife.com，开始进行创作。</Text>
+              <Text style={style.content}>点击下方“成为头条号作者”的按钮，填写简单的资料后，即可以在电脑上进入 http://toutiao.fantuan.cn，开始进行创作。</Text>
             </View>
           </View>
         </View>

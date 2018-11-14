@@ -31,7 +31,7 @@ export default class HeadlineSubmitted extends React.Component {
       <View style={style.contentWrapper}>
         <Iconfont name='success' size={px2dp(190)} color='#2DCC70' style={style.icon}></Iconfont>
         <Text style={style.successHead}>申请成功！</Text>
-        <Text style={style.tip}>您可以在电脑上进入（http://toutiao.fantuanlife.com），用此账号登录范团头条作者后台即可。</Text>
+        <Text style={style.tip}>您可以在电脑上进入（http://toutiao.fantuan.cn），用此账号登录范团头条作者后台即可。</Text>
         <Button style={style.button} textStyle={style.buttonText} onPress={this.complete} activeOpacity={0.8}>完成</Button>
       </View>
     </ScrollView>

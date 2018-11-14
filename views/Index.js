@@ -42,13 +42,13 @@ export default class Index extends React.Component {
                 _Token = screenProps.params.token
                 if (screenProps.params.env == "prod") {
                     _Env = "prod"
-                    _Api = "https://fant.fantuanlife.com"
+                    _Api = "https://fant.fantuan.cn"
                 } else if (screenProps.params.env == "pre") {
                     _Env = "pre"
-                    _Api = "https://fant.fantuanlife.com/pre"
+                    _Api = "https://fant.fantuan.cn/pre"
                 } else {
                     _Env = "dev"
-                    _Api = "https://fanttest.fantuanlife.com"
+                    _Api = "https://fanttest.fantuan.cn"
                 }
                 this.props.navigation.replace(screenProps.route, screenProps.params)
             } else {
