@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
@@ -56,20 +57,29 @@ export default class BindPhone extends React.Component {  // 什么参数都不�
     this.setState({
       submitting: true
     })
-    let rAddress = (params && params.rebind) ? '/jv/user/phone/change' : '/jv/user/phone/bind'
-    _FetchData(_Api + rAddress, rData).then(res => {
+    let rAddress = (params && params.rebind) ? '/jv/user/phone/change' : '/jv/user/phone/app/add'
+    _FetchData(_Api + rAddress, rData, {dontToast: true}).then(res => {
       this.setState({
         submitting: false
       })
       if (res && Boolean(res.error) && res.msg) {
-        res.msg && Toast.show(res.msg)
+        Alert.alert(
+          '绑定失败',
+          res.msg,
+          [
+            {
+              text: '确定'
+            }
+          ]
+        )
         return false
-      } else if (res && !Boolean(res.error)) {
+      } else if (res && !Boolean(res.error) && res.data && res.data.phone && res.data.uid) {
         // 绑定成功，退出页面
         if (Platform.OS == 'android') {
-          GoNativeModule && GoNativeModule.goAfterWXBindPhone()
+          GoNativeModule && GoNativeModule.goAfterWXBindPhone(res.data.phone, res.data.uid)
         }else{
-          GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
+          GoNativeModule && GoNativeModule.goAfterWXBindPhone(res.data.phone, res.data.uid)
+          // GoNativeModule && GoNativeModule.goRootTabBar && GoNativeModule.goRootTabBar()
           SwipBackModule && SwipBackModule.exit()
         }
       }
