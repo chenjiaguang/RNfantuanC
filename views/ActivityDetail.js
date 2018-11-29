@@ -487,8 +487,8 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         title={'活动详情'}
         headerRight={(rgb) => {
           return <TouchableWithoutFeedback disabled={false} onPress={() => { this.share() }}>
-            <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(30), justifyContent: 'center' }}>
-              <Iconfont name="menu" size={px2dp(36)} color={rgb} />
+            <View style={{ height: px2dp(90), paddingLeft: px2dp(20), paddingRight: px2dp(26), justifyContent: 'center' }}>
+              <Iconfont name="dot" size={px2dp(36)} color={rgb} />
             </View>
           </TouchableWithoutFeedback>
         }}
