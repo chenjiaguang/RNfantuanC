@@ -10,7 +10,8 @@ import {
   StatusBar,
   Alert,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  WebView
 } from 'react-native';
 import px2dp from '../lib/px2dp'
 import { ifIphoneX, getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
@@ -37,6 +38,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     super(props)
     this.lastY = 0
     this.state = {
+      defWebViewHeight: 0,
       circleApplying: false,
       isOpen: false,
       browserIndex: 0,
@@ -65,6 +67,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         status: '',
         statusText: '',
         content: [],
+        htmlContent: null,
         circle: null,
         latitude: '',
         longitude: '',
@@ -222,9 +225,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
       // ]).start()
     }
   }
-  introBoxLayout = (event) => {
+  introBoxLayout = (event, forceUpdate) => {
     let { initialHeight, maxHeight, animationHeight, iconRotate } = this.state
-    if (initialHeight && maxHeight && animationHeight && iconRotate) {
+    if (initialHeight && maxHeight && animationHeight && iconRotate && !forceUpdate) {
       return false
     }
     let height = 0
@@ -408,7 +411,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         shareUrl: res.data.share_url,
         share_content: res.data.share_content,
         hasDynamic: res.data.activity_has_dynamic,
-        content: res.data.content.filter(item => item.type.toString() !== '0').map((item, idx) => {
+        content: res.data.rendering_type.toString() === '0' ? res.data.content.filter(item => item.type.toString() !== '0').map((item, idx) => {
           return {
             type: item.type,
             content: item.type.toString() === '1' ? item.content : {
@@ -420,18 +423,21 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             width: item.width,
             height: item.height
           }
-        }),
+        }) : [],
+        htmlContent: res.data.rendering_type.toString() === '1' ? ('<!DOCTYPE html><html style="padding:0;margin:0;"><body style="padding:0;margin:0;">' + res.data.content + '</body></html>') : null,
         circle: res.data.circle,
         status: res.data.status,
       }
-      let images = _obj.content.filter(item => item.type.toString() === '2')
-      let contentImages = images.map(item => {
-        return {
-          idx: item.idx,
-          url: item.content.image
-        }
-      })
-      _obj.contentImages = contentImages
+      if (_obj.content && _obj.content.length) {
+        let images = _obj.content.filter(item => item.type.toString() === '2')
+        let contentImages = images.map(item => {
+          return {
+            idx: item.idx,
+            url: item.content.image
+          }
+        })
+        _obj.contentImages = contentImages
+      }
       this.setState({
         activity: _obj,
         netError: false
@@ -476,9 +482,28 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     })
     this.ImageBrowser.show(_idx)
   }
+
+  _onLoadEnd = () => {
+    const script = `window.postMessage(document.body.scrollHeight)`
+    this.webview && this.webview.injectJavaScript(script)
+  }
+  _onMessage = (e) => {
+    let valToInt= parseInt(e.nativeEvent.data)
+    let defWebViewHeight = px2dp(valToInt)
+    if (defWebViewHeight != this.state.defWebViewHeight) {
+      this.setState({defWebViewHeight})
+      this.introBoxLayout({ // 强制重新设置内容高度
+        nativeEvent: {
+          layout: {
+            height: valToInt
+          }
+        }
+      }, true)
+    }
+  }
   render() {
-    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, circle, contentImages, hasDynamic } = this.state.activity
-    let { initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
+    let { id, bannerUrl, title, joinedTotal, from, sponsorName, sponsorPhone, address, location, date, cost, deadline_text, tags, join, activityImages, activityImageLength, statusText, content, htmlContent, circle, contentImages, hasDynamic } = this.state.activity
+    let { defWebViewHeight, initialHeight, maxHeight, animationHeight, iconRotate, browserIndex } = this.state
     return <View style={styles.page}>
       <HeadNav
         ref={(component) => this._headNav = component}
@@ -537,8 +562,9 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
                 )}
               </View>
             </View>
-            {(content && content.length > 0) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>
+            {((content && content.length > 0) || htmlContent) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>
               <Text style={styles.introHeader}>活动介绍</Text>
+              {htmlContent ? <WebView ref={ele => this.webview = ele} scrollEnabled={false} source={{html: htmlContent, baseUrl: ''}} style={{height: defWebViewHeight}} onLoadEnd={this._onLoadEnd} onMessage={this._onMessage}></WebView> : null}
               {content.map((item, idx) => {
                 if (item.type.toString() === '1') { // 文本
                   return <Text key={idx} style={styles.introText}>{item.content}</Text>
