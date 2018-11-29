@@ -36,8 +36,8 @@ class HeaderLeft extends React.Component {
     }
     render() {
         return <TouchableWithoutFeedback disabled={false} onPress={this.props.goBack}>
-            <View style={{ width: px2dp(100), height: px2dp(90), flexDirection: 'row', alignItems: 'center' }}>
-                <Iconfont name='go_back' size={px2dp(38)} color='#333333' style={{ paddingLeft: px2dp(18) }} />
+            <View style={{ width: px2dp(100), height: px2dp(100), flexDirection: 'row', alignItems: 'center' }}>
+                <Iconfont name='goback1' size={px2dp(30)} color='#333333' style={{ paddingLeft: px2dp(29) }} />
             </View>
         </TouchableWithoutFeedback>
     }
@@ -88,7 +88,7 @@ const SimpleApp = createStackNavigator({
                     fontSize: px2dp(34)
                 },
                 headerTintColor: '#333',
-                gesturesEnabled: true
+                gesturesEnabled: Platform.OS === 'iOS' 
             }
         },
         mode: 'float',

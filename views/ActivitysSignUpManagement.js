@@ -92,10 +92,15 @@ export default class ActivitysSignUpManagement extends React.Component {
       <View style={styles.item}>
 
         <TouchableWithoutFeedback onPress={() => { this.onJumpUserDetail(item.uid, item.is_news) }}>
-          <Image
-            style={styles.img}
-            source={{ uri: item.avatar }}
-          />
+          <View>
+            <View style={styles.imgBox}>
+              <Image
+                style={styles.img}
+                source={{ uri: item.avatar }}
+              />
+              {(item.userInfo && item.userInfo.vipUser) ? <Image style={styles.vipIcon} source={require('../static/image/vip.png')}/> : null}
+            </View>
+          </View>
         </TouchableWithoutFeedback>
         <View style={styles.middle}>
           <Text style={styles.name}>{item.display_name}</Text>
@@ -227,6 +232,11 @@ const styles = StyleSheet.create({
     width: px2dp(76),
     borderRadius: px2dp(38)
   },
+  imgBox: {
+    height: px2dp(76),
+    width: px2dp(76),
+    position: 'relative'
+  },
   middle: {
     marginLeft: px2dp(21),
     flexDirection: 'column',
@@ -321,5 +331,12 @@ const styles = StyleSheet.create({
     fontSize: px2dp(32),
     color: '#333333',
     marginRight: px2dp(30)
-  }
+  },
+  vipIcon: {
+    width: px2dp(22),
+    height: px2dp(22),
+    position: 'absolute',
+    right: 0,
+    bottom: 0
+  },
 })
