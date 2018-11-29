@@ -88,7 +88,7 @@ const SimpleApp = createStackNavigator({
                     fontSize: px2dp(34)
                 },
                 headerTintColor: '#333',
-                gesturesEnabled: true
+                gesturesEnabled: Platform.OS === 'iOS' 
             }
         },
         mode: 'float',

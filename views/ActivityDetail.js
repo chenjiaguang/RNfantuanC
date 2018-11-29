@@ -91,7 +91,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
         borderBottomWidth: 0,
         elevation: 0
       },
-      gesturesEnabled: (navigation.state.params && navigation.state.params.gesturesEnabled) ? navigation.state.params.gesturesEnabled : true
+      gesturesEnabled: navigation.state.params.gesturesEnabled
     }
   }
   onNetReload = () => {
