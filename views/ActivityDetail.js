@@ -424,7 +424,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             height: item.height
           }
         }) : [],
-        htmlContent: res.data.rendering_type.toString() === '1' ? ('<!DOCTYPE html><html style="padding:0;margin:0;"><body style="padding:0;margin:0;">' + res.data.content + '</body></html>') : null,
+        htmlContent: res.data.rendering_type.toString() === '1' ? ('<!DOCTYPE html><html style="padding:0;margin:0;"><head><meta http-equiv="content-type" content="text/html" /><meta http-equiv="Pragma" content="no-cache" /><meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width" /><meta name="app-mobile-web-app-capable" content="yes" /></head><body style="padding:0;margin:0;"><div style="overflow-x:auto;">' + res.data.content + '</div></body></html>') : null,
         circle: res.data.circle,
         status: res.data.status,
       }
@@ -482,12 +482,25 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
     })
     this.ImageBrowser.show(_idx)
   }
+  patchPostMessageFunction = function() {
+    var originalPostMessage = window.postMessage
+    var patchedPostMessage = function(message, targetOrigin, transfer) { 
+      originalPostMessage(message, targetOrigin, transfer)
+    }
+    patchedPostMessage.toString = function() { 
+      return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage')
+    }
+    window.postMessage = patchedPostMessage
+  }
 
   _onLoadEnd = () => {
     const script = `window.postMessage(document.body.scrollHeight)`
     this.webview && this.webview.injectJavaScript(script)
   }
   _onMessage = (e) => {
+    if (!e.nativeEvent.data) {
+      return false
+    }
     let valToInt= parseInt(e.nativeEvent.data)
     let defWebViewHeight = px2dp(valToInt)
     if (defWebViewHeight != this.state.defWebViewHeight) {
@@ -564,7 +577,7 @@ export default class ActivityDetail extends React.Component {  // 什么参数�
             </View>
             {((content && content.length > 0) || htmlContent) ? <Animated.View ref={el => this.animateElement = el} style={[styles.introBox, { height: animationHeight ? animationHeight : 'auto' }]} onLayout={this.introBoxLayout}>
               <Text style={styles.introHeader}>活动介绍</Text>
-              {htmlContent ? <WebView ref={ele => this.webview = ele} scrollEnabled={false} source={{html: htmlContent, baseUrl: ''}} style={{height: defWebViewHeight}} onLoadEnd={this._onLoadEnd} onMessage={this._onMessage}></WebView> : null}
+              {htmlContent ? <WebView ref={ele => this.webview = ele} source={{html: htmlContent, baseUrl: ''}} scrollEnabled={false} bounces={false} style={{width: px2dp(690), height: defWebViewHeight, backgroundColor:'clearColor', opaque:'no'}} onLoadEnd={this._onLoadEnd} onMessage={this._onMessage} injectedJavaScript={'(' + String(this.patchPostMessageFunction) + ')()'}></WebView> : null}
               {content.map((item, idx) => {
                 if (item.type.toString() === '1') { // 文本
                   return <Text key={idx} style={styles.introText}>{item.content}</Text>
